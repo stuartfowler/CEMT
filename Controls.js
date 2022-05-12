@@ -21,7 +21,7 @@ var CollectionsAndFiles = new JavaImporter(
     com.nomagic.magicdraw.uml.Finder,
     java.lang);
 
-var debug = 5;
+var debug = 1;
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
 var notAssessedPath = "Cyber::Enumerations::Implementation::Not Assessed";
 var threatActionPath = "Cyber::Stereotypes::ThreatAction";
