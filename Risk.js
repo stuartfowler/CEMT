@@ -75,9 +75,9 @@ var detectProbInputParameterPath = "Cyber::Constraints::Detect::ProbInput";
 var detectDetectProbParameterPath = "Cyber::Constraints::Detect::DetectProb";
 var detectControlParameterPath = "Cyber::Constraints::Detect::Control";
 var detectEvasionParameterPath = "Cyber::Constraints::Detect::Evasion";
-var noneControlPath = "Threat Model::Controls::None";
-var systemBlockPath = "Assets::System of Systems::System";
-var noneConstraintPath = "Assets::System of Systems::System::System - None";
+var securityControlPath = "Cyber::Stereotypes::SecurityControl";
+var systemPath = "Cyber::Stereotypes::System";
+var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
 var assetPath = "Cyber::Stereotypes::Asset";
 var uniformPath = "SysML::Non-Normative Extensions::Distributions::Uniform";
 var histogramPath = "SimulationProfile::ui::Histogram";
@@ -111,6 +111,9 @@ var parameterWidth = 10;
 
 var numberOfDifficultyParameters = 6;
 var difficultyCombinationVerticalGap = 0;
+
+var defaultMinEffectiveness = 10;
+var defaultMaxEffectiveness = 90;
 
 // Diagram calculated variables
 var initialGap = leftGap + threatWidth + leftGap;
@@ -205,7 +208,7 @@ with (CollectionsAndFiles) {
             throw new Error("Exiting: No " + stereotype.getName() + " in Selected Objects");          
         }
 
-        function createRisk(project, start, signal) {
+        function createRisk(project, start, signal, assetSelection) {
             threatPackage = ef.createPackageInstance();
             threatPackage.setOwner(Finder.byQualifiedName().find(project, riskFolderPath));
             if(assetSelection) {
@@ -459,7 +462,7 @@ with (CollectionsAndFiles) {
             return detectCombination_y + parameterHeight + (parameterNumber * (parameterHeight + difficultyCombinationVerticalGap));
         }
 
-        function buildThreatAction(diagram, previousNode, currentNode, step) {
+        function buildThreatAction(diagram, previousNode, currentNode, step, noneControlPath, systemBlockPath, noneConstraintPath, assetSelection) {
             parametricDiagram = project.getDiagram(diagram);
 
             threatConstraint = createProperty(riskClass, currentNode.getName(), Finder.byQualifiedName().find(project, threatConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, threatConstraintStereotypePath), null, null);
@@ -504,7 +507,7 @@ with (CollectionsAndFiles) {
                     break;
             } 
 
-            threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), 10, 90);
+            threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), defaultMinEffectiveness, defaultMaxEffectiveness);
             threatControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(threatControlEffectiveness, parametricDiagram);
             PresentationElementsManager.getInstance().reshapeShapeElement(threatControlEffectivenessShape, new java.awt.Rectangle(getThreatX(step),threatControlEffectiveness_y,threatWidth,controlEffectivenessHeight));
             
@@ -595,7 +598,7 @@ with (CollectionsAndFiles) {
 
             createBindingConnector(detectEvasionParameter, detectEvasionParameterShape, detectConstraint, evasionValue, evasionShape, null);
             
-            detectControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentDetectNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), 10, 90);
+            detectControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentDetectNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), defaultMinEffectiveness, defaultMaxEffectiveness);
             detectControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(detectControlEffectiveness, parametricDiagram);
             PresentationElementsManager.getInstance().reshapeShapeElement(detectControlEffectivenessShape, new java.awt.Rectangle(getThreatX(step),detectControlEffectiveness_y,threatWidth,controlEffectivenessHeight));
             
@@ -856,9 +859,43 @@ with (CollectionsAndFiles) {
                 var assetSelection = Finder.byQualifiedName().find(project, assetSelectionPath);
             }
                     
+            var secControl = Finder.byQualifiedName().find(project, securityControlPath);
+            var controls = StereotypesHelper.getExtendedElements(secControl);
+            for(i = 0; i < controls.size(); i++) {
+                if(controls.get(i).isAbstract()) {
+                    var noneControl = controls.get(i);
+                }
+            }
+            writeLog("Found None: " + noneControl.getName(), 5);
+            writeLog("Found None: " + noneControl.getQualifiedName(), 5);
 
+            var noneControlPath = noneControl.getQualifiedName();
+    
+            var secConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
+            var secConstraints = StereotypesHelper.getExtendedElements(secConstraint);
+            for(i = 0; i < secConstraints.size(); i++) {
+                if(secConstraints.get(i).getType() == noneControl) {
+                    var noneConstraint = secConstraints.get(i);
+                }
+            }
+            writeLog("Found None: " + noneConstraint.getName(), 5);
+            writeLog("Found None: " + noneConstraint.getQualifiedName(), 5);
 
-            risk = createRisk(project, initialNode.getName(), signal.getName());
+            var noneConstraintPath = noneConstraint.getQualifiedName();
+
+            var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
+            var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
+            for(i = 0; i < systemAssets.size(); i++) {
+                if(systemAssets.get(i).isAbstract()) {
+                    var systemAsset = systemAssets.get(i);
+                }
+            }
+            writeLog("Found System: " + systemAsset.getName(), 5);
+            writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
+
+            var systemBlockPath = systemAsset.getQualifiedName();
+
+            risk = createRisk(project, initialNode.getName(), signal.getName(), assetSelection);
             diagram = ModelElementsManager.getInstance().createDiagram("SysML Parametric Diagram", risk);
 
             nodeHistory = new ArrayList();
@@ -874,7 +911,7 @@ with (CollectionsAndFiles) {
                     break;
                 }
                 writeLog("NextThreatAction: " + nextNode.getName(), 3);
-                drawnNode = buildThreatAction(diagram, drawnNode, nextNode, z);
+                drawnNode = buildThreatAction(diagram, drawnNode, nextNode, z, noneControlPath, systemBlockPath, noneConstraintPath, assetSelection);
                 nodeHistory.add(drawnNode);
             }
 

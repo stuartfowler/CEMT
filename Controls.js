@@ -21,12 +21,14 @@ var CollectionsAndFiles = new JavaImporter(
     com.nomagic.magicdraw.uml.Finder,
     java.lang);
 
-var debug = 1;
+var debug = 2;
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
 var notAssessedPath = "Cyber::Enumerations::Implementation::Not Assessed";
+var notImplementedPath = "Cyber::Enumerations::Implementation::Not Implemented";
 var threatActionPath = "Cyber::Stereotypes::ThreatAction";
 var detectionActionPath = "Cyber::Stereotypes::DetectionAction";
-var noneControlPath = "Threat Model::Controls::None";
+var securityControlPath = "Cyber::Stereotypes::SecurityControl";
+var systemPath = "Cyber::Stereotypes::System";
 
 with (CollectionsAndFiles) {
     try {
@@ -46,16 +48,21 @@ with (CollectionsAndFiles) {
         }
 
         //Creates security constraint properties for each potentialControl under each allocatedComponent
-        function createConstraints(potentialControls, allocatedComponents) {
+        function createConstraints(potentialControls, allocatedComponents, noneControl, systemAsset) {
             notAssessed = Finder.byQualifiedName().find(project, notAssessedPath);
             notAssessed = AutomatonMacroAPI.getOpaqueObject(notAssessed);
-            noneControl = Finder.byQualifiedName().find(project, noneControlPath);
+            notImplemented = Finder.byQualifiedName().find(project, notImplementedPath);
+            notImplemented = AutomatonMacroAPI.getOpaqueObject(notImplemented);
+
+  
             noneControl = AutomatonMacroAPI.getOpaqueObject(noneControl);
+            systemAsset = AutomatonMacroAPI.getOpaqueObject(systemAsset);
             for (i = 0; i < allocatedComponents.size(); i++) {
                 currentComponent = allocatedComponents.get(i);
                 for (j = 0; j < potentialControls.size(); j++) {
                     currentControl = potentialControls.get(j);  
                     present = 0;
+                    nonePresent = 0;
                     writeLog("Checking Combination: " + currentComponent.Name + " - " + currentControl.Name, 3);
                     for (k = 0; k < currentComponent.Owned_Element.size(); k++) {
                         if (currentComponent.Owned_Element.get(k).Type == currentControl) {
@@ -76,13 +83,33 @@ with (CollectionsAndFiles) {
                             new_name = currentComponent.getName() + ' - ' + currentControl.getName();
                             currentConstraint.setName(new_name);
                         }
+                        else {
+                            for (l = 0; l < systemAsset.Owned_Element.size(); l++) {
+                                if (systemAsset.Owned_Element.get(l).Type == noneControl) {
+                                    nonePresent = 1;
+                                    writeLog("Already exists: " + systemAsset.Name + " - " + noneControl.Name, 3);
+                                }
+                            }
+                            if(!nonePresent) {
+                                writeLog("Creating constraint: " + systemAsset.Name + " - " + noneControl.Name, 2);
+                                noneConstraint = AutomatonMacroAPI.createElement("Property");
+                                noneConstraint.setOwner(systemAsset);
+                                noneConstraint.setType(noneControl);
+                                securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
+                                securityConstraint = AutomatonMacroAPI.getOpaqueObject(securityConstraint);
+                                noneConstraint = AutomatonMacroAPI.addStereotype(noneConstraint, securityConstraint);
+                                noneConstraint.setImplementation(notImplemented);
+                                new_name = systemAsset.getName() + ' - ' + noneControl.getName();
+                                noneConstraint.setName(new_name);
+                            }
+                        }
                     }
                 }
             }
         }
 
         //Extracts the potentialControls and allocatedComponents from a given threatAction
-        function processAction(object) {
+        function processAction(object, noneControl, systemAsset) {
             writeLog("Processing threatAction: " + object.getName(), 2);
             opaqueObject = AutomatonMacroAPI.getOpaqueObject(object);
             potentialControls = opaqueObject.Mitigated_By;
@@ -90,7 +117,7 @@ with (CollectionsAndFiles) {
             allocatedComponents = opaqueObject.affects;
             writeLog("AllocatedComponents: " + allocatedComponents, 3);
             if(allocatedComponents && potentialControls) {
-                createConstraints(potentialControls, allocatedComponents);
+                createConstraints(potentialControls, allocatedComponents, noneControl, systemAsset);
             }
         }
 
@@ -106,6 +133,26 @@ with (CollectionsAndFiles) {
         writeLog("Got threatAction stereotype: " + threatAction, 5);
         var detectionAction = Finder.byQualifiedName().find(project, detectionActionPath);
         writeLog("Got detectionAction stereotype: " + detectionAction, 5);
+
+        var secControl = Finder.byQualifiedName().find(project, securityControlPath);
+        var controls = StereotypesHelper.getExtendedElements(secControl);
+        for(i = 0; i < controls.size(); i++) {
+            if(controls.get(i).isAbstract()) {
+                var noneControl = controls.get(i);
+            }
+        }
+        writeLog("Found None: " + noneControl.getName(), 5);
+        writeLog("Found None: " + noneControl.getQualifiedName(), 5);
+
+        var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
+        var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
+        for(i = 0; i < systemAssets.size(); i++) {
+            if(systemAssets.get(i).isAbstract()) {
+                var systemAsset = systemAssets.get(i);
+            }
+        }
+        writeLog("Found System: " + systemAsset.getName(), 5);
+        writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
 
         //If something is selected in containment tree
         if(project.getBrowser().getContainmentTree().getSelectedNode()) {
@@ -126,7 +173,7 @@ with (CollectionsAndFiles) {
             writeLog("ThreatAction List Size: " + threatActions.size(), 3);
              for (x = 0; x < threatActions.size(); x++) {
                 currentObject = threatActions.get(x);
-                processAction(currentObject);
+                processAction(currentObject, noneControl, systemAsset);
             }
             //Also process all detectionActions
             detectionActions = StereotypesHelper.getExtendedElements(detectionAction);
@@ -134,7 +181,7 @@ with (CollectionsAndFiles) {
             writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
              for (x = 0; x < detectionActions.size(); x++) {
                 currentObject = detectionActions.get(x);
-                processAction(currentObject);
+                processAction(currentObject, noneControl, systemAsset);
             }
         }
     }
