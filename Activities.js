@@ -24,6 +24,7 @@ var CollectionsAndFiles = new JavaImporter(
 var debug = 2;
 var aggregatedActionPath = "Cyber::Stereotypes::AggregatedAction";
 var malActivityPath = "Cyber::Stereotypes::MalActivity";
+var nodePath = "UML Standard Profile::UML2 Metamodel::ActivityParameterNode";
 
 with (CollectionsAndFiles) {
     try {
@@ -48,6 +49,23 @@ with (CollectionsAndFiles) {
             currentAction = AutomatonMacroAPI.getOpaqueObject(object);
             if(currentAction.behavior) {
                 writeLog("Activity already exists: " + currentAction.getName(), 3);
+                malActivityStereo = Finder.byQualifiedName().find(project, malActivityPath);
+                if(!(StereotypesHelper.hasStereotype(object.getBehavior(), malActivityStereo))) {
+                    StereotypesHelper.addStereotype(object.getBehavior(), malActivityStereo);
+                }
+                if(!(currentAction.getOwner() == currentAction.behavior.getOwner())) {
+                    currentAction.behavior.setOwner(currentAction.getOwner());
+                }
+                for(i = 0; i < object.getBehavior().getOwnedElement().size(); i++) {
+                    writeLog("Found Owned Element: " + object.getBehavior().getOwnedElement().get(i).getName(), 5);
+                    if(object.getBehavior().getOwnedElement().get(i).getClass() == "class com.nomagic.uml2.ext.magicdraw.activities.mdbasicactivities.impl.ActivityParameterNodeImpl") {
+                        writeLog("Found ActivtyParameterNode: " + object.getBehavior().getOwnedElement().get(i).getName(), 5);
+                        if(!(object.getBehavior().getOwnedElement().get(i).isControlType())) {
+                            writeLog("Changing ActivtyParameterNode to Control Type: " + object.getBehavior().getOwnedElement().get(i).getName(), 2)
+                            object.getBehavior().getOwnedElement().get(i).setControlType(true);
+                        }
+                    }
+                }
             } else {
                 currentActivity = ef.createActivityInstance();
                 currentActivity = AutomatonMacroAPI.getOpaqueObject(currentActivity);
