@@ -529,7 +529,7 @@ with (CollectionsAndFiles) {
 
             if(linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
                 noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
-                currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+                currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, null, null, null, null);
                 currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
                 currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
                 createDependency(threatControlEffectiveness, threatControlEffectivenessShape, noneConstraint, currentConstraintShape);
@@ -619,7 +619,7 @@ with (CollectionsAndFiles) {
 
             if(linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
                 noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
-                currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+                currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, null, null, null, null);
                 currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
                 currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
                 createDependency(detectControlEffectiveness, detectControlEffectivenessShape, noneConstraint, currentConstraintShape);
