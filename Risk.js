@@ -890,11 +890,8 @@ with (CollectionsAndFiles) {
 
             var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
             var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
-            for(i = 0; i < systemAssets.size(); i++) {
-                if(systemAssets.get(i).isAbstract()) {
-                    var systemAsset = systemAssets.get(i);
-                }
-            }
+            var systemAsset = systemAssets.get(0);
+
             writeLog("Found System: " + systemAsset.getName(), 5);
             writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
 

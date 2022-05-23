@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<diagram version="8" type="CEMT Misuse Case Diagram" baseType="Use Case Diagram" abbreviation="muc" category="CEMT Diagrams">
+    <requiredPlugin>com.nomagic.magicdraw.plugins.impl.sysml#SysML;UML_Standard_Profile.mdzip;Cyber_Profile.mdzip</requiredPlugin>
+    <toolbarConfiguration>
+        <category name="Cyber" id="action_category_1613393180626_581448_1" expandedByDefault="true">
+            <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.mdusecases.Actor" description="MaliciousActor" listAsElement="false" opposite="false" id="IDaction_1613393199521_420400_1">
+                    <stereotype id="_19_0_3_6a70230_1613389353480_402345_71498"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.mdusecases.Actor" description="NonMaliciousActor" listAsElement="false" opposite="false" id="IDaction_1613393219928_499051_2">
+                    <stereotype id="_19_0_3_6a70230_1613389368439_369867_71525"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.mdusecases.UseCase" description="MisuseCase" listAsElement="false" opposite="false" id="IDaction_1613393234147_320848_3">
+                    <stereotype id="_19_0_3_6a70230_1584336760278_122354_43082"/>
+                </custom>
+                <standard action="ADD_ASSOCIATION" shortcut="pressed S "/>
+            </actions>
+        </category>
+    </toolbarConfiguration>
+    <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/usecasediagram.png"></icon>
+    <icon type="diagraming" size="-1" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/usecasediagram.svg"></icon>
+    <module name="Cyber_Profile.mdzip" location="C:\Program Files\Cameo Systems Modeler\profiles\Cyber_Profile.mdzip">
+        <root id="_19_0_3_6a70230_1584053584149_261835_42690"/>
+    </module>
+    <module name="UML_Standard_Profile.mdzip" location="C:\Program Files\Cameo Systems Modeler\profiles\UML_Standard_Profile.mdzip">
+        <root id="magicdraw_uml_standard_profile_v_0001"/>
+    </module>
+    <elementstyle name="Diagram">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_ABBREVIATED_DIAGRAM_TYPE</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_DIAGRAM_TYPE</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_PARAMETERS</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_CONTEXT_NAME</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_FRAME_OWNER</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdusecases.Actor</element>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_USECASE</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package</element>
+        <path action="ADD_CONTAINMENT_LINK_OPPOSITE">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_PACKAGE</target>
+            <target>ADD_CLASS</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_ENUMERATION</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_MERGE_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdusecases.UseCase</element>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_ACTOR</target>
+            <target>ADD_USECASE</target>
+            <target>ADD_SUBSYSTEM</target>
+        </path>
+        <path action="ADD_EXTEND_OPPOSITE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_INCLUDE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430239267_179145_1189" name="Value Type"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_ENUMERATION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213032822_616987_2338" name="Full Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147436929898_779228_1998" name="Flow Specification"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_310701_1581" name="System Context"/>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_0_be00301_1147682946132_981479_8" name="Flow Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213059640_259248_2362" name="Interface Block"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147420812402_281263_364" name="Viewpoint"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430329106_6539_1367" name="Unit"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147767804973_159489_404" name="Constraint Block"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_DIRECTED_COMPOSITION"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147424179914_458922_958" name="Block"/>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_DEPENDENCY"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430310770_313444_1322" name="QuantityKind"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213131032_5397_2410" name="Proxy Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_19_0_3_6a70230_1584336760278_122354_43082" name="MisuseCase"/>
+        <path action="ADD_ASSOCIATION"/>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147420760998_43940_227" name="View"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_PACKAGE</target>
+            <target>ADD_MODEL</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147873190330_159934_2220" name="Requirement"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_ENUMERATION</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_CONTAINMENT_LINK"/>
+        <path action="ADD_CONTAINMENT_LINK_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+</diagram>

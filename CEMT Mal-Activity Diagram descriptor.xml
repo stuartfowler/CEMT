@@ -1,0 +1,1731 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<diagram version="8" type="CEMT Mal-Activity Diagram" baseType="Activity Diagram" abbreviation="mal-act" category="CEMT Diagrams">
+    <requiredPlugin>com.nomagic.magicdraw.plugins.impl.sysml#SysML;UML_Standard_Profile.mdzip;Cyber_Profile.mdzip</requiredPlugin>
+    <toolbarConfiguration>
+        <category name="Cyber" id="action_category_1584059459170_459409_1" expandedByDefault="true">
+            <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.activities.mdintermediateactivities.JoinNode" description="ThreatAND" listAsElement="false" opposite="false" id="IDaction_1586829926842_812129_0">
+                    <stereotype id="_19_0_3_6a70230_1586829774625_383807_42233"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.activities.mdbasicactivities.InitialNode" description="ThreatStart" listAsElement="false" opposite="false" id="IDaction_1584065866562_391656_2">
+                    <stereotype id="_19_0_3_6a70230_1584065325884_917091_42356"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction" description="AggregatedAction" listAsElement="false" opposite="false" id="IDaction_1584065185397_199934_0">
+                    <stereotype id="_19_0_3_6a70230_1584065078794_354834_42294"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.InputPin" description="ThreatInput" listAsElement="false" opposite="false" id="IDaction_1584164820645_493579_2">
+                    <stereotype id="_19_0_3_6a70230_1584164721739_446699_42873"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isControlType</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.OutputPin" description="ThreatOutput" listAsElement="false" opposite="false" id="IDaction_1584164848093_750890_3">
+                    <stereotype id="_19_0_3_6a70230_1584164747558_746490_42919"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isControlType</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction" description="ThreatAction" listAsElement="false" opposite="false" id="IDaction_1584059474335_259032_2">
+                    <stereotype id="_19_0_3_6a70230_1584054180492_863154_42870"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.activities.mdbasicactivities.ControlFlow" description="ThreatFlow" listAsElement="false" opposite="false" id="IDaction_1584059778319_35655_5">
+                    <stereotype id="_19_0_3_6a70230_1584059622365_680974_42283"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction" description="DetectionAction" listAsElement="false" opposite="false" id="IDaction_1584059489155_527621_3">
+                    <stereotype id="_19_0_3_6a70230_1584054110996_396512_42843"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.activities.mdbasicactivities.ControlFlow" description="DetectionFlow" listAsElement="false" opposite="false" id="IDaction_1584059799813_475859_6">
+                    <stereotype id="_19_0_3_6a70230_1584059676395_696216_42366"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.activities.mdintermediateactivities.FlowFinalNode" description="ThreatEnd" listAsElement="false" opposite="false" id="IDaction_1584065894741_416269_3">
+                    <stereotype id="_19_0_3_6a70230_1584065348664_232012_42408"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.SendSignalAction" description="ThreatSendSignal" listAsElement="false" opposite="false" id="IDaction_1584073937093_151116_0">
+                    <stereotype id="_19_0_3_6a70230_1584073703763_90774_43137"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.AcceptEventAction" description="ThreatAcceptEvent" listAsElement="false" opposite="false" id="IDaction_1584073973933_900321_1">
+                    <stereotype id="_19_0_3_6a70230_1584073803547_196779_43253"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.SendSignalAction" description="ThreatImpact" listAsElement="false" opposite="false" id="IDaction_1584073990522_711700_2">
+                    <stereotype id="_19_0_3_6a70230_1584073728035_772410_43187"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.SendSignalAction" description="ThreatDetection" listAsElement="false" opposite="false" id="IDaction_1584074018857_565490_3">
+                    <stereotype id="_19_0_3_6a70230_1584073888320_368554_43336"/>
+                </custom>
+            </actions>
+        </category>
+    </toolbarConfiguration>
+    <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/activitydiagram.png"></icon>
+    <icon type="diagraming" size="-1" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/activitydiagram.svg"></icon>
+    <module name="Cyber_Profile.mdzip" location="C:\Program Files\Cameo Systems Modeler\profiles\Cyber_Profile.mdzip">
+        <root id="_19_0_3_6a70230_1584053584149_261835_42690"/>
+    </module>
+    <module name="UML_Standard_Profile.mdzip" location="C:\Program Files\Cameo Systems Modeler\profiles\UML_Standard_Profile.mdzip">
+        <root id="magicdraw_uml_standard_profile_v_0001"/>
+    </module>
+    <elementstyle name="CentralBufferNode">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+                    <value>STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON</value>
+                    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+                    <index xmi:value="0"/>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <elementstyle name="Diagram">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_ABBREVIATED_DIAGRAM_TYPE</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_DIAGRAM_TYPE</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_PARAMETERS</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_CONTEXT_NAME</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_FRAME_OWNER</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.AcceptCallAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.AcceptEventAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.AddStructuralFeatureValueAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.AddVariableValueAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.BroadcastSignalAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallOperationAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.ClearAssociationAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.ClearStructuralFeatureAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.ClearVariableAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdstructuredactivities.ConditionalNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.CreateLinkAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.CreateLinkObjectAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.CreateObjectAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdintermediateactivities.DecisionNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.DestroyLinkAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.DestroyObjectAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdextrastructuredactivities.ExpansionRegion</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_EXPANSION_NODE"/>
+        <path action="ADD_OUTPUT_EXPANSION_NODE"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdintermediateactivities.ForkNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdbasicactivities.InitialNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.InvocationAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdintermediateactivities.JoinNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.LinkAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdstructuredactivities.LoopNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdintermediateactivities.MergeNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.OpaqueAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.RaiseExceptionAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.ReadExtentAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.ReadIsClassifiedObjectAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.ReadLinkAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.ReadLinkObjectEndAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.ReadLinkObjectEndQualifierAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.ReadSelfAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.ReadStructuralFeatureAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.ReadVariableAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.ReclassifyObjectAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.RemoveStructuralFeatureValueAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.RemoveVariableValueAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.ReplyAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.SendObjectAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.SendSignalAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdstructuredactivities.SequenceNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.StartClassifierBehaviorAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.StartObjectBehaviorAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.StructuralFeatureAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.activities.mdstructuredactivities.StructuredActivityNode</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.TestIdentityAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdcompleteactions.UnmarshallAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.ValueSpecificationAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_OUTPUT_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.VariableAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.WriteLinkAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdintermediateactions.WriteStructuralFeatureAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.actions.mdstructuredactions.WriteVariableAction</element>
+        <path action="ADD_CONTROL_FLOW">
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+            <target>ADD_DECISION_NODE</target>
+            <target>ADD_MERGE_NODE</target>
+            <target>ADD_JOIN_NODE_HORIZONTAL</target>
+            <target>ADD_FORK_NODE_HORIZONTAL</target>
+            <target>ADD_CALL_OPERATION_ACTION</target>
+            <target>ADD_FINAL_NODE</target>
+            <target>ADD_FLOW_FINAL_NODE_</target>
+            <target>ADD_STRUCTURED_ACTIVITY_NODE</target>
+        </path>
+        <path action="ADD_OBJECT_FLOW">
+            <target>ADD_CENTRAL_BUFFER</target>
+            <target>ADD_DATASTORE</target>
+            <target>ADD_ACTIVITY_PARAMETER_NODE</target>
+            <target>ADD_CALL_BEHAVIOR_ACTION</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_INPUT_PIN"/>
+        <path action="ADD_OUTPUT_PIN"/>
+        <path action="ADD_VALUE_PIN"/>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_19_0_3_6a70230_1584054110996_396512_42843" name="DetectionAction"/>
+        <stereotype id="_19_0_3_6a70230_1584054180492_863154_42870" name="ThreatAction"/>
+        <path action="IDaction_1584164820645_493579_2"/>
+        <path action="IDaction_1584164848093_750890_3"/>
+        <path action="IDaction_1584059778319_35655_5"/>
+        <path action="IDaction_1584059799813_475859_6"/>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576734593_228534_190" name="Extended Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576734609_725391_198" name="Performance Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576734609_530688_194" name="Functional Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576734609_380772_200" name="Physical Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576734609_387880_196" name="Interface Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172577924546_705207_930" name="Business Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576899359_902879_864" name="Usability Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147873190330_159934_2220" name="Requirement"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172576734609_234637_202" name="Design Constraint"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+</diagram>

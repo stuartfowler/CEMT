@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<diagram version="8" type="CEMT Asset Definition Diagram" baseType="Class Diagram" abbreviation="add" category="CEMT Diagrams">
+    <requiredPlugin>com.nomagic.magicdraw.plugins.impl.sysml#SysML;Cyber_Profile.mdzip;UML_Standard_Profile.mdzip</requiredPlugin>
+    <toolbarConfiguration>
+        <category name="Cyber" id="action_category_1653261030861_596718_0" expandedByDefault="true">
+            <actions>
+                <standard action="ADD_DIRECTED_ASSOCIATION"/>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Asset" listAsElement="false" opposite="false" id="IDaction_1653261098213_737736_1">
+                    <stereotype id="_19_0_3_6a70230_1584053857098_491267_42744"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Contextual Asset" listAsElement="false" opposite="false" id="IDaction_1653261123564_989353_2">
+                    <stereotype id="_19_0_3_6a70230_1584053857098_491267_42744"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isAbstract</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isEncapsulated</propertyID>
+    <propertyGroup>_19_0_3_6a70230_1584053857098_491267_42744</propertyGroup>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="System of Interest" listAsElement="false" opposite="false" id="IDaction_1653261161070_347706_3">
+                    <stereotype id="_19_0_3_6a70230_1652445056187_73067_43272"/>
+                </custom>
+            </actions>
+        </category>
+    </toolbarConfiguration>
+    <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/blockdefinitiondiagram.png"></icon>
+    <icon type="diagraming" size="-1" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/blockdefinitiondiagram.svg"></icon>
+    <module name="Cyber_Profile.mdzip" location="C:\Program Files\Cameo Systems Modeler\profiles\Cyber_Profile.mdzip">
+        <root id="_19_0_3_6a70230_1584053584149_261835_42690"/>
+    </module>
+    <module name="UML_Standard_Profile.mdzip" location="C:\Program Files\Cameo Systems Modeler\profiles\UML_Standard_Profile.mdzip">
+        <root id="magicdraw_uml_standard_profile_v_0001"/>
+    </module>
+    <elementstyle name="Class">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+                    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+                    <index xmi:value="-1"/>
+                </mdElement>
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>SHOW_ASSOCIATION_ENDS_MODE</propertyID>
+                    <propertyGroup>ATTRIBUTES</propertyGroup>
+                    <value>WITHOUT_ASSOCIATION</value>
+                    <choice xmi:value="ALL^WITHOUT_ASSOCIATION^DO_NOT_DISPLAY"/>
+                    <index xmi:value="1"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SUPPRESS_CLASS_OPERATIONS</propertyID>
+                    <propertyGroup>OPERATIONS</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <elementstyle name="AssociationClass">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+                    <value>STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES</value>
+                    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+                    <index xmi:value="5"/>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <elementstyle name="Diagram">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_ABBREVIATED_DIAGRAM_TYPE</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_DIAGRAM_TYPE</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_PARAMETERS</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_CONTEXT_NAME</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SHOW_FRAME_OWNER</propertyID>
+                    <propertyGroup>DIAGRAM_FRAME</propertyGroup>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdusecases.Actor</element>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_ACTOR</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DIRECTED_ASSOCIATION">
+            <target>ADD_USECASE</target>
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_DIRECTED_AGGREGATION">
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_USECASE</target>
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_AGGREGATION">
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_COMPOSITION">
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration</element>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_ENUMERATION</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>ADD_ENUMERATION</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DIRECTED_ASSOCIATION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_DIRECTED_AGGREGATION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_AGGREGATION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdinformationflows.InformationItem</element>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdinterfaces.Interface</element>
+        <path action="ADD_INTERFACE_REALIZATION_OPPOSITE"/>
+        <path action="ADD_USAGE_OPPOSITE"/>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Operation</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package</element>
+        <path action="ADD_CONTAINMENT_LINK_OPPOSITE">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_PACKAGE</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP"/>
+        <path action="ADD_ELEMENT_IMPORT"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port</element>
+        <path action="ADD_USAGE">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Reception</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Slot</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdusecases.UseCase</element>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_ACTOR</target>
+            <target>ADD_USECASE</target>
+            <target>ADD_SUBSYSTEM</target>
+        </path>
+        <path action="ADD_EXTEND_OPPOSITE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_INCLUDE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430239267_179145_1189" name="Value Type"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213032822_616987_2338" name="Full Port"/>
+        <path action="ADD_USAGE">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147436929898_779228_1998" name="Flow Specification"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_310701_1581" name="System Context"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_15_0_be00301_1199377756297_348405_2678" name="Part Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147767840464_372327_467" name="Constraint Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_19_0_3_6a70230_1652445056187_73067_43272" name="System"/>
+        <path action="ADD_DIRECTED_ASSOCIATION"/>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1173094714531_37548_260" name="External"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_0EAPbeta_be00301_1161355503976_51059_459" name="Constraint Parameter"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_388539_1575" name="Domain"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_19_0_3_6a70230_1584053857098_491267_42744" name="Asset"/>
+        <path action="ADD_DIRECTED_ASSOCIATION"/>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_0_be00301_1147682946132_981479_8" name="Flow Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213059640_259248_2362" name="Interface Block"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_375361_1577" name="System"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147420812402_281263_364" name="Viewpoint"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_0_be00301_1164123483951_695645_2041" name="Value Property"/>
+        <path action="ADD_CONNECTOR"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_15_0_be00301_1199378032543_992832_3096" name="Reference Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430329106_6539_1367" name="Unit"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147767804973_159489_404" name="Constraint Block"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147424179914_458922_958" name="Block"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_898135_1579" name="Subsystem"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430310770_313444_1322" name="QuantityKind"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213131032_5397_2410" name="Proxy Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147436061009_177713_1911" name="Flow Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147420760998_43940_227" name="View"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147937772815_210871_2448" name="Test Case"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147873190330_159934_2220" name="Requirement"/>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+        </path>
+    </manipulators>
+</diagram>
