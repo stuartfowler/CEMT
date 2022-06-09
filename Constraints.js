@@ -1,5 +1,5 @@
 /* 
-This macro updates Security Constraints to ensure they fit the "<Asset Name> - <Control Name>" format.
+This macro updates Security Properties to ensure they fit the "<Asset Name> - <Control Name>" format.
 This macro should be run when the modeller changes the name of a Security Control.
 When a particular constraint is selected in the containment tree, only that constraint is processed.
 When nothing is selected in the containment tree, all Security Constraints are processed. 
@@ -23,7 +23,7 @@ var CollectionsAndFiles = new JavaImporter(
     java.lang);
 
 var debug = 2;
-var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
+var securityPropertyPath = "Cyber::Stereotypes::SecurityProperty";
 
 with (CollectionsAndFiles) {
     try {
@@ -44,7 +44,7 @@ with (CollectionsAndFiles) {
 
         //Checks Constraint name and updates as required
         function processConstraint(object) {
-            writeLog("Processing securityConstraint: " + object.getName(), 2);
+            writeLog("Processing securityProperty: " + object.getName(), 2);
             type = object.getType().getName();
             name = object.getName();
             owner = object.getOwner().getName();
@@ -63,29 +63,29 @@ with (CollectionsAndFiles) {
         writeLog("Got project: " + project, 5);
         newSession(project, "Constraint Creation");
 
-        //Grabs the securityConstraint stereotypes
-        securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
-        writeLog("Got securityConstraint stereotype: " + securityConstraint, 5);
+        //Grabs the securityProperty stereotypes
+        securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
+        writeLog("Got securityProperty stereotype: " + securityProperty, 5);
 
         //If something is selected in containment tree
         if(project.getBrowser().getContainmentTree().getSelectedNode()) {
             //Get selected object from containment tree
             var currentObject = project.getBrowser().getContainmentTree().getSelectedNode().getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
-            //Process object if it is a securityConstraint, otherwise do nothing
-            if(StereotypesHelper.hasStereotype(currentObject,securityConstraint)) {
+            //Process object if it is a securityProperty, otherwise do nothing
+            if(StereotypesHelper.hasStereotype(currentObject,securityProperty)) {
                 processConstraint(currentObject);
             }
             else {
-                writeLog("Selected Item is not a SecurityConstraint", 1)
+                writeLog("Selected Item is not a SecurityProperty", 1)
             }
         } else {
-            //If nothing is selected, find all securityConsraints and process them
-            securityConstraints = StereotypesHelper.getExtendedElements(securityConstraint);
-            writeLog("Got list of securityConstraints: " + securityConstraints, 4);
-            writeLog("Secuirty Constraint List Size: " + securityConstraints.size(), 3);
-             for (x = 0; x < securityConstraints.size(); x++) {
-                currentObject = securityConstraints.get(x);
+            //If nothing is selected, find all securityProperties and process them
+            securityProperties = StereotypesHelper.getExtendedElements(securityProperty);
+            writeLog("Got list of securityProperties: " + securityProperties, 4);
+            writeLog("Secuirty Constraint List Size: " + securityProperties.size(), 3);
+             for (x = 0; x < securityProperties.size(); x++) {
+                currentObject = securityProperties.get(x);
                 processConstraint(currentObject);
             }
         }

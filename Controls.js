@@ -1,7 +1,8 @@
 /* 
-This macro creates Security Constraints from the Assets and Security Controls allocated to ThreatActions and DetectionActions.
+This macro creates Security Properties from the Assets and Security Controls allocated to ThreatActions and DetectionActions.
 When a particular action is selected in the containment tree, only that action is processed.
 When nothing is selected in the containment tree, all ThreatActions and DetectionActions are processed. 
+Also creates Security Properties for all Security Constraints that are Applied to Assets.
 
 Author: Stuart Fowler
 Date: 16 March 2020
@@ -21,8 +22,9 @@ var CollectionsAndFiles = new JavaImporter(
     com.nomagic.magicdraw.uml.Finder,
     java.lang);
 
-var debug = 5;
+var debug = 2;
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
+var securityPropertyPath = "Cyber::Stereotypes::SecurityProperty";
 var notAssessedPath = "Cyber::Enumerations::Implementation::Not Assessed";
 var notImplementedPath = "Cyber::Enumerations::Implementation::Not Implemented";
 var threatActionPath = "Cyber::Stereotypes::ThreatAction";
@@ -47,7 +49,7 @@ with (CollectionsAndFiles) {
             SessionManager.getInstance().createSession(project, sessionName);
         }
 
-        //Creates security constraint properties for each potentialControl under each allocatedComponent
+        //Creates security properties for each potentialControl under each allocatedComponent
         function createConstraints(potentialControls, allocatedComponents, noneControl, systemAsset) {
             notAssessed = Finder.byQualifiedName().find(project, notAssessedPath);
             notAssessed = AutomatonMacroAPI.getOpaqueObject(notAssessed);
@@ -72,16 +74,16 @@ with (CollectionsAndFiles) {
                     }
                     if (!present) {
                         if(currentControl != noneControl){                            
-                            writeLog("Creating constraint: " + currentComponent.Name + " - " + currentControl.Name, 2);
-                            currentConstraint = AutomatonMacroAPI.createElement("Property");
-                            currentConstraint.setOwner(currentComponent);
-                            currentConstraint.setType(currentControl);
-                            securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
-                            securityConstraint = AutomatonMacroAPI.getOpaqueObject(securityConstraint);
-                            currentConstraint = AutomatonMacroAPI.addStereotype(currentConstraint, securityConstraint);
-                            currentConstraint.setImplementation(notAssessed);
+                            writeLog("Creating property: " + currentComponent.Name + " - " + currentControl.Name, 2);
+                            currentProperty = AutomatonMacroAPI.createElement("Property");
+                            currentProperty.setOwner(currentComponent);
+                            currentProperty.setType(currentControl);
+                            securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
+                            securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
+                            currentProperty = AutomatonMacroAPI.addStereotype(currentProperty, securityProperty);
+                            currentProperty.setImplementation(notAssessed);
                             new_name = currentComponent.getName() + ' - ' + currentControl.getName();
-                            currentConstraint.setName(new_name);
+                            currentProperty.setName(new_name);
                         }
                         else {
                             for (l = 0; l < systemAsset.Owned_Element.size(); l++) {
@@ -91,16 +93,16 @@ with (CollectionsAndFiles) {
                                 }
                             }
                             if(!nonePresent) {
-                                writeLog("Creating constraint: " + systemAsset.Name + " - " + noneControl.Name, 2);
-                                noneConstraint = AutomatonMacroAPI.createElement("Property");
-                                noneConstraint.setOwner(systemAsset);
-                                noneConstraint.setType(noneControl);
-                                securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
-                                securityConstraint = AutomatonMacroAPI.getOpaqueObject(securityConstraint);
-                                noneConstraint = AutomatonMacroAPI.addStereotype(noneConstraint, securityConstraint);
-                                noneConstraint.setImplementation(notImplemented);
+                                writeLog("Creating property: " + systemAsset.Name + " - " + noneControl.Name, 2);
+                                noneProperty = AutomatonMacroAPI.createElement("Property");
+                                noneProperty.setOwner(systemAsset);
+                                noneProperty.setType(noneControl);
+                                securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
+                                securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
+                                noneProperty = AutomatonMacroAPI.addStereotype(noneProperty, securityProperty);
+                                noneProperty.setImplementation(notImplemented);
                                 new_name = systemAsset.getName() + ' - ' + noneControl.getName();
-                                noneConstraint.setName(new_name);
+                                noneProperty.setName(new_name);
                             }
                         }
                     }
@@ -121,6 +123,34 @@ with (CollectionsAndFiles) {
             }
         }
 
+        function processConstraint(currentConstraint) {
+            writeLog("Processing constraint: " + currentConstraint.getName(), 2);
+            opaqueConstraint = AutomatonMacroAPI.getOpaqueObject(currentConstraint);
+            applicableAssets = opaqueConstraint.Applies;
+            for (i = 0; i < applicableAssets.size(); i++) {
+                currentAsset = applicableAssets.get(i);
+                writeLog("Checking Combination: " + currentAsset.Name + " - " + currentConstraint.Name, 3);
+                present = 0;
+                for (k = 0; k < currentAsset.Owned_Element.size(); k++) {
+                    if (currentAsset.Owned_Element.get(k).Type == currentConstraint) {
+                        present = 1;
+                        writeLog("Already exists: " + currentAsset.Name + " - " + currentConstraint.Name, 3);
+                    }
+                }
+                if (!present) {   
+                    writeLog("Creating property: " + currentAsset.Name + " - " + currentConstraint.Name, 2);
+                    currentProperty = AutomatonMacroAPI.createElement("Property");
+                    currentProperty.setOwner(currentAsset);
+                    currentProperty.setType(currentConstraint);
+                    securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
+                    securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
+                    currentProperty = AutomatonMacroAPI.addStereotype(currentProperty, securityProperty);
+                    currentProperty.setImplementation(notAssessed);
+                    new_name = currentAsset.getName() + ' - ' + currentConstraint.getName();
+                    currentProperty.setName(new_name);
+                }
+            }
+        }
         //Initialises by selecting the project and element factory
         var project = Application.getInstance().getProject();
         writeLog("Got project: " + project, 5);
@@ -133,6 +163,8 @@ with (CollectionsAndFiles) {
         writeLog("Got threatAction stereotype: " + threatAction, 5);
         var detectionAction = Finder.byQualifiedName().find(project, detectionActionPath);
         writeLog("Got detectionAction stereotype: " + detectionAction, 5);
+        var securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
+        writeLog("Got securityConstraint stereotype: " + securityConstraint, 5)
 
         var secControl = Finder.byQualifiedName().find(project, securityControlPath);
         var controls = StereotypesHelper.getExtendedElements(secControl);
@@ -169,7 +201,7 @@ with (CollectionsAndFiles) {
             writeLog("ThreatAction List Size: " + threatActions.size(), 3);
              for (x = 0; x < threatActions.size(); x++) {
                 currentObject = threatActions.get(x);
-                processAction(currentObject, noneControl, systemAsset);
+                //processAction(currentObject, noneControl, systemAsset);
             }
             //Also process all detectionActions
             detectionActions = StereotypesHelper.getExtendedElements(detectionAction);
@@ -177,7 +209,15 @@ with (CollectionsAndFiles) {
             writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
              for (x = 0; x < detectionActions.size(); x++) {
                 currentObject = detectionActions.get(x);
-                processAction(currentObject, noneControl, systemAsset);
+                //processAction(currentObject, noneControl, systemAsset);
+            }
+
+            //Process SecurityConstraints
+            securityConstraints = StereotypesHelper.getExtendedElementsIncludingDerived(securityConstraint);
+            writeLog("Got list of securityConstraints: " + securityConstraints, 2);
+            writeLog("SecurityConstraints List Size: " + securityConstraints.size(), 2);     
+            for (x = 0; x < securityConstraints.size(); x++) {
+                processConstraint(securityConstraints.get(x));
             }
         }
     }
