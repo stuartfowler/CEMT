@@ -77,6 +77,7 @@ var detectDetectProbParameterPath = "Cyber::Constraints::Detect::DetectProb";
 var detectControlParameterPath = "Cyber::Constraints::Detect::Control";
 var detectEvasionParameterPath = "Cyber::Constraints::Detect::Evasion";
 var securityControlPath = "Cyber::Stereotypes::SecurityControl";
+var noneControlStereoPath = "Cyber::Stereotypes::NoneControl";
 var systemPath = "Cyber::Stereotypes::System";
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
 var assetPath = "Cyber::Stereotypes::Asset";
@@ -525,7 +526,7 @@ with (CollectionsAndFiles) {
             writeLog("allocatedComponents: " + linkedAssets, 5);
             if(assetSelection) {
                 for(h = 0; h < linkedAssets.length; h++) {
-                    if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection))) {
+                    if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
                         linkedAssets.remove(h);
                     }
                 }
@@ -615,7 +616,7 @@ with (CollectionsAndFiles) {
             writeLog("allocatedComponents: " + linkedAssets, 5);
             if(assetSelection) {
                 for(h = 0; h < linkedAssets.length; h++) {
-                    if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection))) {
+                    if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
                         linkedAssets.remove(h);
                     }
                 }
@@ -865,17 +866,18 @@ with (CollectionsAndFiles) {
             }
                     
             var secControl = Finder.byQualifiedName().find(project, securityControlPath);
-            var controls = StereotypesHelper.getExtendedElements(secControl);
-            for(i = 0; i < controls.size(); i++) {
-                if(controls.get(i).isAbstract()) {
-                    var noneControl = controls.get(i);
-                }
+            var noneControlStereo = Finder.byQualifiedName().find(project, noneControlStereoPath);
+            var noneControls = StereotypesHelper.getExtendedElements(noneControlStereo);
+            if(noneControls.size() > 1)
+            {
+                writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
             }
+            var noneControl = noneControls.get(0);
             writeLog("Found None: " + noneControl.getName(), 5);
             writeLog("Found None: " + noneControl.getQualifiedName(), 5);
 
             var noneControlPath = noneControl.getQualifiedName();
-    
+
             var secConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
             var secConstraints = StereotypesHelper.getExtendedElements(secConstraint);
             for(i = 0; i < secConstraints.size(); i++) {
@@ -890,6 +892,10 @@ with (CollectionsAndFiles) {
 
             var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
             var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
+            if(systemAssets.size() > 1)
+            {
+                writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
+            }
             var systemAsset = systemAssets.get(0);
 
             writeLog("Found System: " + systemAsset.getName(), 5);

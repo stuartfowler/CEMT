@@ -30,6 +30,7 @@ var notImplementedPath = "Cyber::Enumerations::Implementation::Not Implemented";
 var threatActionPath = "Cyber::Stereotypes::ThreatAction";
 var detectionActionPath = "Cyber::Stereotypes::DetectionAction";
 var securityControlPath = "Cyber::Stereotypes::SecurityControl";
+var noneControlPath = "Cyber::Stereotypes::NoneControl";
 var systemPath = "Cyber::Stereotypes::System";
 
 with (CollectionsAndFiles) {
@@ -167,17 +168,22 @@ with (CollectionsAndFiles) {
         writeLog("Got securityConstraint stereotype: " + securityConstraint, 5)
 
         var secControl = Finder.byQualifiedName().find(project, securityControlPath);
-        var controls = StereotypesHelper.getExtendedElements(secControl);
-        for(i = 0; i < controls.size(); i++) {
-            if(controls.get(i).isAbstract()) {
-                var noneControl = controls.get(i);
-            }
+        var noneControlStereo = Finder.byQualifiedName().find(project, noneControlPath);
+        var noneControls = StereotypesHelper.getExtendedElements(noneControlStereo);
+        if(noneControls.size() > 1)
+        {
+            writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
         }
+        var noneControl = noneControls.get(0);
         writeLog("Found None: " + noneControl.getName(), 5);
         writeLog("Found None: " + noneControl.getQualifiedName(), 5);
 
         var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
         var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
+        if(systemAssets.size() > 1)
+        {
+            writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
+        }
         var systemAsset = systemAssets.get(0);
         writeLog("Found System: " + systemAsset.getName(), 5);
         writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
@@ -201,7 +207,7 @@ with (CollectionsAndFiles) {
             writeLog("ThreatAction List Size: " + threatActions.size(), 3);
              for (x = 0; x < threatActions.size(); x++) {
                 currentObject = threatActions.get(x);
-                //processAction(currentObject, noneControl, systemAsset);
+                processAction(currentObject, noneControl, systemAsset);
             }
             //Also process all detectionActions
             detectionActions = StereotypesHelper.getExtendedElements(detectionAction);
@@ -209,7 +215,7 @@ with (CollectionsAndFiles) {
             writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
              for (x = 0; x < detectionActions.size(); x++) {
                 currentObject = detectionActions.get(x);
-                //processAction(currentObject, noneControl, systemAsset);
+                processAction(currentObject, noneControl, systemAsset);
             }
 
             //Process SecurityConstraints

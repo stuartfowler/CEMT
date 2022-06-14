@@ -25,6 +25,8 @@ var debug = 2;
 var aggregatedActionPath = "Cyber::Stereotypes::AggregatedAction";
 var malActivityPath = "Cyber::Stereotypes::MalActivity";
 var nodePath = "UML Standard Profile::UML2 Metamodel::ActivityParameterNode";
+var inputPinPath = "Cyber::Stereotypes::ThreatInput";
+var outputPinPath = "Cyber::Stereotypes::ThreatOutput";
 
 with (CollectionsAndFiles) {
     try {
@@ -53,8 +55,11 @@ with (CollectionsAndFiles) {
                 if(!(StereotypesHelper.hasStereotype(object.getBehavior(), malActivityStereo))) {
                     StereotypesHelper.addStereotype(object.getBehavior(), malActivityStereo);
                 }
-                if(!(currentAction.getOwner() == currentAction.behavior.getOwner())) {
-                    currentAction.behavior.setOwner(currentAction.getOwner());
+                if(!(currentAction.getContext() == currentAction.behavior.getOwner())) {
+                    currentAction.behavior.setOwner(currentAction.getContext());
+                }
+                if(!(currentAction.behavior.getName() == currentAction.getName())) {
+                    currentAction.behavior.setName(currentAction.getName());
                 }
                 for(i = 0; i < object.getBehavior().getOwnedElement().size(); i++) {
                     writeLog("Found Owned Element: " + object.getBehavior().getOwnedElement().get(i).getName(), 5);
@@ -67,15 +72,23 @@ with (CollectionsAndFiles) {
                     }
                 }
             } else {
-                currentActivity = ef.createActivityInstance();
-                currentActivity = AutomatonMacroAPI.getOpaqueObject(currentActivity);
-                currentActivity.setOwner(currentAction.getOwner());
-                currentActivity.setName(currentAction.getName());
-                malActivity = Finder.byQualifiedName().find(project, malActivityPath);
-                malActivity = AutomatonMacroAPI.getOpaqueObject(malActivity);
-                currentActivity = AutomatonMacroAPI.addStereotype(currentActivity, malActivity);
-                writeLog("Activity created: " + currentActivity.getName(), 2);
-                currentAction.setBehavior(currentActivity);
+                writeLog("This action does not have an activity attached: " + currentAction.getName() + ". Create a CEMT Mal-Activity diagram below this action to progress.", 2);
+            }
+        }
+
+        function processPin(pin) {
+            writeLog("Processing Pin: " + pin.getName(), 3);
+            var parameter = pin.getSyncElement();
+            writeLog("Found Parameter: " + parameter.getName(), 5);
+            if(!(parameter.getName() == pin.getName())) {
+                parameter.setName(pin.getName());
+                writeLog("Changed Parameter Name to: " + parameter.getName(), 4);
+            }
+            var parameterNode = parameter.get_activityParameterNodeOfParameter().get(0);
+            writeLog("Found ParameterNode: " + parameterNode.getName(), 5);
+            if(!(parameterNode.getName() == pin.getName())) {
+                parameterNode.setName(pin.getName());
+                writeLog("Changed Parameter Node Name to: " + parameterNode.getName(), 4);
             }
         }
 
@@ -111,6 +124,24 @@ with (CollectionsAndFiles) {
                 currentObject = aggregatedActions.get(x);
                 processAggregatedAction(currentObject);
             }
+        }
+
+        var inputPinStereo = Finder.byQualifiedName().find(project, inputPinPath);
+        var inputPins = StereotypesHelper.getExtendedElements(inputPinStereo);
+        writeLog("Got list of inputPins: " + inputPins, 4);
+        writeLog("Input Pins List Size: " + inputPins.size(), 3);
+        for (x = 0; x < inputPins.size(); x++) {
+            currentObject = inputPins.get(x);
+            processPin(currentObject);
+        }
+
+        var outputPinStereo = Finder.byQualifiedName().find(project, outputPinPath);
+        var outputPins = StereotypesHelper.getExtendedElements(outputPinStereo);
+        writeLog("Got list of outputPins: " + outputPins, 4);
+        writeLog("Output Pins List Size: " + outputPins.size(), 3);
+        for (x = 0; x < outputPins.size(); x++) {
+            currentObject = outputPins.get(x);
+            processPin(currentObject);
         }
     }
     finally

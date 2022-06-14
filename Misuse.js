@@ -46,17 +46,27 @@ with (CollectionsAndFiles) {
         function processMisuseCase(object) {
             writeLog("Processing misuseCase: " + object.getName(), 2);
             currentAction = AutomatonMacroAPI.getOpaqueObject(object);
-            ownedActivities = object.getOwnedElement();
-            for(i = 0; i < ownedActivities.size(); i++) {
-                if(ownedActivities[i].getName() == object.getName()) {
-                    malActivity = Finder.byQualifiedName().find(project, malActivityPath);
-                    if(StereotypesHelper.hasStereotype(ownedActivities[i],malActivity)) {
-                        writeLog("Selected Item already contains a MalActivity", 4)
-                    }
-                    else {
-                        StereotypesHelper.addStereotype(ownedActivities[i],malActivity);
-                    }
-                }
+            behaviour = object.getClassifierBehavior();
+            malActivity = Finder.byQualifiedName().find(project, malActivityPath);
+            if(StereotypesHelper.hasStereotype(behaviour,malActivity)) {
+                writeLog("Selected Item already contains a MalActivity", 4);
+            }
+            else {
+                StereotypesHelper.addStereotype(behaviour,malActivity);
+            }
+
+            if(behaviour.getName() == currentAction.getName()) {
+                writeLog("Selected MalActivity is already correctly named", 4);
+            }
+            else {
+                behaviour.setName(currentAction.getName());
+            }
+
+            if(behaviour.getOwner() == currentAction) {
+                writeLog("Selected MalActivity is already correctly placed", 4);
+            }
+            else {
+                behaviour.setOwner(currentAction);
             }
         }
 
