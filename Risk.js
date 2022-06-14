@@ -79,7 +79,6 @@ var detectEvasionParameterPath = "Cyber::Constraints::Detect::Evasion";
 var securityControlPath = "Cyber::Stereotypes::SecurityControl";
 var noneControlStereoPath = "Cyber::Stereotypes::NoneControl";
 var systemPath = "Cyber::Stereotypes::System";
-var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
 var assetPath = "Cyber::Stereotypes::Asset";
 var uniformPath = "SysML::Non-Normative Extensions::Distributions::Uniform";
 var histogramPath = "SimulationProfile::ui::Histogram";
@@ -878,7 +877,7 @@ with (CollectionsAndFiles) {
 
             var noneControlPath = noneControl.getQualifiedName();
 
-            var secConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
+            var secConstraint = Finder.byQualifiedName().find(project, securityConstraintStereotypePath);
             var secConstraints = StereotypesHelper.getExtendedElements(secConstraint);
             for(i = 0; i < secConstraints.size(); i++) {
                 if(secConstraints.get(i).getType() == noneControl) {

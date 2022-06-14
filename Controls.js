@@ -130,16 +130,16 @@ with (CollectionsAndFiles) {
             applicableAssets = opaqueConstraint.Applies;
             for (i = 0; i < applicableAssets.size(); i++) {
                 currentAsset = applicableAssets.get(i);
-                writeLog("Checking Combination: " + currentAsset.Name + " - " + currentConstraint.Name, 3);
+                writeLog("Checking Combination: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
                 present = 0;
                 for (k = 0; k < currentAsset.Owned_Element.size(); k++) {
                     if (currentAsset.Owned_Element.get(k).Type == currentConstraint) {
                         present = 1;
-                        writeLog("Already exists: " + currentAsset.Name + " - " + currentConstraint.Name, 3);
+                        writeLog("Already exists: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
                     }
                 }
                 if (!present) {   
-                    writeLog("Creating property: " + currentAsset.Name + " - " + currentConstraint.Name, 2);
+                    writeLog("Creating property: " + currentAsset.Name + " - " + currentConstraint.getName(), 2);
                     currentProperty = AutomatonMacroAPI.createElement("Property");
                     currentProperty.setOwner(currentAsset);
                     currentProperty.setType(currentConstraint);

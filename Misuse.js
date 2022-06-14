@@ -47,26 +47,31 @@ with (CollectionsAndFiles) {
             writeLog("Processing misuseCase: " + object.getName(), 2);
             currentAction = AutomatonMacroAPI.getOpaqueObject(object);
             behaviour = object.getClassifierBehavior();
-            malActivity = Finder.byQualifiedName().find(project, malActivityPath);
-            if(StereotypesHelper.hasStereotype(behaviour,malActivity)) {
-                writeLog("Selected Item already contains a MalActivity", 4);
+            if(behaviour) {
+                malActivity = Finder.byQualifiedName().find(project, malActivityPath);
+                if(StereotypesHelper.hasStereotype(behaviour,malActivity)) {
+                    writeLog("Selected Item already contains a MalActivity", 4);
+                }
+                else {
+                    StereotypesHelper.addStereotype(behaviour,malActivity);
+                }
+    
+                if(behaviour.getName() == currentAction.getName()) {
+                    writeLog("Selected MalActivity is already correctly named", 4);
+                }
+                else {
+                    behaviour.setName(currentAction.getName());
+                }
+    
+                if(behaviour.getOwner() == object) {
+                    writeLog("Selected MalActivity is already correctly placed", 4);
+                }
+                else {
+                    behaviour.setOwner(object);
+                }
             }
             else {
-                StereotypesHelper.addStereotype(behaviour,malActivity);
-            }
-
-            if(behaviour.getName() == currentAction.getName()) {
-                writeLog("Selected MalActivity is already correctly named", 4);
-            }
-            else {
-                behaviour.setName(currentAction.getName());
-            }
-
-            if(behaviour.getOwner() == currentAction) {
-                writeLog("Selected MalActivity is already correctly placed", 4);
-            }
-            else {
-                behaviour.setOwner(currentAction);
+                writeLog("No behaviour exists for this misuse case. Please create a behaviour before processing.", 2);
             }
         }
 
