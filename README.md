@@ -38,4 +38,4 @@
  - Animated gifs and instructions
  
 ## Stereotype Details
-<mark>Add links to detailed documentation for each stereotype in the Cyber_Profile</mark>
+<mark>Add links to detailed documentation for each stereotype in the Cyber_Profile</mark> [link](./test.md)
