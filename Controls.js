@@ -22,8 +22,9 @@ var CollectionsAndFiles = new JavaImporter(
     com.nomagic.magicdraw.uml.Finder,
     java.lang);
 
-var debug = 2;
+var debug = 5;
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
+var ISMControlPath = "Cyber::Stereotypes::ISMControl";
 var securityPropertyPath = "Cyber::Stereotypes::SecurityProperty";
 var notAssessedPath = "Cyber::Enumerations::Implementation::Not Assessed";
 var notImplementedPath = "Cyber::Enumerations::Implementation::Not Implemented";
@@ -126,6 +127,9 @@ with (CollectionsAndFiles) {
 
         function processConstraint(currentConstraint) {
             writeLog("Processing constraint: " + currentConstraint.getName(), 2);
+            notAssessed = Finder.byQualifiedName().find(project, notAssessedPath);
+            notAssessed = AutomatonMacroAPI.getOpaqueObject(notAssessed);
+
             opaqueConstraint = AutomatonMacroAPI.getOpaqueObject(currentConstraint);
             applicableAssets = opaqueConstraint.Applies;
             for (i = 0; i < applicableAssets.size(); i++) {
@@ -166,6 +170,8 @@ with (CollectionsAndFiles) {
         writeLog("Got detectionAction stereotype: " + detectionAction, 5);
         var securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
         writeLog("Got securityConstraint stereotype: " + securityConstraint, 5)
+        var ISMControl = Finder.byQualifiedName().find(project, ISMControlPath);
+        writeLog("Got ISMControl stereotype: " + ISMControl, 5)
 
         var secControl = Finder.byQualifiedName().find(project, securityControlPath);
         var noneControlStereo = Finder.byQualifiedName().find(project, noneControlPath);
@@ -174,9 +180,15 @@ with (CollectionsAndFiles) {
         {
             writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
         }
-        var noneControl = noneControls.get(0);
-        writeLog("Found None: " + noneControl.getName(), 5);
-        writeLog("Found None: " + noneControl.getQualifiedName(), 5);
+        if(noneControl) {
+            var noneControl = noneControls.get(0);
+            writeLog("Found None: " + noneControl.getName(), 5);
+            writeLog("Found None: " + noneControl.getQualifiedName(), 5);
+        }
+        else {
+            writeLog("ERROR: No Controls are typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
+        }
+
 
         var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
         var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
@@ -184,9 +196,14 @@ with (CollectionsAndFiles) {
         {
             writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
         }
-        var systemAsset = systemAssets.get(0);
-        writeLog("Found System: " + systemAsset.getName(), 5);
-        writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
+        if(systemAsset) {
+            var systemAsset = systemAssets.get(0);
+            writeLog("Found System: " + systemAsset.getName(), 5);
+            writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
+        }
+        else {
+            writeLog("ERROR: No Assets are typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
+        }
 
         //If something is selected in containment tree
         if(project.getBrowser().getContainmentTree().getSelectedNode()) {
@@ -198,7 +215,12 @@ with (CollectionsAndFiles) {
                 processAction(currentObject);
             }
             else {
-                writeLog("Selected Item is not a ThreatAction or DetectionAction", 1)
+                if(StereotypesHelper.hasStereotype(currentObject,securityConstraint) || StereotypesHelper.hasStereotype(currentObject,ISMControl)) {
+                    processConstraint(currentObject);
+                }
+                else{
+                    writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
+                }
             }
         } else {
             //If nothing is selected, find all threatActions and process them
