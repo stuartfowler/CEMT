@@ -45,10 +45,15 @@ The CEMT is distributed as an importable profile for [CAMEO Systems Modeler](htt
 
 The simulated risk assessment portion of the CEMT also requires the [CAMEO Simulation Toolkit](https://www.3ds.com/products-services/catia/products/no-magic/cameo-simulation-toolkit/) which is a feature of CAMEO System Modeler that is included as part of the *Enterprise Edition* of CAMEO Systems Modeler - it is not included in the entry level *Architect Edition*. Without this feature installed, there may be unexpected errors in some of the CEMT functionality.
 
-[test](./Documentation/Videos/Import.mp4)
+https://user-images.githubusercontent.com/7237737/174940843-a89db5ef-c4d9-44f3-8cba-89e861963e74.mp4
+
  - Cyber_Profile Usage
 
 ## Usage
+
+
+
+
 
  - Detailed walkthrough for creating diagram suite
 
