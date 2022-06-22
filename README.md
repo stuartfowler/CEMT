@@ -6,9 +6,19 @@
 
    - [Cyberworthiness](#cyberworthiness)
 
- - [Summary](#summary)
-
  - [Installation](#installation)
+
+   - [CEMT](#cemt)
+
+   - [Optional Extras](#optional-extras)
+
+ - [Modelling Process](#modelling-process)
+
+   - [Threat Modelling](#threat-modelling)
+
+   - [Threat Mitigation](#threat-mitigation)
+
+   - [Risk Assessment](#risk-assessment)
 
  - [Examples](#examples)
 
@@ -36,13 +46,6 @@ The inclusion of the worthiness construct is a reference to the established tech
 
 CEMT approaches cyberworthiness from the perspective that the overall objective is to create a cybersecurity evaluation for mission critical and safety critical systems that are mindful of the context in which the system is operating, is intuitive enough to facilitate collaboration between all stakeholders, is understandable by key decisions makers so that they can reasonably take accountability for their decisions and is transparent in terms of how the conclusions trace to the analysis.
 
-## Summary
-
-
-
- - What is it used for
- - High Level Process
-
 ## Installation
 
 ### CEMT
@@ -65,33 +68,17 @@ This imports all of the necessary stereotypes and attributes of the CEMT, as wel
 
 <mark>ISM</mark>
 
+## Modelling Process
+
+### Threat Modelling
+
+### Threat Mitigation
+
+### Risk Assessment
+
+ - What is it used for
+ - High Level Process
+
 ## Examples
 
 <mark>Threat Model Example</mark>
-
-## Usage
-
- - Detailed walkthrough for creating diagram suite
-
-### Misuse Cases
-
- - Animated gifs and instructions
-
-### Mal-Activity Diagram
-
- - Animated gifs and instructions
- 
-### Matrices
-
- - Animated gifs and instructions
- 
-### Summary Diagrams
-
- - Animated gifs and instructions
- 
-### Risk Assessments
-
- - Animated gifs and instructions
- 
-## Stereotype Details
-<mark>Add links to detailed documentation for each stereotype in the Cyber_Profile</mark>
