@@ -1,5 +1,15 @@
 # Cyberworthiness Evaluation and Management Toolkit (CEMT)
 
+## Contents
+
+ - [Background](#background)
+
+   - [Cyberworthiness](#cyberworthiness)
+
+ - [Summary](#summary)
+
+ - [Installation](#installation)
+
 ## Background
 
 CEMT is a tool for developing cyberworthiness assessments of complex systems. It has been created as part of a Higher Degree by Reserach (HDR) through the University of New South Wales (UNSW) Canberra to address the need for a consistent and comprehensive approach for assessing the cyberworthiness of complex systems within the Australian Government Department of Defence. Traditional cybersecurity assessment methodologies that leverage lists of mitigation strategies that have been compiled from historical best practice are important tools for hardening engineered systems, but their usefulness is limited when applied to bespoke systems that do not share the same operational profile or environmental context of the systems from which these best practices were derived. The CEMT provides a first-principles approach to evaluating the cyberworthiness of a system, facilitating a transparent and explainable risk assessment which inherently scoped to the context of the system being evaluated. This delivers a comprehensive justification that can underpin a claim of cyberworthiness with the necessary level of engineering assurance.
@@ -24,11 +34,18 @@ CEMT approaches cyberworthiness from the perspective that the overall objective 
 
 ## Summary
 
+
+
  - What is it used for
  - High Level Process
 
 ## Installation
 
+The CEMT is distributed as an importable profile for [CAMEO Systems Modeler](https://www.3ds.com/products-services/catia/products/no-magic/cameo-systems-modeler/), which is a commercially available MBSE environment. The CEMT requires a licensed install of CAMEO Systems Modeler to function.
+
+The simulated risk assessment portion of the CEMT also requires the [CAMEO Simulation Toolkit](https://www.3ds.com/products-services/catia/products/no-magic/cameo-simulation-toolkit/) which is a feature of CAMEO System Modeler that is included as part of the *Enterprise Edition* of CAMEO Systems Modeler - it is not included in the entry level *Architect Edition*. Without this feature installed, there may be unexpected errors in some of the CEMT functionality.
+
+[test](./Documentation/Videos/Import.mp4)
  - Cyber_Profile Usage
 
 ## Usage
