@@ -137,7 +137,7 @@ with (CollectionsAndFiles) {
                 writeLog("Checking Combination: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
                 present = 0;
                 for (k = 0; k < currentAsset.Owned_Element.size(); k++) {
-                    if (currentAsset.Owned_Element.get(k).Type == currentConstraint) {
+                    if (currentAsset.Owned_Element.get(k).Type == opaqueConstraint) {
                         present = 1;
                         writeLog("Already exists: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
                     }
@@ -180,7 +180,7 @@ with (CollectionsAndFiles) {
         {
             writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
         }
-        if(noneControl) {
+        if(noneControls) {
             var noneControl = noneControls.get(0);
             writeLog("Found None: " + noneControl.getName(), 5);
             writeLog("Found None: " + noneControl.getQualifiedName(), 5);
@@ -196,7 +196,7 @@ with (CollectionsAndFiles) {
         {
             writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
         }
-        if(systemAsset) {
+        if(systemAssets) {
             var systemAsset = systemAssets.get(0);
             writeLog("Found System: " + systemAsset.getName(), 5);
             writeLog("Found System: " + systemAsset.getQualifiedName(), 5);

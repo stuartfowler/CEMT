@@ -79,16 +79,21 @@ with (CollectionsAndFiles) {
         function processPin(pin) {
             writeLog("Processing Pin: " + pin.getName(), 3);
             var parameter = pin.getSyncElement();
-            writeLog("Found Parameter: " + parameter.getName(), 5);
-            if(!(parameter.getName() == pin.getName())) {
-                parameter.setName(pin.getName());
-                writeLog("Changed Parameter Name to: " + parameter.getName(), 4);
+            if(parameter){
+                writeLog("Found Parameter: " + parameter.getName(), 5);
+                if(!(parameter.getName() == pin.getName())) {
+                    parameter.setName(pin.getName());
+                    writeLog("Changed Parameter Name to: " + parameter.getName(), 4);
+                }
+                var parameterNode = parameter.get_activityParameterNodeOfParameter().get(0);
+                writeLog("Found ParameterNode: " + parameterNode.getName(), 5);
+                if(!(parameterNode.getName() == pin.getName())) {
+                    parameterNode.setName(pin.getName());
+                    writeLog("Changed Parameter Node Name to: " + parameterNode.getName(), 4);
+                }
             }
-            var parameterNode = parameter.get_activityParameterNodeOfParameter().get(0);
-            writeLog("Found ParameterNode: " + parameterNode.getName(), 5);
-            if(!(parameterNode.getName() == pin.getName())) {
-                parameterNode.setName(pin.getName());
-                writeLog("Changed Parameter Node Name to: " + parameterNode.getName(), 4);
+            else {
+                writeLog("Pin does not have a parameter, skipping.", 5);
             }
         }
 

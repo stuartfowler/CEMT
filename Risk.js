@@ -630,6 +630,7 @@ with (CollectionsAndFiles) {
                 currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
                 createDependency(detectControlEffectiveness, detectControlEffectivenessShape, noneConstraint, currentConstraintShape);
                 PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), detectComponent_y, threatWidth, componentHeight));
+                StereotypesHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
                 StereotypesHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
             }
             else {
