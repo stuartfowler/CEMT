@@ -64,6 +64,10 @@ This imports all of the necessary stereotypes and attributes of the CEMT, as wel
 
 <mark>COPY PACKAGES ACROSS</mark>
 
+https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9a62-4c394498e6b6.mp4
+
+
+
 > **Note**: You will also need to ensure that `SimulationProfile.mdzip` is also imported into your project. This comes as part of the CAMEO Simulation Toolkit, and it should default into the same default `profiles` directory. Just follow the same process as used to import `Cyber_Profile.mdzip` but scroll down until you find `SimulationProfile.mdzip`.
 
 ### Custom Diagrams
