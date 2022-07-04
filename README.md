@@ -79,9 +79,12 @@ https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9
 
 While the CEMT supports models being created with the the standard SysML Use Case Diagrams, Activity Diagrams and Block Definition Diagrams, custom variants of these diagrams have been created with modified drawing pallettes to simplify the process of developing a cyberworthiness model. 
 
-
 https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4
 
+These diagrams can be found at these locations:
+ - [CEMT Asset Definition Diagram](./Diagrams/CEMT%20Asset%20Definition%20Diagram%20descriptor.xml) - Can be used to define Asset hierarchies instead of using the standard SysML Block Definition Diagrams.
+ - [CEMT Mal-Activity Diagram](./Diagrams/CEMT%20Mal-Activity%20Diagram%20descriptor.xml) - Can be used to model threat and detection flows instead of using the standard SysML Activity Diagrams.
+ - [CEMT Misuse Case Diagram](./Diagrams/CEMT%20Misuse%20Case%20Diagram%20descriptor.xml) - Can be used to model misuse cases instead of using the standard SysML Use Case Diagrams.
 
 ### Information Security Manual (ISM)
 
@@ -90,6 +93,25 @@ While the CEMT primarily implements a first-principles threat modelling approach
 It is recommended that once you import the profile, you copy and paste the contents across into your model and then remove the profile. The attributes and stereotypes that are relied upon by these ISM controls are already contained within the main CEMT package, so there is no need to keep it loaded at all times. 
 
 ## Modelling Process
+
+```mermaid
+flowchart LR
+  subgraph TMo["Threat Modelling"]
+    direction TB
+    1 --> 2 --> 3
+  end
+  subgraph TMi["Threat Mitigation"]
+    direction TB
+    4 --> 5 --> 6
+  end
+  subgraph RA["Risk Assessment"]
+    direction TB
+    7 --> 8 --> 9
+  end
+  TMo ==> TMi ==> RA
+  3 --> 4
+  6 --> 7
+```
 
 ### Threat Modelling
 
