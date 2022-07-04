@@ -132,26 +132,26 @@ flowchart LR
     7 --> 8 --> 9
   end
   TMo ==> TMi ==> RA
-  click 25 "#threat-modelling" "Threat Modelling"
-  click 1a "#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 1b "#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 1c "#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 24 "#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 25 "https://github.com/stuartfowler/CEMT#threat-modelling" "Threat Modelling"
+  click 1a "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1b "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1c "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 24 "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
 
-  click 23 "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21a "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21b "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21c "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21d "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21e "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21f "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 23 "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21a "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21b "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21c "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21d "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21e "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21f "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
 
-  click 22a "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22b "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22c "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22d "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22e "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22f "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22a "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22b "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22c "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22d "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22e "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22f "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
 ```
 
 ### Threat Modelling
