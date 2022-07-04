@@ -96,41 +96,33 @@ It is recommended that once you import the profile, you copy and paste the conte
 
 ```mermaid
 flowchart LR
+
   subgraph TMo["Threat Modelling"]
     direction TB
-    subgraph 1["Misuse Cases"]
-      direction LR
-      1a["Misuse Cases"]
-      1b["Actors"]
-      1c["Associations"]
-      1a --> 1c
-      1b --> 1c
-    end
-    subgraph 2["Mal-Activity Diagrams"]
+    subgraph 1["Misuse Case Diagrams"]
       direction TB
-      subgraph 21["Intermediate"]
-        direction LR
-        21a["Aggregated Actions"]
-        21b["Pins"]
-        21c["ThreatStart"]
-        21d["ThreatSignal"]
-        21e["Flows"]
-        21a --> 21b --> 21e
-        21c --> 21e
-        21d --> 21e
-      end
-      subgraph 22["Detailed"]
-        direction LR
-        2a["Threat Actions"]
-        2b["Detection Actions"]
-        2c["Threat Difficulty"]
-        2d["Flows"]
-        2a --> 2c --> 2d
-        2b --> 2d
-      end
+      1a["Misuse Cases"] --> 1c["Associations"]
+      1b["Actors"] --> 1c
     end
-    1 --> 2
-  end
+    subgraph 21["Intermediate Mal-Activity Diagrams"]
+      direction LR
+      21a["Aggregated Actions"] --> 21b["Pins"] --> 21e["Flows"] --> 21f["Labels"]
+      21c["Threat Start"] --> 21d["Signals"] --> 21e      
+    end
+    subgraph 22["Detailed Mal-Activity Diagrams"]
+      direction LR
+      22a["Threat Actions"] --> 22c["Threat Difficulty"] --> 22d["Flows"] --> 22f["Labels"]
+      22b["Detection Actions"] --> 22d
+      22e["Threat Ends"] --> 22d
+    end
+    23["Create Detailed Mal-Activity"]
+    24["Create Intermediate Mal-Activity"]
+    25["Identify Top Level Threats"]
+    21 --> 23 --> 22
+    25 --> 1 --> 24 --> 21
+    21 --> 1
+    22 --> 21
+    end
   subgraph TMi["Threat Mitigation"]
     direction TB
     4 --> 5 --> 6
@@ -140,9 +132,35 @@ flowchart LR
     7 --> 8 --> 9
   end
   TMo ==> TMi ==> RA
+  click 25 "#threat-modelling" "Threat Modelling"
+  click 1a "#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1b "#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1c "#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 24 "#misuse-case-diagrams" "Misuse Case Diagrams"
+
+  click 23 "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21a "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21b "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21c "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21d "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21e "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 21f "#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+
+  click 22a "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22b "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22c "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22d "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22e "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 22f "#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
 ```
 
 ### Threat Modelling
+
+#### Misuse Case Diagrams
+
+#### Intermediate Mal-Activity Diagrams
+
+#### Detailed Mal-Activity Diagrams
 
 ### Threat Mitigation
 
