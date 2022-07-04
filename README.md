@@ -60,19 +60,24 @@ The CEMT is can be installed by copying the `Cyber_Profile.mdzip` file into the 
 
 https://user-images.githubusercontent.com/7237737/174941526-18245b64-b436-40c3-be4a-6464bf09f30f.mp4
 
-This imports all of the necessary stereotypes and attributes of the CEMT, as well as macros it relies upon. The source code for these JavaScript macros is captured in this GitHub repo, but can also be viewed inside CAMEO itself if you would like to validate it.
+This imports all of the necessary stereotypes and attributes of the CEMT, as well as macros it relies upon. The source code for these JavaScript macros is captured in this GitHub repo, but can also be viewed inside CAMEO itself if you would like to validate it. These macros can be found at these locations:
+ - [Activities.js](./Macros/Activities.js)
+ - [Constraints.js](./Macros/Constraints.js)
+ - [Controls.js](./Macros/Controls.js)
+ - [Misuse.js](./Macros/Misuse.js)
+ - [Risk.js](./Macros/Risk.js)
+A short description of what each of these macros does can be found in the header of the macro source code.
 
-<mark>COPY PACKAGES ACROSS</mark>
+There are also anumber of standard tables, matrices and summary diagrams that must be copied across from the Cyber profile into the model you are creating, as shown below.
 
 https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9a62-4c394498e6b6.mp4
-
 
 
 > **Note**: You will also need to ensure that `SimulationProfile.mdzip` is also imported into your project. This comes as part of the CAMEO Simulation Toolkit, and it should default into the same default `profiles` directory. Just follow the same process as used to import `Cyber_Profile.mdzip` but scroll down until you find `SimulationProfile.mdzip`.
 
 ### Custom Diagrams
 
-<mark>Diagrams</mark>
+While the CEMT supports models being created with the the standard SysML Use Case Diagrams, Activity Diagrams and Block Definition Diagrams, custom variants of these diagrams have been created with modified drawing pallettes to simplify the process of developing a cyberworthiness model. 
 
 ### Information Security Manual (ISM)
 
