@@ -98,7 +98,38 @@ It is recommended that once you import the profile, you copy and paste the conte
 flowchart LR
   subgraph TMo["Threat Modelling"]
     direction TB
-    1 --> 2 --> 3
+    subgraph 1["Misuse Cases"]
+      direction LR
+      1a["Misuse Cases"]
+      1b["Actors"]
+      1c["Associations"]
+      1a --> 1c
+      1b --> 1c
+    end
+    subgraph 2["Mal-Activity Diagrams"]
+      direction TB
+      subgraph 21["Intermediate"]
+        direction LR
+        21a["Aggregated Actions"]
+        21b["Pins"]
+        21c["ThreatStart"]
+        21d["ThreatSignal"]
+        21e["Flows"]
+        21a --> 21b --> 21e
+        21c --> 21e
+        21d --> 21e
+      end
+      subgraph 22["Detailed"]
+        direction LR
+        2a["Threat Actions"]
+        2b["Detection Actions"]
+        2c["Threat Difficulty"]
+        2d["Flows"]
+        2a --> 2c --> 2d
+        2b --> 2d
+      end
+    end
+    1 --> 2
   end
   subgraph TMi["Threat Mitigation"]
     direction TB
@@ -109,8 +140,6 @@ flowchart LR
     7 --> 8 --> 9
   end
   TMo ==> TMi ==> RA
-  3 --> 4
-  6 --> 7
 ```
 
 ### Threat Modelling
