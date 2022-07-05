@@ -16,6 +16,12 @@
 
  - [Modelling Process](#modelling-process)
 
+   - [Threat Modelling](#threat-modelling)
+
+   - [Threat Mitigation](#threat-mitigation)
+
+   - [Risk Assessment](#risk-assessment)
+
  - [Examples](#examples)
 
 ## Background
@@ -79,7 +85,7 @@ These diagrams can be found at these locations:
  - [CEMT Misuse Case Diagram](./Diagrams/CEMT%20Misuse%20Case%20Diagram%20descriptor.xml) - Can be used to model misuse cases instead of using the standard SysML Use Case Diagrams.
 
 The diagrams can be imported into your model in the following manner:
-https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4
+https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4mermaid[]
 
 ### Information Security Manual (ISM)
 
@@ -90,60 +96,38 @@ It is recommended that once you import the profile, you copy and paste the conte
 ## Modelling Process
 
 ```mermaid
-flowchart TB
+flowchart LR
+1("Threat Modelling") --> 2("Threat Mitigation") --> 3("Risk Assessment")
+click 1 "https://github.com/stuartfowler/CEMT#threat-modelling" "Threat Modelling"
+click 2 "https://github.com/stuartfowler/CEMT#threat-mitigation" "Threat Mitigation"
+click 3 "https://github.com/stuartfowler/CEMT#risk-assessment" "Risk Assessment"
+```
 
+### Threat Modelling
+
+```mermaid
+flowchart TB
   subgraph TMo["Threat Modelling"]
     direction TB
     subgraph 1["Misuse Case Diagrams"]
       direction LR
-      1a["Misuse Cases"] --> 1c["Associations"]
-      1b["Actors"] --> 1c
+      1a("Misuse Cases") --> 1c("Associations")
+      1b("Actors") --> 1c
     end
     subgraph 2["Intermediate Mal-Activity Diagrams"]
       direction LR
-      2a["Aggregated Actions"] --> 2b["Pins"] --> 2e["Flows"] --> 2f["Labels"]
-      2c["Threat Start"] --> 2d["Signals"] --> 2e      
+      2a("Aggregated Actions") --> 2b("Pins") --> 2e("Flows") --> 2f("Labels")
+      2c("Threat Start") --> 2d("Signals") --> 2e      
     end
     subgraph 3["Detailed Mal-Activity Diagrams"]
       direction LR
-      3a["Threat Actions"] --> 3c["Threat Difficulty"] --> 3d["Flows"] --> 3f["Labels"]
-      3b["Detection Actions"] --> 3d
-      3e["Threat Ends"] --> 3d
+      3a("Threat Actions") --> 3c("Threat Difficulty") --> 3d("Flows") --> 3f("Labels")
+      3b("Detection Actions") --> 3d
+      3e("Threat Ends") --> 3d
     end
-
     1 --> 2 --> 3
   end
-  subgraph TMi["Threat Mitigation"]
-    direction TB
-    subgraph 4["Asset Definition Diagrams"]
-      4a["System of Interest"] --> 4d["Directed Associations"]
-      4b["Assets"] --> 4d
-      4c["Contextual Assets"] --> 4d
-    end
-    subgraph 5["Matrices"]
-      5b["Security Controls"] --> 5c["Security Properties"] --> 5g["Implementation Status"]
-      5d["Link Assets"] --> 5c
-      5f["Security Constraints"] --> 5c
-    end
-    4 --> 5
-  end
-  subgraph RA["Risk Assessment"]
-    direction TB
-    subgraph 6["Summary Diagrams"]
-      6a["Bowties"] --> 6b["Attack Trees"]
-    end
-    subgraph 7["Parametric Diagrams"]
-      7a["Threat Path"] --> 7b["Threat Level"] --> 7e["Simulate"]
-      7a --> 7c["Initial Probability"] --> 7e
-      7a --> 7d["Control Effectiveness"] --> 7e
-    end
-    subgraph 8["Risk Table"]
-      8a["Description"] --> 8b["Simulated Probabilities"] --> 8c["Risk Rating"]
-    end
-    6 --> 7 --> 8
-  end
-  TMo ==> TMi ==> RA
-  
+
   click 1a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
   click 1b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
   click 1c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
@@ -161,7 +145,28 @@ flowchart TB
   click 3d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
   click 3e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
   click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+```
 
+### Threat Mitigation
+
+```mermaid
+flowchart TB
+
+  subgraph TMi["Threat Mitigation"]
+    direction TB
+    subgraph 4["Asset Definition Diagrams"]
+      4a("System of Interest") --> 4d("Directed Associations")
+      4b("Assets") --> 4d
+      4c("Contextual Assets") --> 4d
+    end
+    subgraph 5["Matrices"]
+      5b("Security Controls") --> 5c("Security Properties") --> 5g("Implementation Status")
+      5d("Link Assets") --> 5c
+      5f("Security Constraints") --> 5c
+    end
+    4 --> 5
+  end
+  
   click 4a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
   click 4b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
   click 4c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
@@ -174,6 +179,27 @@ flowchart TB
   click 5e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
   click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
 
+```
+
+### Risk Assessment
+```mermaid
+flowchart TB
+  subgraph RA["Risk Assessment"]
+    direction TB
+    subgraph 6["Summary Diagrams"]
+      6a("Bowties") --> 6b("Attack Trees")
+    end
+    subgraph 7["Parametric Diagrams"]
+      7a("Threat Path") --> 7b("Threat Level") --> 7e("Simulate")
+      7a --> 7c("Initial Probability") --> 7e
+      7a --> 7d("Control Effectiveness") --> 7e
+    end
+    subgraph 8["Risk Table"]
+      8a("Description") --> 8b("Simulated Probabilities") --> 8c("Risk Rating")
+    end
+    6 --> 7 --> 8
+  end
+  
   click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
   click 6b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
 
