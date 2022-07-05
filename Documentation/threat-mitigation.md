@@ -1,11 +1,9 @@
-# Risk Assessment
+# Threat Mitigation
 
 ## Overview
 
-## Summary Diagrams
+## Asset Definition Diagrams
 
-## Parametric Diagrams
-
-## Risk Table
+## Matrices
 
  > [Return to Modelling Process Flowchart](https://github.com/stuartfowler/CEMT#modelling-process)

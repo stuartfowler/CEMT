@@ -1,11 +1,11 @@
-# Risk Assessment
+# Threat Modelling
 
 ## Overview
 
-## Summary Diagrams
+## Misuse Case Diagrams
 
-## Parametric Diagrams
+## Intermediate Mal-Activity Diagrams
 
-## Risk Table
+## Detailed Mal-Activity Diagrams
 
  > [Return to Modelling Process Flowchart](https://github.com/stuartfowler/CEMT#modelling-process)

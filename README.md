@@ -16,12 +16,6 @@
 
  - [Modelling Process](#modelling-process)
 
-   - [Threat Modelling](#threat-modelling)
-
-   - [Threat Mitigation](#threat-mitigation)
-
-   - [Risk Assessment](#risk-assessment)
-
  - [Examples](#examples)
 
 ## Background
@@ -79,12 +73,13 @@ https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9
 
 While the CEMT supports models being created with the the standard SysML Use Case Diagrams, Activity Diagrams and Block Definition Diagrams, custom variants of these diagrams have been created with modified drawing pallettes to simplify the process of developing a cyberworthiness model. 
 
-https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4
-
 These diagrams can be found at these locations:
  - [CEMT Asset Definition Diagram](./Diagrams/CEMT%20Asset%20Definition%20Diagram%20descriptor.xml) - Can be used to define Asset hierarchies instead of using the standard SysML Block Definition Diagrams.
  - [CEMT Mal-Activity Diagram](./Diagrams/CEMT%20Mal-Activity%20Diagram%20descriptor.xml) - Can be used to model threat and detection flows instead of using the standard SysML Activity Diagrams.
  - [CEMT Misuse Case Diagram](./Diagrams/CEMT%20Misuse%20Case%20Diagram%20descriptor.xml) - Can be used to model misuse cases instead of using the standard SysML Use Case Diagrams.
+
+The diagrams can be imported into your model in the following manner:
+https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4
 
 ### Information Security Manual (ISM)
 
@@ -115,14 +110,9 @@ flowchart TB
       3b["Detection Actions"] --> 3d
       3e["Threat Ends"] --> 3d
     end
-    DMA["Create Detailed Mal-Activity"]
-    IMA["Create Intermediate Mal-Activity"]
-    TLT["Identify Top Level Threats"]
-    2 --> DMA --> 3
-    TLT --> 1 --> IMA --> 2
-    2 --> IMA
-    3 --> 2
-    end
+
+    1 --> 2 --> 3
+  end
   subgraph TMi["Threat Mitigation"]
     direction TB
     subgraph 4["Asset Definition Diagrams"]
@@ -135,7 +125,6 @@ flowchart TB
       5d["Link Assets"] --> 5c
       5f["Security Constraints"] --> 5c
     end
-
     4 --> 5
   end
   subgraph RA["Risk Assessment"]
@@ -155,42 +144,49 @@ flowchart TB
   end
   TMo ==> TMi ==> RA
   
-  click TLT "https://github.com/stuartfowler/CEMT#threat-modelling" "Threat Modelling"
-  click 1a "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 1b "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 1c "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
-  click IMA "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
+  click 1c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
 
-  click DMA "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2a "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2b "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2c "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2d "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2e "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2f "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
 
-  click 3a "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3b "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3c "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3d "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3e "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3f "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+
+  click 4a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
+  click 4b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
+  click 4c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
+  click 4d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
+
+  click 5a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+  click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+  click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+  click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+  click 5e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+  click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+
+  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
+  click 6b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
+
+  click 7a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
+  click 7b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
+  click 7c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
+  click 7d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
+  click 7e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
+
+  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-table" "Risk Table"
+  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-table" "Risk Table"
+  click 8c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-table" "Risk Table"
 ```
-
-### Threat Modelling
-
-#### Misuse Case Diagrams
-
-#### Intermediate Mal-Activity Diagrams
-
-#### Detailed Mal-Activity Diagrams
-
-### Threat Mitigation
-
-### Risk Assessment
-
- - What is it used for
- - High Level Process
 
 ## Examples
 
