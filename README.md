@@ -112,6 +112,8 @@ The focus on providing assurance of the likelihood value is a deliberate choice.
 
 ### Threat Modelling
 
+The threat modelling step involves the use of Misuse Case Diagrams and Mal-Activity Diagrams to model the way threat actors interact with the attack surface to achieve their malicious intent.
+
 ```mermaid
 flowchart TB
   subgraph TMo["Threat Modelling"]
