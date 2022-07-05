@@ -34,7 +34,7 @@ Traditional cybersecurity assessment methodologies that leverage lists of mitiga
 
 Cyberworthiness is the ability for a system to continue to operate safely and effectively in a contested cyber environment. Given this explicit focus on continued operation, it has an inherent bias towards ensuring the integrity and availability of the system and its functions when faced with a cyber threat.
 
-The inclusion of the worthiness construct is a reference to the established technical assurance frameworks that underpin concepts such as airworthiness and seaworthiness. This requires a level of rigour in the engineering analysis that provides confidence and assurance that the claim of worthiness is accurate, complete and supported by evidence. The primary guiding principles that were adopted for the development of the CEMT are based on the *Principles for Governance of Seaworthiness* from the [Defence Seaworthiness Management System Manual](https://www.defence.gov.au/sites/default/files/2021-01/SeaworthinessMgmtSystemManual.pdf):
+The inclusion of the worthiness construct is a reference to the established technical assurance frameworks that underpin concepts such as airworthiness and seaworthiness. This requires a level of rigour in the engineering analysis that provides confidence and assurance that the claim of worthiness is accurate, complete and supported by evidence. The primary guiding principles that were adopted for the development of the CEMT are based on the *Principles for Governance of Seaworthiness* from the [Defence Seaworthiness Management System Manual](https://www.defence.gov.au/sites/default/files/202-01/SeaworthinessMgmtSystemManual.pdf):
 
 > 2.10 The seaworthiness governance principles require that seaworthiness decisions are made:
 > 
@@ -95,63 +95,86 @@ It is recommended that once you import the profile, you copy and paste the conte
 ## Modelling Process
 
 ```mermaid
-flowchart LR
+flowchart TB
 
   subgraph TMo["Threat Modelling"]
     direction TB
     subgraph 1["Misuse Case Diagrams"]
-      direction TB
+      direction LR
       1a["Misuse Cases"] --> 1c["Associations"]
       1b["Actors"] --> 1c
     end
-    subgraph 21["Intermediate Mal-Activity Diagrams"]
+    subgraph 2["Intermediate Mal-Activity Diagrams"]
       direction LR
-      21a["Aggregated Actions"] --> 21b["Pins"] --> 21e["Flows"] --> 21f["Labels"]
-      21c["Threat Start"] --> 21d["Signals"] --> 21e      
+      2a["Aggregated Actions"] --> 2b["Pins"] --> 2e["Flows"] --> 2f["Labels"]
+      2c["Threat Start"] --> 2d["Signals"] --> 2e      
     end
-    subgraph 22["Detailed Mal-Activity Diagrams"]
+    subgraph 3["Detailed Mal-Activity Diagrams"]
       direction LR
-      22a["Threat Actions"] --> 22c["Threat Difficulty"] --> 22d["Flows"] --> 22f["Labels"]
-      22b["Detection Actions"] --> 22d
-      22e["Threat Ends"] --> 22d
+      3a["Threat Actions"] --> 3c["Threat Difficulty"] --> 3d["Flows"] --> 3f["Labels"]
+      3b["Detection Actions"] --> 3d
+      3e["Threat Ends"] --> 3d
     end
-    23["Create Detailed Mal-Activity"]
-    24["Create Intermediate Mal-Activity"]
-    25["Identify Top Level Threats"]
-    21 --> 23 --> 22
-    25 --> 1 --> 24 --> 21
-    21 --> 1
-    22 --> 21
+    DMA["Create Detailed Mal-Activity"]
+    IMA["Create Intermediate Mal-Activity"]
+    TLT["Identify Top Level Threats"]
+    2 --> DMA --> 3
+    TLT --> 1 --> IMA --> 2
+    2 --> IMA
+    3 --> 2
     end
   subgraph TMi["Threat Mitigation"]
     direction TB
-    4 --> 5 --> 6
+    subgraph 4["Asset Definition Diagrams"]
+      4a["System of Interest"] --> 4d["Directed Associations"]
+      4b["Assets"] --> 4d
+      4c["Contextual Assets"] --> 4d
+    end
+    subgraph 5["Matrices"]
+      5b["Security Controls"] --> 5c["Security Properties"] --> 5g["Implementation Status"]
+      5d["Link Assets"] --> 5c
+      5f["Security Constraints"] --> 5c
+    end
+
+    4 --> 5
   end
   subgraph RA["Risk Assessment"]
     direction TB
-    7 --> 8 --> 9
+    subgraph 6["Summary Diagrams"]
+      6a["Bowties"] --> 6b["Attack Trees"]
+    end
+    subgraph 7["Parametric Diagrams"]
+      7a["Threat Path"] --> 7b["Threat Level"] --> 7e["Simulate"]
+      7a --> 7c["Initial Probability"] --> 7e
+      7a --> 7d["Control Effectiveness"] --> 7e
+    end
+    subgraph 8["Risk Table"]
+      8a["Description"] --> 8b["Simulated Probabilities"] --> 8c["Risk Rating"]
+    end
+    6 --> 7 --> 8
   end
   TMo ==> TMi ==> RA
-  click 25 "https://github.com/stuartfowler/CEMT#threat-modelling" "Threat Modelling"
+  
+  click TLT "https://github.com/stuartfowler/CEMT#threat-modelling" "Threat Modelling"
   click 1a "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
   click 1b "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
   click 1c "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 24 "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
+  click IMA "https://github.com/stuartfowler/CEMT#misuse-case-diagrams" "Misuse Case Diagrams"
 
-  click 23 "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21a "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21b "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21c "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21d "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21e "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 21f "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click DMA "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2a "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2b "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2c "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2d "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2e "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
+  click 2f "https://github.com/stuartfowler/CEMT#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
 
-  click 22a "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22b "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22c "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22d "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22e "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 22f "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3a "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3b "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3c "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3d "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3e "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
+  click 3f "https://github.com/stuartfowler/CEMT#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
 ```
 
 ### Threat Modelling
