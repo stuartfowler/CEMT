@@ -66,6 +66,7 @@ This imports all of the necessary stereotypes and attributes of the CEMT, as wel
  - [Controls.js](./Macros/Controls.js)
  - [Misuse.js](./Macros/Misuse.js)
  - [Risk.js](./Macros/Risk.js)
+
 A short description of what each of these macros does can be found in the header of the macro source code.
 
 There are also anumber of standard tables, matrices and summary diagrams that must be copied across from the Cyber profile into the model you are creating, as shown below.
@@ -95,6 +96,8 @@ It is recommended that once you import the profile, you copy and paste the conte
 
 ## Modelling Process
 
+The high-level process to be taken through the modelling process is fairly standard. It begins with a Threat Modelling activity, then a Threat Mitigation step and finally a Risk Assessment. 
+
 ```mermaid
 flowchart LR
 1("Threat Modelling") --> 2("Threat Mitigation") --> 3("Risk Assessment")
@@ -102,6 +105,10 @@ click 1 "https://github.com/stuartfowler/CEMT#threat-modelling" "Threat Modellin
 click 2 "https://github.com/stuartfowler/CEMT#threat-mitigation" "Threat Mitigation"
 click 3 "https://github.com/stuartfowler/CEMT#risk-assessment" "Risk Assessment"
 ```
+
+The CEMT is primarily focused on providing a high level of assurance for the likelihood of a given threat or risk. It does not aid in the identification of risks or threats and it does not assist in determining the consequence of that risk or threat being realised. The top level threats to the system need to be determined and captured in the model, but the CEMT does not provide any tools, techniques or guidance to assist in the identification of these threats. There are a number of existing threat identification methods that can be used to generate a list of top level threats to the system you are evaluating. Similarly, the consequence of a particular risk or threat is captured in the tool, but the focus of the CEMT is in determining the likelihood of a risk, not the consequence. A criticality assessment should be conducted on each asset to inform the consequence of a risk or threat to that asset. 
+
+The focus on providing assurance of the likelihood value is a deliberate choice. Discussions regarding criticality and consequence of cybersecurity risks are typically less opaque and less subjective, while top level threats to most systems are typically well documented in best-practice literature and therefore reasonably well understood. Traditionally, it is the likelihood determination where there is most subjectivity and opaque reasoning, and hence this determination is the primary focus of the CEMT.
 
 ### Threat Modelling
 
@@ -216,4 +223,4 @@ flowchart TB
 
 ## Examples
 
-<mark>Threat Model Example</mark>
+An [example threat model](https://github.com/stuartfowler/CEMT/blob/main/Threat%20Model/Threat%20Model.mdzip) can be found in this GitHub repository. It contains an example of the CEMT being applied against a generic system. The example is incomplete, providing detail primarily in the Insider Threat misuse case, but this misuse case does contain an instantiation of most of the functionality in the CEMT.

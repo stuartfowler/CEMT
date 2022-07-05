@@ -8,4 +8,4 @@
 
 ## Detailed Mal-Activity Diagrams
 
- > [Return to Modelling Process Flowchart](https://github.com/stuartfowler/CEMT#mthreat-modelling)
+ > [Return to Modelling Process Flowchart](https://github.com/stuartfowler/CEMT#threat-modelling)
