@@ -230,6 +230,6 @@ flowchart TB
 
 ## Examples
 
-An [example threat model](https://github.com/stuartfowler/CEMT/blob/main/Threat%20Model/Threat%20Model.mdzip) can be found in this GitHub repository. It contains an example of the CEMT being applied against a generic system. The example is incomplete, providing detail primarily in the Insider Threat misuse case, but this misuse case does contain an instantiation of most of the functionality in the CEMT.
+An [example threat model](/Threat%20Model/Threat%20Model.mdzip) can be found in this GitHub repository. It contains an example of the CEMT being applied against a generic system. The example is incomplete, providing detail primarily in the Insider Threat misuse case, but this misuse case does contain an instantiation of most of the functionality in the CEMT.
 
 > **Note**: This sample threat model uses the optional [Custom Diagrams](#custom-diagrams). You will get a number of non-breaking errors if you load the sample model without first importing the custom diagrams.

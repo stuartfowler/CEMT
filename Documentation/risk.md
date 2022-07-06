@@ -8,4 +8,4 @@
 
 ## Risk Table
 
- > [Return to Modelling Process Flowchart](https://github.com/stuartfowler/CEMT#risk-assessment)
+ > [Return to Modelling Process Flowchart](/README.md#risk-assessment)

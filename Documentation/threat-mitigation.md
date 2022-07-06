@@ -6,4 +6,4 @@
 
 ## Matrices
 
- > [Return to Modelling Process Flowchart](https://github.com/stuartfowler/CEMT#threat-mitigation)
+ > [Return to Modelling Process Flowchart](/README.md#threat-mitigation)
