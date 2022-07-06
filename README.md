@@ -1,29 +1,5 @@
 # Cyberworthiness Evaluation and Management Toolkit (CEMT)
 
-## Contents
-
- - [Background](#background)
-
-   - [Cyberworthiness](#cyberworthiness)
-
- - [Installation](#installation)
-
-   - [CEMT](#cemt)
-
-   - [Custom Diagrams](#custom-diagrams)
-
-   - [ISM](#information-security-manual-ism)
-
- - [Modelling Process](#modelling-process)
-
-   - [Threat Modelling](#threat-modelling)
-
-   - [Threat Mitigation](#threat-mitigation)
-
-   - [Risk Assessment](#risk-assessment)
-
- - [Examples](#examples)
-
 ## Background
 
 CEMT is a tool for developing cyberworthiness assessments of complex systems. It has been created as part of a Higher Degree by Reserach (HDR) through the University of New South Wales (UNSW) Canberra to address the need for a consistent and comprehensive approach for assessing the cyberworthiness of complex systems within the Australian Government Department of Defence. 
