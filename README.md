@@ -112,7 +112,7 @@ The focus on providing assurance of the likelihood value is a deliberate choice.
 
 ### Threat Modelling
 
-The threat modelling step involves the use of Misuse Case Diagrams and Mal-Activity Diagrams to model the way threat actors interact with the attack surface to achieve their malicious intent.
+The threat modelling stage involves the use of Misuse Case Diagrams and Mal-Activity Diagrams to model the way threat actors interact with the attack surface to achieve their malicious intent. The purpose of this activity is to enumerate the paths that an attacker must take to compromise the system. Click on the steps in the flowchart below to see additional detail and instructions.
 
 ```mermaid
 flowchart TB
@@ -158,6 +158,8 @@ flowchart TB
 
 ### Threat Mitigation
 
+The threat mitigation stage involves the use of Asset Definition Diagrams and Dependency Matrices to tie the threat paths generated during the threat modelling stage to the Assets within the system and potential security mitigations. The purpose of this activity is to provide traceability between system components, security controls and malicious actions. Click on the steps in the flowchart below to see additional detail and instructions.
+
 ```mermaid
 flowchart TB
 
@@ -191,6 +193,9 @@ flowchart TB
 ```
 
 ### Risk Assessment
+
+The threat mitigation stage involves the use of Relationship Maps and Parametric Diagrams to assess the likelihood of a particular threat succeeding. The purpose of this activity is to provide determine a risk rating for key threat paths identified in the earlier stages. Click on the steps in the flowchart below to see additional detail and instructions.
+
 ```mermaid
 flowchart TB
   subgraph RA["Risk Assessment"]
@@ -226,3 +231,5 @@ flowchart TB
 ## Examples
 
 An [example threat model](https://github.com/stuartfowler/CEMT/blob/main/Threat%20Model/Threat%20Model.mdzip) can be found in this GitHub repository. It contains an example of the CEMT being applied against a generic system. The example is incomplete, providing detail primarily in the Insider Threat misuse case, but this misuse case does contain an instantiation of most of the functionality in the CEMT.
+
+> **Note**: This sample threat model uses the optional [Custom Diagrams](#custom-diagrams). You will get a number of non-breaking errors if you load the sample model without first importing the custom diagrams.
