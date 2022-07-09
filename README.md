@@ -62,7 +62,8 @@ These diagrams can be found at these locations:
  - [CEMT Misuse Case Diagram](./Diagrams/CEMT%20Misuse%20Case%20Diagram%20descriptor.xml) - Can be used to model misuse cases instead of using the standard SysML Use Case Diagrams.
 
 The diagrams can be imported into your model in the following manner:
-https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4mermaid[]
+
+https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4
 
 ### Information Security Manual (ISM)
 
