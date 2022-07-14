@@ -206,22 +206,26 @@ with (CollectionsAndFiles) {
         }
 
         //If something is selected in containment tree
-        if(project.getBrowser().getContainmentTree().getSelectedNode()) {
+        if(project.getBrowser().getContainmentTree().getSelectedNodes()) {
             //Get selected object from containment tree
-            var currentObject = project.getBrowser().getContainmentTree().getSelectedNode().getUserObject();
-            writeLog("Got object name: " + currentObject.getName(), 5);
-            //Process object if it is a threatAction or detectionAction, otherwise do nothing
-            if(StereotypesHelper.hasStereotype(currentObject,threatAction) || StereotypesHelper.hasStereotype(currentObject,detectionAction)) {
-                processAction(currentObject);
-            }
-            else {
-                if(StereotypesHelper.hasStereotype(currentObject,securityConstraint) || StereotypesHelper.hasStereotype(currentObject,ISMControl)) {
-                    processConstraint(currentObject);
+            var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+            writeLog("Length: " + selectedObjects.length, 5);
+            for (x = 0; x < selectedObjects.length; x++) {
+                currentObject = selectedObjects[x].getUserObject();
+                writeLog("Got object name: " + currentObject.getName(), 5);
+                //Process object if it is a threatAction or detectionAction, otherwise do nothing
+                if(StereotypesHelper.hasStereotype(currentObject, threatAction) || StereotypesHelper.hasStereotype(currentObject, detectionAction)) {
+                    processAction(currentObject, noneControl, systemAsset);
                 }
-                else{
-                    writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
+                else {
+                    if(StereotypesHelper.hasStereotype(currentObject, securityConstraint) || StereotypesHelper.hasStereotype(currentObject, ISMControl)) {
+                        processConstraint(currentObject);
+                    }
+                    else{
+                        writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
+                    }
                 }
-            }
+            }   
         } else {
             //If nothing is selected, find all threatActions and process them
             threatActions = StereotypesHelper.getExtendedElements(threatAction);
@@ -235,7 +239,7 @@ with (CollectionsAndFiles) {
             detectionActions = StereotypesHelper.getExtendedElements(detectionAction);
             writeLog("Got list of detectionActions: " + detectionActions, 4);
             writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
-             for (x = 0; x < detectionActions.size(); x++) {
+            for (x = 0; x < detectionActions.size(); x++) {
                 currentObject = detectionActions.get(x);
                 processAction(currentObject, noneControl, systemAsset);
             }

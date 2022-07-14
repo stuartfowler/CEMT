@@ -109,16 +109,20 @@ with (CollectionsAndFiles) {
         writeLog("Got aggregatedAction stereotype: " + aggregatedAction, 5);
 
         //If something is selected in containment tree
-        if(project.getBrowser().getContainmentTree().getSelectedNode()) {
+        if(project.getBrowser().getContainmentTree().getSelectedNodes()) {
             //Get selected object from containment tree
-            var currentObject = project.getBrowser().getContainmentTree().getSelectedNode().getUserObject();
-            writeLog("Got object name: " + currentObject.getName(), 5);
-            //Process object if it is a aggregatedAction, otherwise do nothing
-            if(StereotypesHelper.hasStereotype(currentObject,aggregatedAction)) {
-                processAggregatedAction(currentObject);
-            }
-            else {
-                writeLog("Selected Item is not an AggregatedAction", 1)
+            var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+            writeLog("Length: " + selectedObjects.length, 5);
+            for (x = 0; x < selectedObjects.length; x++) {
+                currentObject = selectedObjects[x].getUserObject();
+                writeLog("Got object name: " + currentObject.getName(), 5);
+                //Process object if it is a aggregatedAction, otherwise do nothing
+                if(StereotypesHelper.hasStereotype(currentObject,aggregatedAction)) {
+                    processAggregatedAction(currentObject);
+                }
+                else {
+                    writeLog("Selected Item is not an AggregatedAction", 1)
+                }
             }
         } else {
             //If nothing is selected, find all aggregatedAction and process them
