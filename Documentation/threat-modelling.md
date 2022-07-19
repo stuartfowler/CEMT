@@ -58,15 +58,15 @@ Misuse Case Diagrams use the following CEMT stereotypes:
    - [NonMaliciousActor](./stereotypes.md#nonmaliciousactor)
  - [Association](./stereotypes.md#association)
 
-The diagrams are created by placing [MaliciousActors](./stereotypes.md#maliciousactor), [NonMaliciousActors](./stereotypes.md#nonmaliciousactor) and [MisuseCases](./stereotypes.md#misuse-case), naming them appropriately and then connecting them together using the Association relationship. This is shown in the video snippet below.
+The diagrams are created by placing [MaliciousActors](./stereotypes.md#maliciousactor), [NonMaliciousActors](./stereotypes.md#nonmaliciousactor) and [MisuseCases](./stereotypes.md#misuse-case), naming them appropriately and then connecting them together using the Association relationship. The CEMT also includes a `Mis-use Case` legend, which will apply the appropriate colouring and adornments. This is shown in the video snippet below.
 
 https://user-images.githubusercontent.com/7237737/177487459-e7660d65-c24c-4d7c-ab7b-ba983d8c70a6.mp4
 
-The CEMT includes a `Mis-use Case` legend, which will apply the appropriate colouring and adornments. Additional [MaliciousActors](./stereotypes.md#maliciousactor), [NonMaliciousActors](./stereotypes.md#nonmaliciousactor) and [MisuseCases](./stereotypes.md#misuse-case) can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
+Additional [MaliciousActors](./stereotypes.md#maliciousactor), [NonMaliciousActors](./stereotypes.md#nonmaliciousactor) and [MisuseCases](./stereotypes.md#misuse-case) can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
 
 ![Misuse Case Diagram](/Documentation/Images/misuse.png)
 
-The purpose of these diagrams is to provide a high level view of the scope of the assessment, in terms of the actors and the threats that they pose to the system. Modellers should ensure that a misuse case has been created for each of the top level threats to the system.
+The purpose of these diagrams is to provide a high level view of the scope of the assessment, in terms of the actors and the threats that they pose to the system. Modellers should ensure that a misuse case has been created for each of the top level threats to the sys
 
  > [Return to Modelling Process Flowchart](/README.md#threat-modelling)
 
