@@ -205,10 +205,11 @@ with (CollectionsAndFiles) {
             writeLog("ERROR: No Assets are typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
         }
 
+        //Get selected object from containment tree
+        var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+
         //If something is selected in containment tree
-        if(project.getBrowser().getContainmentTree().getSelectedNodes()) {
-            //Get selected object from containment tree
-            var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+        if(selectedObjects.length > 0) {
             writeLog("Length: " + selectedObjects.length, 5);
             for (x = 0; x < selectedObjects.length; x++) {
                 currentObject = selectedObjects[x].getUserObject();
