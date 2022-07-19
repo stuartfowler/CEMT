@@ -2,8 +2,12 @@
 
 ## Misuse Case Diagrams
 
-### Actor
+### CyberActor
 
-### Misuse Case
+#### MaliciousActor
+
+#### NonMaliciousActor
+
+### MisuseCase
 
 ### Association

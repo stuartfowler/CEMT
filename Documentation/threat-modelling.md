@@ -32,11 +32,7 @@ The threat modelling process involves the investigation of misuse cases which re
 
 ## Misuse Case Diagrams
 
-Misuse Case Diagrams use the following CEMT stereotypes:
-
- - [Misuse Cases](./stereotypes.md#misuse-case)
- - [Actors](./stereotypes.md#actor)
- - [Associations](./stereotypes.md#association)
+The process for creating Misuse Case Diagrams requires the modeller to define misuse cases that align with the top level threats to the system, articulate the actors that perform those misuse cases and then link them together using associations.
 
 ```mermaid
 flowchart TB
@@ -45,8 +41,8 @@ flowchart TB
       1a("Misuse Cases") --> 1c("Associations")
       1b("Actors") --> 1c
     end
-    click 1a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#misuse-case" "Misuse Case Stereotype"
-    click 1b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#actor" "Actor Stereotype"
+    click 1a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#misusecase" "Misuse Case Stereotype"
+    click 1b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#cyberactor" "CyberActor Stereotype"
     click 1c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#association" "Association Stereotype"
 ```
 
@@ -54,13 +50,23 @@ Misuse Case Diagrams are drawn using the `CEMT Misuse Case Diagram`, which can b
 
 > **Note**: The `CEMT Misuse Case Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Misuse Case Diagram using a standard `SysML Use Case Diagram` and manually apply the stereotypes if you wish.
 
-The diagrams are created by placing the [Actors](./stereotypes.md#actor) and [Misuse Cases](./stereotypes.md#misuse-case), naming them appropriately and then connecting them together using the Association relationship. This is shown in the video snippet below.
+Misuse Case Diagrams use the following CEMT stereotypes:
+
+ - [MisuseCase](./stereotypes.md#misuse-case)
+ - [CyberActor](./stereotypes.md#actor)
+   - [MaliciousActor](./stereotypes.md#maliciousactor)
+   - [NonMaliciousActor](./stereotypes.md#nonmaliciousactor)
+ - [Association](./stereotypes.md#association)
+
+The diagrams are created by placing [MaliciousActors](./stereotypes.md#maliciousactor), [NonMaliciousActors](./stereotypes.md#nonmaliciousactor) and [MisuseCases](./stereotypes.md#misuse-case), naming them appropriately and then connecting them together using the Association relationship. This is shown in the video snippet below.
 
 https://user-images.githubusercontent.com/7237737/177487459-e7660d65-c24c-4d7c-ab7b-ba983d8c70a6.mp4
 
-The CEMT includes a `Mis-use Case` legend, which will apply the appropriate colouring and adornments. Additional [Actors](./stereotypes.md#actor) and [Misuse Cases](./stereotypes.md#misuse-case) can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
+The CEMT includes a `Mis-use Case` legend, which will apply the appropriate colouring and adornments. Additional [MaliciousActors](./stereotypes.md#maliciousactor), [NonMaliciousActors](./stereotypes.md#nonmaliciousactor) and [MisuseCases](./stereotypes.md#misuse-case) can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
 
 ![Misuse Case Diagram](/Documentation/Images/misuse.png)
+
+The purpose of these diagrams is to provide a high level view of the scope of the assessment, in terms of the actors and the threats that they pose to the system. Modellers should ensure that a misuse case has been created for each of the top level threats to the system.
 
  > [Return to Modelling Process Flowchart](/README.md#threat-modelling)
 
