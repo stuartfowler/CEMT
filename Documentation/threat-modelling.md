@@ -130,7 +130,7 @@ These are drawn on the `CEMT Mal-Activity Diagram` by placing a [`ThreatImpact`]
 
 https://user-images.githubusercontent.com/7237737/179894631-5e16f41e-77cd-48c8-ab3e-415a7e39c97f.mp4
 
-> **Note**: If you add the signals to the `ThreatImpactSignal` or `ThreatDetectionSignal` via the context menu that appears when you place the `ThreatImpact` or `ThreatDetection` object, rather than by dragging them from the containment tree, the underlying `ThreatImpact` or `ThreatDetection` stereotypes are stripped from the object. If you attach the signal in this way, you may need to re-apply these stereotypes manually. You will notice this because the red and blue colours from the legend will not apply properly, and the stereotype can be re-applied by right clicking on the object and selecting `ThreatImpact` or `ThreatDetection` from the context menu.
+> **Note**: If you add the signals to the `ThreatImpactSignal` or `ThreatDetectionSignal` via the context menu that appears when you place the `ThreatImpact` or `ThreatDetection` object, rather than by dragging them from the containment tree, the underlying `ThreatImpact` or `ThreatDetection` stereotypes are stripped from the object. You will notice this because the red and blue colours from the legend will not apply properly once they are connected via the [Flows](#flows). The stereotype can be manually re-applied by right clicking on the object and selecting `ThreatImpact` or `ThreatDetection` from the context menu to fix this issue.
 
 ### Aggregated Actions
 
