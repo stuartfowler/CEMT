@@ -102,7 +102,7 @@ flowchart TB
     end
     subgraph 2["Intermediate Mal-Activity Diagrams"]
       direction LR
-      2c("Threat Start") --> 2d("Signals") --> 2e("Flows") --> 2f("Labels")
+      2c("Threat Start") --> 2d("Signals") --> 2e("Flows")
       2a("Aggregated Actions") --> 2b("Pins") --> 2e        
     end
     subgraph 3["Detailed Mal-Activity Diagrams"]

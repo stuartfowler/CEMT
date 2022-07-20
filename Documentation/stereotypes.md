@@ -34,6 +34,10 @@
 
 ### Signals
 
+#### ThreatImpactSignal
+
+#### ThreatDetectionSignal
+
 #### ThreatSendSignal
 
 #### ThreatAcceptEvent

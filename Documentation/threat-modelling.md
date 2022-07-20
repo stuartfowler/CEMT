@@ -13,7 +13,7 @@ flowchart TB
     end
     subgraph 2["Intermediate Mal-Activity Diagrams"]
       direction LR
-      2c("Threat Start") --> 2d("Signals") --> 2e("Flows") --> 2f("Labels")
+      2c("Threat Start") --> 2d("Signals") --> 2e("Flows")
       2a("Aggregated Actions") --> 2b("Pins") --> 2e    
     end
     subgraph 3["Detailed Mal-Activity Diagrams"]
@@ -78,7 +78,7 @@ The process for creating Intermediate Mal-Activity Diagrams requires the modelle
 flowchart TB
     subgraph 2["Intermediate Mal-Activity Diagrams"]
       direction LR
-      2c("Threat Start") --> 2d("Signals") --> 2e("Flows") --> 2f("Labels")
+      2c("Threat Start") --> 2d("Signals") --> 2e("Flows")
       2a("Aggregated Actions") --> 2b("Pins") --> 2e      
     end
     click 2a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#aggregatedactions" "Aggregated Actions Stereotype"
@@ -87,7 +87,9 @@ flowchart TB
     click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#signals" "Signals Stereotypes"
     click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#threatmodelflows" "Flow Stereotypes"
 ```
-Intermediate Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created inside a `Package` in the containment tree.
+Intermediate Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on a MisuseCase, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [MalActivity](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [MisuseCase](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu, or by running the included `Misuse` macro, as shown in the video below.
+
+https://user-images.githubusercontent.com/7237737/179883971-68c666db-56d2-4a67-a5d0-91c2e26dae8e.mp4
 
 > **Note**: The `CEMT Mal-Activity Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Intermediate Mal-Activity Diagram using a standard `SysML Activity Diagram` and manually apply the stereotypes if you wish.
 
@@ -100,16 +102,15 @@ Intermediate Mal-Activity Diagrams use the following CEMT stereotypes:
  - [ThreatModelFlow](./stereotypes.md#threatmodelflow)
    - [ThreatFlow](./stereotypes.md#threatflow)
    - [DetectionFlow](./stereotypes.md#detectionaction)
+ - [Signal](./stereotypes.md#signals)
+   - [ThreatImpactSignal](./stereotypes.md#threatimpactsignal)
+   - [ThreatDetectionSignal](./stereotypes.md#threatdetectionsignal)
  - [ThreatSendSignal](./stereotypes.md#threatsendsignal)
  - [ThreatAcceptEvent](./stereotypes.md#threatacceptevent)
  - [ThreatImpact](./stereotypes.md#threatimpact)
  - [ThreatDetection](./stereotypes.md#threatdetection)
 
-The diagrams are created by placing ...
-
-
-https://user-images.githubusercontent.com/7237737/179883971-68c666db-56d2-4a67-a5d0-91c2e26dae8e.mp4
-
+The diagrams are created by right-clicking on the
 
 Start -> Impact/Detection
 
