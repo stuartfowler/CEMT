@@ -112,7 +112,31 @@ Intermediate Mal-Activity Diagrams use the following CEMT stereotypes:
 
 The diagrams are created by placing ...
 
+
+https://user-images.githubusercontent.com/7237737/179894577-9b2b8317-d76f-4272-b0c7-009776ded925.mp4
+
+
+
+https://user-images.githubusercontent.com/7237737/179894602-a06bb366-dccd-4b64-b699-6d282032b7d4.mp4
+
+
+
+https://user-images.githubusercontent.com/7237737/179894631-5e16f41e-77cd-48c8-ab3e-415a7e39c97f.mp4
+
+
 Start -> Impact/Detection
+
+
+https://user-images.githubusercontent.com/7237737/179895990-d646c9e8-21ec-4400-8c0d-408636918cf2.mp4
+
+
+
+https://user-images.githubusercontent.com/7237737/179895999-0bed82a1-8370-4173-af7c-3371656b298e.mp4
+
+
+https://user-images.githubusercontent.com/7237737/179896018-0a9a8697-a03b-4ad0-a180-3a0faba7e495.mp4
+
+
 
 Actions -> Pins 
 
