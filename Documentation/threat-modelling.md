@@ -85,11 +85,11 @@ flowchart TB
       2c("Threat Start") --> 2d("Signals") --> 2e("Flows")
       2a("Aggregated Actions") --> 2b("Pins") --> 2e      
     end
-    click 2a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#aggregatedactions" "Aggregated Actions Stereotype"
-    click 2b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#pins" "Pins Stereotypes"
-    click 2c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#threatstart" "Threat Start Stereotype"
-    click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#signals" "Signals Stereotypes"
-    click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/stereotypes.md#threatmodelflows" "Flow Stereotypes"
+    click 2a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#aggregated-actions" "Aggregated Actions"
+    click 2b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#pins" "Pins"
+    click 2c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-start" "Threat Start"
+    click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#signals" "Signals"
+    click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#flows" "Flows"
 ```
 Intermediate Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on a MisuseCase, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`MisuseCase`](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu, or by running the included [Misuse macro](../Macros/README.md#misuse), as shown in the video below.
 
@@ -140,7 +140,7 @@ https://user-images.githubusercontent.com/7237737/179895990-d646c9e8-21ec-4400-8
 
 ### Pins
 
-Pins must be added to the `AggregatedActions` before connecting the flows, as this is the mechanism that allows the flows to transition into the more detailed mal-activity diagrams inside the `AggregatedActions`. [`ThreatInputs`](./stereotypes.md#threatinput) are used to create the input pins for flows into the `AggregatedAction` while [`ThreatOutputs`](./stereotypes.md#threatoutput) are used to create the output pins for flows out of the `AggregatedAction`. 
+Pins must be added to the `AggregatedActions` before connecting the flows, as this is the mechanism that allows the flows to transition into the more detailed mal-activity diagrams inside the `AggregatedActions`. [`ThreatInputs`](./stereotypes.md#threatinput) are used to create the input pins for flows into the `AggregatedAction` while [`ThreatOutputs`](./stereotypes.md#threatoutput) are used to create the output pins for flows out of the `AggregatedAction`. As there are usually multiple `ThreatOutputs` for each `AggregatedAction`, the `ThreatOutputs` should be labelled by setting the name of the object to something that describes the condition by which the flow would be active.
 
 https://user-images.githubusercontent.com/7237737/179895999-0bed82a1-8370-4173-af7c-3371656b298e.mp4
 
@@ -173,7 +173,7 @@ The process for creating and drawing these objects is similar to that shown in t
 
 ## Detailed Mal-Activity Diagrams
 
-![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact-clean.png)
+<mark>Purpose</mark>
 
 ```mermaid
 flowchart TB
@@ -183,6 +183,40 @@ flowchart TB
       3b("Detection Actions") --> 3d
       3e("Threat Ends") --> 3d
     end
+    click 3a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-actions" "Threat Actions"
+    click 3b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detection-actions" "Detection Actions"
+    click 3c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-difficulty" "Threat Difficulty"
+    click 3d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#flows-1" "Flows"
+    click 3e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-ends" "Threat Ends"
+    click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#labels" "Labels"
 ```
+
+<mark>Creation</mark>
+
+Detailed Mal-Activity Diagrams use the following CEMT stereotypes:
+
+ - [`ThreatModelAction`](./stereotypes.md#threatmodelaction)
+   - [`ThreatAction`](./stereotypes.md#threataction)
+   - [`DetectionAction`](./stereotypes.md#detectionaction)
+ - [`ThreatModelFlow`](./stereotypes.md#threatmodelflow)
+   - [`ThreatFlow`](./stereotypes.md#threatflow)
+   - [`DetectionFlow`](./stereotypes.md#detectionflow)
+ - [`ThreatEnd`](./stereotypes.md#threatend)
+
+### Threat Actions
+
+### Threat Difficulty
+
+### Detection Actions
+
+### Threat Ends
+
+### Flows
+
+### Labels
+
+### Additional Optional Steps
+
+![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact-clean.png)
 
  > [Return to Modelling Process Flowchart](/README.md#threat-modelling)
