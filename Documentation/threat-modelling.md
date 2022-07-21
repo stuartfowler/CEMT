@@ -237,11 +237,13 @@ https://user-images.githubusercontent.com/7237737/180129648-8858f33c-c866-4065-8
 
 ### Flows
 
+Threat Flows and Detection Flows.
 
 https://user-images.githubusercontent.com/7237737/180129660-3e8ae33c-5b9e-42a4-8f3f-bb849691c2a8.mp4
 
 ### Labels
 
+Guard conditions and names.
 
 https://user-images.githubusercontent.com/7237737/180129680-d85b2138-7889-4742-8143-aafa275a8728.mp4
 
