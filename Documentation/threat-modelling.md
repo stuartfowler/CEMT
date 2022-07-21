@@ -191,6 +191,10 @@ flowchart TB
     click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#labels" "Labels"
 ```
 
+
+https://user-images.githubusercontent.com/7237737/180127957-9e69a985-63de-4e22-974b-2e472b007291.mp4
+
+
 <mark>Creation</mark>
 
 Detailed Mal-Activity Diagrams use the following CEMT stereotypes:
