@@ -173,7 +173,7 @@ The process for creating and drawing these objects is similar to that shown in t
 
 ## Detailed Mal-Activity Diagrams
 
-![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact.png)
+![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact-clean.png)
 
 ```mermaid
 flowchart TB
