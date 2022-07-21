@@ -209,15 +209,39 @@ Detailed Mal-Activity Diagrams use the following CEMT stereotypes:
 
 ### Threat Actions
 
+
+https://user-images.githubusercontent.com/7237737/180129375-b821794b-79b5-4076-8328-e7339aaaa203.mp4
+
+
 ### Threat Difficulty
+
+
+https://user-images.githubusercontent.com/7237737/180129383-8d8faaae-19a8-49fa-bf98-1b4fad5cd0b3.mp4
+
 
 ### Detection Actions
 
+
+https://user-images.githubusercontent.com/7237737/180129398-448faac0-72cd-4571-a897-fe51d74e7134.mp4
+
+
 ### Threat Ends
+
+
+https://user-images.githubusercontent.com/7237737/180129648-8858f33c-c866-4065-8233-c045d93fa45e.mp4
+
 
 ### Flows
 
+
+https://user-images.githubusercontent.com/7237737/180129660-3e8ae33c-5b9e-42a4-8f3f-bb849691c2a8.mp4
+
+
 ### Labels
+
+
+https://user-images.githubusercontent.com/7237737/180129680-d85b2138-7889-4742-8143-aafa275a8728.mp4
+
 
 ### Additional Optional Steps
 
