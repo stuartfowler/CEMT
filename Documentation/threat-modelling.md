@@ -91,7 +91,7 @@ flowchart TB
     click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#signals" "Signals"
     click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#flows" "Flows"
 ```
-Intermediate Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on a MisuseCase, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`MisuseCase`](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu, or by running the included [Misuse macro](../Macros/README.md#misuse), as shown in the video below.
+Intermediate Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on a `MisuseCase`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`MisuseCase`](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu - or by running the included [Misuse macro](../Macros/README.md#misuse), as shown in the video below.
 
 > **Note**: The `CEMT Mal-Activity Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Intermediate Mal-Activity Diagram using a standard `SysML Activity Diagram` and manually apply the stereotypes if you wish.
 
@@ -173,7 +173,7 @@ The process for creating and drawing these objects is similar to that shown in t
 
 ## Detailed Mal-Activity Diagrams
 
-<mark>Purpose</mark>
+The process for creating Detailed Mal-Activity Diagrams requires the modeller to provide additional detail underneath the Intermediate Mal-Activity Diagrams that outline the higher level view of the path an attacker needs to take to compromise the system. These Detailed Mal-Activity Diagrams articulate the elemental steps that must be completed by the attacker, and are used as the basis for the [Attack Trees](./risk.md#attack-trees) developed later in the process. This is the final step in the Threat Modelling process, and creates the objects against which the Threat Mitigation process will be performed.
 
 ```mermaid
 flowchart TB
@@ -191,12 +191,11 @@ flowchart TB
     click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#labels" "Labels"
 ```
 
-| Test |
-|:----:|
-| https://user-images.githubusercontent.com/7237737/180127957-9e69a985-63de-4e22-974b-2e472b007291.mp4 |
+Detailed Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on an `AggregatedAction`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. They can also be created by selecting the `AggregatedAction` and selecting the `CEMT Mal-Activity Diagram` icon form the context manu. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`AggregatedAction`](./stereotypes.md#aggregationaction) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can resolve this issue by running the included [Activities macro](../Macros/README.md#activities), as shown in the video below.
 
+> **Note**: The `CEMT Mal-Activity Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Detailed Mal-Activity Diagram using a standard `SysML Activity Diagram` and manually apply the stereotypes if you wish.
 
-<mark>Creation</mark>
+https://user-images.githubusercontent.com/7237737/180127957-9e69a985-63de-4e22-974b-2e472b007291.mp4
 
 Detailed Mal-Activity Diagrams use the following CEMT stereotypes:
 
