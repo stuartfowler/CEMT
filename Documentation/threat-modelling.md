@@ -209,43 +209,45 @@ Detailed Mal-Activity Diagrams use the following CEMT stereotypes:
 
 ### Threat Actions
 
+The first step in drawing the Detailed Mal-Activity Diagrams is to insert [`ThreatActions`](./stereotypes.md#threataction) which represent the specific steps an attacker is taking at this point of the threat flow. This is achieved by simply selecting `ThreatAction` from the drawing palette, placing it on the `CEMT Mal-Activity Diagram` and typing in a name for the `ThreatAction`.
+
+The purpose here is to create `ThreatActions` that define the steps the attacker needs to take to move between the input nodes and the output nodes of the `CEMT Mal-Activity Diagram`. That could be a single `ThreatAction`, as shown in the videos below, or it could be a number of sequential `ThreatActions`, or it could be parallel `ThreatActions` that represent multiple paths the attack may take from the input. The goal here is to manage the complexity of the threat model by appropriately grouping these detailed `ThreatActions` into `AggregatedActions` which are the basis of the [Intermediate Mal-Activity Diagrams](#intermediate-mal-activity-diagrams). If these Detailed Mal-Activity Diagrams start to become too complex and confusing, the modeller should reassess whether the diagram could become more intuitive and understandable by adding another layer of `AggregatedActions`.
 
 https://user-images.githubusercontent.com/7237737/180129375-b821794b-79b5-4076-8328-e7339aaaa203.mp4
 
-
 ### Threat Difficulty
 
+Once the `ThreatActions` have been drawn, the modeller needs to assign a `Difficulty` property to each `ThreatAction`. This property represents the difficulty of the step irrespective of any mitigations being in place. This is meant to represent a relative difficulty between the steps in your threat model, and is used in the [Risk Assessment](./risk.md) step of the analysis. 
+
+As an example, inserting a removable media device into a USB port is trivially difficult, and any attacker would be able to do that, whereas a complex Electronic Attack that targets bespoke signal processors is likely to require a higher level of attacker expertise and resources. In this case, those steps on the Electronic Attack threat path would have a higher `Difficulty` value than those associated with inserting the removable media device.
 
 https://user-images.githubusercontent.com/7237737/180129383-8d8faaae-19a8-49fa-bf98-1b4fad5cd0b3.mp4
 
-
 ### Detection Actions
 
+Every `ThreatAction` taken by an attacker will generate some sort of activity that the system may be able to detect. [`DetectionActions`](./stereotypes.md#detectionaction) are added by selecting `DetectionAction` from the drawing palette, placing it on the `CEMT Mal-Activity Diagram` and typing in a name for the `DetectionAction`. Each `ThreatAction` should have a corresponding `DetectionAction`, which represents the system's ability to detect that specific `ThreatAction`.
 
 https://user-images.githubusercontent.com/7237737/180129398-448faac0-72cd-4571-a897-fe51d74e7134.mp4
 
-
 ### Threat Ends
 
+[`ThreatEnds`](./stereotypes.md#threatend) represent a potential end point for a threat flow in the threat model. While one potential path is for the attacker to reach their desired outcome (the `ThreatImpacts` described in the [Signals](#signals) section), the attacker may be stopped because an attacker was unable to complete a particular step in the attacker path and the attack was stopped. These objects can be created by simply selecting `ThreatImpact` from the drawing palette and placing it on the diagram.
 
 https://user-images.githubusercontent.com/7237737/180129648-8858f33c-c866-4065-8233-c045d93fa45e.mp4
-
 
 ### Flows
 
 
 https://user-images.githubusercontent.com/7237737/180129660-3e8ae33c-5b9e-42a4-8f3f-bb849691c2a8.mp4
 
-
 ### Labels
 
 
 https://user-images.githubusercontent.com/7237737/180129680-d85b2138-7889-4742-8143-aafa275a8728.mp4
 
-
 ### Additional Optional Steps
 
-<mark>Adding multiple ThreatEnds.</mark>
+Adding multiple ThreatEnds
 
 ![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact-clean.png)
 
