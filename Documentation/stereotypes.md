@@ -32,7 +32,7 @@
 
 #### DetectionFlow
 
-### Signals
+### ThreatSignal
 
 #### ThreatImpactSignal
 

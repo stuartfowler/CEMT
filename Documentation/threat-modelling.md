@@ -64,7 +64,7 @@ The diagrams are created by placing [`MaliciousActors`](./stereotypes.md#malicio
 
 https://user-images.githubusercontent.com/7237737/177487459-e7660d65-c24c-4d7c-ab7b-ba983d8c70a6.mp4
 
-### Additional Steps
+### Additional Optional Steps
 
 Additional `MaliciousActors`, `NonMaliciousActors` and `MisuseCases` can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
 
@@ -105,8 +105,8 @@ Intermediate Mal-Activity Diagrams use the following CEMT stereotypes:
  - [`ThreatOutput`](./stereotypes.md#threatoutput)
  - [`ThreatModelFlow`](./stereotypes.md#threatmodelflow)
    - [`ThreatFlow`](./stereotypes.md#threatflow)
-   - [`DetectionFlow`](./stereotypes.md#detectionaction)
- - [`Signal`](./stereotypes.md#signals)
+   - [`DetectionFlow`](./stereotypes.md#detectionflow)
+ - [`ThreatSignal`](./stereotypes.md#threatsignal)
    - [`ThreatImpactSignal`](./stereotypes.md#threatimpactsignal)
    - [`ThreatDetectionSignal`](./stereotypes.md#threatdetectionsignal)
  - [`ThreatSendSignal`](./stereotypes.md#threatsendsignal)
@@ -130,25 +130,42 @@ These are drawn on the `CEMT Mal-Activity Diagram` by placing a [`ThreatImpact`]
 
 https://user-images.githubusercontent.com/7237737/179894631-5e16f41e-77cd-48c8-ab3e-415a7e39c97f.mp4
 
-> **Note**: If you add the signals to the `ThreatImpactSignal` or `ThreatDetectionSignal` via the context menu that appears when you place the `ThreatImpact` or `ThreatDetection` object, rather than by dragging them from the containment tree, the underlying `ThreatImpact` or `ThreatDetection` stereotypes are stripped from the object. You will notice this because the red and blue colours from the legend will not apply properly once they are connected via the [Flows](#flows). The stereotype can be manually re-applied by right clicking on the object and selecting `ThreatImpact` or `ThreatDetection` from the context menu to fix this issue.
+> **Note**: If you add the signals to the `ThreatImpact` or `ThreatDetection` via the context menu that appears when you place the `ThreatImpact` or `ThreatDetection` object, rather than by dragging them from the containment tree, the underlying `ThreatImpact` or `ThreatDetection` stereotypes are stripped from the object. You will notice this because the red and blue colours from the legend will not apply properly once they are connected via the [Flows](#flows). The stereotype can be manually re-applied by right clicking on the object and selecting `ThreatImpact` or `ThreatDetection` from the context menu to fix this issue.
 
 ### Aggregated Actions
+
+The next step in the threat modelling process is to define and draw the [`AggregatedActions`](./stereotypes.md#aggregatedaction) that describe the high level actions that an attacker needs to take between the `ThreatStart` and the `ThreatImpact`. These `AggregatedActions` are logical groupings that are designed to manage the complexity of the actual steps in the threat flow during the modelling process, and will not appear in the final [Attack Trees](./risk.md#attack-trees) as nodes.
 
 https://user-images.githubusercontent.com/7237737/179895990-d646c9e8-21ec-4400-8c0d-408636918cf2.mp4
 
 ### Pins
 
+Pins must be added to the `AggregatedActions` before connecting the flows, as this is the mechanism that allows the flows to transition into the more detailed mal-activity diagrams inside the `AggregatedActions`. [`ThreatInputs`](./stereotypes.md#threatinput) are used to create the input pins for flows into the `AggregatedAction` while [`ThreatOutputs`](./stereotypes.md#threatoutput) are used to create the output pins for flows out of the `AggregatedAction`. 
+
 https://user-images.githubusercontent.com/7237737/179895999-0bed82a1-8370-4173-af7c-3371656b298e.mp4
+
+> **Note**: The `ThreatOutput` stereotype is used for all output pins from an `AggregatedAction`. This includes pins that carry `ThreatFlows` and pins that carry `DetectionFlows`.
 
 ### Flows
 
+[`ThreatModelFlows`](./stereotypes.md#threatmodelflow) are used to connect together the various objects on the `CEMT Mal-Activity Diagram`. There are two types of flows that are used:
+
+ - [`ThreatFlows`](./stereotypes.md#threatflow) - which are used to model the path that the attacker must take; and
+ - [`DetectionFlows`](./stereotypes.md#detectionflow) - which are used to model the path that a system takes to detect the attacker.
+
+ `ThreatFlows` should be drawn from the `ThreatStart` to the input pins of an `AggregatedAction` and from the output pins of an `AggregatedAction` to either another `AggregatedAction` or to a `ThreatImpact`.
+
+ `DetectionFlows` should be drawn from the output pins of an `AggregatedAction` to a `ThreatDetection`.
+
 https://user-images.githubusercontent.com/7237737/179896018-0a9a8697-a03b-4ad0-a180-3a0faba7e495.mp4
 
-### Additional Steps
+### Additional Optional Steps
 
-Send + Accept
+The CEMT does not limit modellers to a single Intermediate Mal-Activity diagram. If the modeller wishes to use multiple levels of nested mal-activity diagrams by using `AggregatedActions` within `AggregatedActions` that is currently supported to a depth of 3. These can be created by following the same process outlined in the [Detailed Mal-Activity Diagrams](#detailed-mal-activity-diagrams) section, but continuing to use `AggregatedActions`, `ThreatInputs` and `ThreatOutputs` to draw the next intermediate level of detail.
 
-Multiple nested levels
+The CEMT also provides the ability to link together different mal-activity diagrams which may reside under different misuse cases to avoid duplication of mal-activity diagrams. This is achieved using the [`ThreatSendSignal`](./stereotypes.md#threatsendsignal), [`ThreatAcceptEvent`](./stereotypes.md#threatacceptevent) and [`ThreatSignal`](./stereotypes.md#threatsignal) stereotypes. The `ThreatSendSignal` would be drawn on the mal-activity diagram that is the source of the `ThreatFlow` being passed between the two mal-activity diagrams and the `ThreatAcceptEvent` would be drawn on the mal-activity diagram that is the destination of the `ThreatFlow` being passed between the two mal-activity diagrams. A `ThreatSignal` would be created and assigned to both the `ThreatAcceptEvent` and `ThreatSendSignal`, linking them together. 
+
+The process for creating and drawing these objects is similar to that shown in the [Signals](#signals) section. The completed Intermediate Mal-Activity Diagram shown below includes the 'System Access' object at the top, which is a `ThreatAcceptEvent` which is accepting a `ThreatSignal` named 'System Access' from one or more `ThreatSendSignal` objects elsewhere in the model. 
 
 ![Intermediate Mal-Activity Diagram](/Documentation/Images/intmalact.png)
 
