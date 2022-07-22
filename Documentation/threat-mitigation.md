@@ -47,11 +47,7 @@ Asset Definition Diagrams are drawn using a `CEMT Asset Definition Diagram`, whi
 
 > **Note**: The `CEMT Asset Definition Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create an Asset Definition Diagram using a standard `SysML Block Definition Diagram` and manually apply the stereotypes if you wish. If the system of interest is being developed using MBSE techniques and the CEMT process is being integrated into an existing model you may already have a defined system breakdown structure in the form of a `SysML Block Definition Diagram`. If so you can apply the `System` and `Asset` stereotypes to the existing `Blocks` if you wish, rather than creating new objects and a new hierarchy.
 
-<mark>creation video</mark>
-
-
 https://user-images.githubusercontent.com/7237737/180377140-f613ddba-a722-4db6-a1e5-df7a7e03c937.mp4
-
 
 Asset Definition Diagrams use the following CEMT stereotypes:
 
@@ -61,27 +57,33 @@ Asset Definition Diagrams use the following CEMT stereotypes:
 
 ### System of Interest
 
+The first step in developing the Asset Definition Diagram is to insert a [`System`](./stereotypes.md#system) object that represents the system that is being evaluated using the CEMT. This is done by selecting `System of Interest` from the drawing palette and placing it on the diagram.
 
 https://user-images.githubusercontent.com/7237737/180377207-68d1d84a-75a0-4ad4-802e-9b629b8ca3ab.mp4
 
-
 ### Assets
 
+The next step involves creating [`Assets`](./stereotypes.md#asset) that represent the subsystems and components within the system of interest. This is done by selecting `Asset` from the drawing palette and placing them on the diagram.
 
 https://user-images.githubusercontent.com/7237737/180377237-56bf5555-aafc-4415-b91c-97b582edbe58.mp4
 
-
 ### Contextual Assets
 
+The next step requires the modeller to define the contextual assets, which are those assets that are external to the system of interest but play a role in the security of the system because they might implement security mitigations on which the system of interest depends. This is done by selecting `Contextual Asset` from the drawing palette and placing them on the diagram.
 
 https://user-images.githubusercontent.com/7237737/180377260-030fb82e-873d-4c7a-92ef-69a2de420750.mp4
 
+> **Note**: The `Contextual Asset` is not its own stereotype. The contextual assets are still given the [`Asset`](./stereotypes.md#asset) stereotype, but they also have the `isAbstract` property set to `true`. This is indicated on the `CEMT Asset Definition Diagram` by the name of the `Asset` being displayed in *italics*.
 
 ### Directed Associations
 
+The final step in developing the Asset Definition Diagram is to link the system of interest, the assets and the contextual assets together into a hierarchy using [`DirectedAssociations`](./stereotypes.md#directedassociation). These are created by selecting `Directed Association` from the drawing palette and drawing them between the objects, starting from the parent and going down to the child.
 
 https://user-images.githubusercontent.com/7237737/180377285-0e9664b4-9b3a-4842-857e-d1b60d2a4aef.mp4
 
+### Additional Optional Steps
+
+The `CEMT Asset Definition Diagram` also shows the controls that are applicable to the `Asset` and their implementation state, once the Threat Mitigation process has been completed. While this information will not be populated onto the model until the steps outlined in the [Matrices](#matrices) section have been completed, it provides a view that can be useful for reviewers once the model has been fully populated. An example of this is shown in the sample diagram below.
 
 ![Asset Definition Diagram](/Documentation/Images/add.png)
 
