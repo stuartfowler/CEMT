@@ -49,6 +49,10 @@ Asset Definition Diagrams are drawn using a `CEMT Asset Definition Diagram`, whi
 
 <mark>creation video</mark>
 
+
+https://user-images.githubusercontent.com/7237737/180377140-f613ddba-a722-4db6-a1e5-df7a7e03c937.mp4
+
+
 Asset Definition Diagrams use the following CEMT stereotypes:
 
  - [`Asset`](./stereotypes.md#asset)
@@ -57,11 +61,27 @@ Asset Definition Diagrams use the following CEMT stereotypes:
 
 ### System of Interest
 
+
+https://user-images.githubusercontent.com/7237737/180377207-68d1d84a-75a0-4ad4-802e-9b629b8ca3ab.mp4
+
+
 ### Assets
+
+
+https://user-images.githubusercontent.com/7237737/180377237-56bf5555-aafc-4415-b91c-97b582edbe58.mp4
+
 
 ### Contextual Assets
 
+
+https://user-images.githubusercontent.com/7237737/180377260-030fb82e-873d-4c7a-92ef-69a2de420750.mp4
+
+
 ### Directed Associations
+
+
+https://user-images.githubusercontent.com/7237737/180377285-0e9664b4-9b3a-4842-857e-d1b60d2a4aef.mp4
+
 
 ![Asset Definition Diagram](/Documentation/Images/add.png)
 
