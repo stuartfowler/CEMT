@@ -237,19 +237,33 @@ https://user-images.githubusercontent.com/7237737/180129648-8858f33c-c866-4065-8
 
 ### Flows
 
-Threat Flows and Detection Flows.
+Once the building blocks of the `CEMT Mal-Activity Diagram` have been placed, you can connect them up using [`ThreatFlows`](./stereotypes.md#threatflow) and [`DetectionFlows`](./stereotypes.md#detectionflow). 
+
+`ThreatFlows` should start at the input parameter, pass through each `ThreatAction` in the order the attacker would need to complete those actions and then end at the output parameter. `ThreatFlows` should also connect each `ThreatAction` to a `ThreatEnd`.
+
+`DetectionFlows` should start at a `ThreatAction` and connect to the corresponding `DetectionAction`. Each `DetectionAction` should also connect to a `ThreatEnd` and the output parameter associated with a detection event via `DetectionFlows`.
 
 https://user-images.githubusercontent.com/7237737/180129660-3e8ae33c-5b9e-42a4-8f3f-bb849691c2a8.mp4
 
 ### Labels
 
-Guard conditions and names.
+Labels should be added to the `ThreatFlows` and `DetectionFlows` to provide context for the reviewers. These labels are not used by the model, but they are important because they provide reviewers with the necessary information to understand and review the model.
+
+There are two types of labels used:
+ - Names - used to label a flow when that flow always occurs when the proceeding action is attempted; and
+ - Guard conditions - used when that flow only occurs if the guard condition is met.
+
+ In the example below, the flow between the `Log Into Component` action and the `System Accessed` parameter only occurs if the attacker successfully logs into the system and accesses the system, so this is represented as a guard condition. The `else` guard condition is used to show all other alternatives (ie. the system was not accessed successfully), which would cause the flow to head towards the `ThreatEnd` as the threat was stopped at that point.
+
+ However, whenever there is an attempt to log into a component, some sort of activity is generated, which can be detected. Consequently, the label on the `DetectionFlow` between the `Log Into Component` action and the `Detect Component Login` action uses a name, rather than a guard condition.
 
 https://user-images.githubusercontent.com/7237737/180129680-d85b2138-7889-4742-8143-aafa275a8728.mp4
 
 ### Additional Optional Steps
 
-Adding multiple ThreatEnds
+In some cases, you may want to have multiple `ThreatEnds` on a single `CEMT Mal-Activity Diagram` to simplify the routing of `ThreatFlows` and `DetectionFlows` around a diagram. While you can just drag on a new `ThreatEnd` from the drawing palette, this would actually create a new object in the model. A cleaner way to do this would be to select the existing `ThreatEnd` object for a particular diagram in the containment tree (you can do this by selecting the object on the drawing and using the `Alt + B` keyboard shortcut) and then dragging that object from the containment tree onto the diagram. This will create a second representation of the same object, which can then be used as the sink of multiple `ThreatFlows` and `DetectionFlows` without creating unnecessary object in the model.
+
+This technique can also be used to duplicate the representation of any other object in the `CEMT Mal-Activity Diagram` if doing so would make your diagram more understandable.
 
 ![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact-clean.png)
 
