@@ -51,3 +51,11 @@
 #### ThreatAction
 
 #### DetectionAction
+
+## CEMT Asset Definition Diagram
+
+### Asset
+
+### System
+
+### DirectedAssociation

@@ -28,7 +28,9 @@ flowchart TB
 
 ## Overview
 
-The threat modelling process involves the investigation of misuse cases which represent the top level threats to a systems and the development of a nested flow chart, in the form of hierarchical mal-activity diagrams, that articulates what steps an attacker needs to perform in order to achieve those misuse cases. The information contained in this document aims to guide a modeller and provide instructions on how to use the CEMT to produce the necessary views in CAMEO Systems Modeler. The production of an accurate and comprehensive model depends on the cybersecurity expertise and the system knowledge of the modelling team; this documentation simply outlines how to use the CEMT, not how to produce a comprehensive assessment.
+The threat modelling process involves the investigation of misuse cases which represent the top level threats to a systems and the development of a nested flow chart, in the form of hierarchical mal-activity diagrams, that articulates what steps an attacker needs to perform in order to achieve those misuse cases. 
+
+> **Note**: The information contained in this documentation set aims to guide a modeller and provide instructions on how to use the CEMT to produce the necessary views in CAMEO Systems Modeler. The production of an accurate and comprehensive model depends on the cybersecurity expertise and the system knowledge of the modelling team; this documentation simply outlines how to use the CEMT, not how to produce a comprehensive assessment.
 
 ## Misuse Case Diagrams
 
@@ -46,7 +48,7 @@ flowchart TB
     click 1c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md##misuse-cases-actors-and-associations" "Associations"
 ```
 
-Misuse Case Diagrams are drawn using the `CEMT Misuse Case Diagram`, which can be created inside a `Package` in the containment tree.
+Misuse Case Diagrams are drawn using a `CEMT Misuse Case Diagram`, which can be created by right clicking on a `Package` in the containment tree, selecting `Create Diagram` from the context menu and then selecting `CEMT Misuse Case Diagram`.
 
 > **Note**: The `CEMT Misuse Case Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Misuse Case Diagram using a standard `SysML Use Case Diagram` and manually apply the stereotypes if you wish.
 
@@ -91,7 +93,7 @@ flowchart TB
     click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#signals" "Signals"
     click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#flows" "Flows"
 ```
-Intermediate Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on a `MisuseCase`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`MisuseCase`](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu - or by running the included [Misuse macro](../Macros/README.md#misuse), as shown in the video below.
+Intermediate Mal-Activity Diagrams are drawn using a `CEMT Mal-Activity Diagram`, which can be created by right clicking on a `MisuseCase`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`MisuseCase`](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu - or by running the included [Misuse macro](../Macros/README.md#misuse), as shown in the video below.
 
 > **Note**: The `CEMT Mal-Activity Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Intermediate Mal-Activity Diagram using a standard `SysML Activity Diagram` and manually apply the stereotypes if you wish.
 
@@ -191,7 +193,7 @@ flowchart TB
     click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#labels" "Labels"
 ```
 
-Detailed Mal-Activity Diagrams are drawn using the `CEMT Mal-Activity Diagram`, which can be created by right clicking on an `AggregatedAction`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. They can also be created by selecting the `AggregatedAction` and selecting the `CEMT Mal-Activity Diagram` icon form the context manu. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`AggregatedAction`](./stereotypes.md#aggregationaction) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can resolve this issue by running the included [Activities macro](../Macros/README.md#activities), as shown in the video below.
+Detailed Mal-Activity Diagrams are drawn using a `CEMT Mal-Activity Diagram`, which can be created by right clicking on an `AggregatedAction`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. They can also be created by selecting the `AggregatedAction` and selecting the `CEMT Mal-Activity Diagram` icon form the context manu. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`AggregatedAction`](./stereotypes.md#aggregationaction) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can resolve this issue by running the included [Activities macro](../Macros/README.md#activities), as shown in the video below.
 
 > **Note**: The `CEMT Mal-Activity Diagram` is a [Custom Diagram](../README.md#custom-diagrams). You can also create a Detailed Mal-Activity Diagram using a standard `SysML Activity Diagram` and manually apply the stereotypes if you wish.
 
