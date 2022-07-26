@@ -32,6 +32,7 @@ var threatActionPath = "Cyber::Stereotypes::ThreatAction";
 var detectionActionPath = "Cyber::Stereotypes::DetectionAction";
 var securityControlPath = "Cyber::Stereotypes::SecurityControl";
 var noneControlPath = "Cyber::Stereotypes::NoneControl";
+var noneAssetPath = "Cyber::Stereotypes::NoneAsset";
 var systemPath = "Cyber::Stereotypes::System";
 
 with (CollectionsAndFiles) {
@@ -125,34 +126,37 @@ with (CollectionsAndFiles) {
             }
         }
 
-        function processConstraint(currentConstraint) {
+        function processConstraint(currentConstraint, noneAsset) {
             writeLog("Processing constraint: " + currentConstraint.getName(), 2);
             notAssessed = Finder.byQualifiedName().find(project, notAssessedPath);
             notAssessed = AutomatonMacroAPI.getOpaqueObject(notAssessed);
 
             opaqueConstraint = AutomatonMacroAPI.getOpaqueObject(currentConstraint);
+            noneAsset = AutomatonMacroAPI.getOpaqueObject(noneAsset);
             applicableAssets = opaqueConstraint.Applies;
             for (i = 0; i < applicableAssets.size(); i++) {
                 currentAsset = applicableAssets.get(i);
                 writeLog("Checking Combination: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
                 present = 0;
-                for (k = 0; k < currentAsset.Owned_Element.size(); k++) {
-                    if (currentAsset.Owned_Element.get(k).Type == opaqueConstraint) {
-                        present = 1;
-                        writeLog("Already exists: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
+                if(currentAsset != noneAsset) {
+                    for (k = 0; k < currentAsset.Owned_Element.size(); k++) {
+                        if (currentAsset.Owned_Element.get(k).Type == opaqueConstraint) {
+                            present = 1;
+                            writeLog("Already exists: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
+                        }
                     }
-                }
-                if (!present) {   
-                    writeLog("Creating property: " + currentAsset.Name + " - " + currentConstraint.getName(), 2);
-                    currentProperty = AutomatonMacroAPI.createElement("Property");
-                    currentProperty.setOwner(currentAsset);
-                    currentProperty.setType(currentConstraint);
-                    securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
-                    securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
-                    currentProperty = AutomatonMacroAPI.addStereotype(currentProperty, securityProperty);
-                    currentProperty.setImplementation(notAssessed);
-                    new_name = currentAsset.getName() + ' - ' + currentConstraint.getName();
-                    currentProperty.setName(new_name);
+                    if (!present) {   
+                        writeLog("Creating property: " + currentAsset.Name + " - " + currentConstraint.getName(), 2);
+                        currentProperty = AutomatonMacroAPI.createElement("Property");
+                        currentProperty.setOwner(currentAsset);
+                        currentProperty.setType(currentConstraint);
+                        securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
+                        securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
+                        currentProperty = AutomatonMacroAPI.addStereotype(currentProperty, securityProperty);
+                        currentProperty.setImplementation(notAssessed);
+                        new_name = currentAsset.getName() + ' - ' + currentConstraint.getName();
+                        currentProperty.setName(new_name);
+                    }
                 }
             }
         }
@@ -182,8 +186,8 @@ with (CollectionsAndFiles) {
         }
         if(noneControls) {
             var noneControl = noneControls.get(0);
-            writeLog("Found None: " + noneControl.getName(), 5);
-            writeLog("Found None: " + noneControl.getQualifiedName(), 5);
+            writeLog("Found None Control: " + noneControl.getName(), 5);
+            writeLog("Found None Control: " + noneControl.getQualifiedName(), 5);
         }
         else {
             writeLog("ERROR: No Controls are typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
@@ -205,6 +209,21 @@ with (CollectionsAndFiles) {
             writeLog("ERROR: No Assets are typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
         }
 
+        var noneAssetStereo = Finder.byQualifiedName().find(project, noneAssetPath);
+        var noneAssets = StereotypesHelper.getExtendedElements(noneAssetStereo);
+        if(noneAssets.size() > 1)
+        {
+            writeLog("ERROR: More than 1 Asset is typed as a noneAsset. This is not a breaking error, but may lead to unexpected results.", 1);
+        }
+        if(noneAssets) {
+            var noneAsset = noneAssets.get(0);
+            writeLog("Found None Asset: " + noneAsset.getName(), 5);
+            writeLog("Found None Asset: " + noneAsset.getQualifiedName(), 5);
+        }
+        else {
+            writeLog("ERROR: No Assets are typed as a noneAsset. This is not a breaking error, but may lead to unexpected results.", 1);
+        }
+
         //Get selected object from containment tree
         var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
 
@@ -220,7 +239,7 @@ with (CollectionsAndFiles) {
                 }
                 else {
                     if(StereotypesHelper.hasStereotype(currentObject, securityConstraint) || StereotypesHelper.hasStereotype(currentObject, ISMControl)) {
-                        processConstraint(currentObject);
+                        processConstraint(currentObject, noneAsset);
                     }
                     else{
                         writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
@@ -250,7 +269,7 @@ with (CollectionsAndFiles) {
             writeLog("Got list of securityConstraints: " + securityConstraints, 2);
             writeLog("SecurityConstraints List Size: " + securityConstraints.size(), 2);     
             for (x = 0; x < securityConstraints.size(); x++) {
-                processConstraint(securityConstraints.get(x));
+                processConstraint(securityConstraints.get(x), noneAsset);
             }
         }
     }
