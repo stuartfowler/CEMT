@@ -38,7 +38,7 @@ https://user-images.githubusercontent.com/7237737/174941526-18245b64-b436-40c3-b
 
 This imports all of the necessary stereotypes and attributes of the CEMT, as well as macros it relies upon. The source code for these JavaScript macros is captured in this GitHub repo, but can also be viewed inside CAMEO itself if you would like to validate it. These macros can be found at these locations:
  - [Activities.js](./Macros/Activities.js)
- - [Constraints.js](./Macros/Constraints.js)
+ - [Properties.js](./Macros/Properties.js)
  - [Controls.js](./Macros/Controls.js)
  - [Misuse.js](./Macros/Misuse.js)
  - [Risk.js](./Macros/Risk.js)
