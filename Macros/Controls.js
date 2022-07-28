@@ -22,7 +22,7 @@ var CollectionsAndFiles = new JavaImporter(
     com.nomagic.magicdraw.uml.Finder,
     java.lang);
 
-var debug = 5;
+var debug = 2;
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
 var ISMControlPath = "Cyber::Stereotypes::ISMControl";
 var securityPropertyPath = "Cyber::Stereotypes::SecurityProperty";
@@ -126,19 +126,19 @@ with (CollectionsAndFiles) {
             }
         }
 
-        function processConstraint(currentConstraint, noneAsset) {
+        function processConstraint(currentConstraint, noneAssetStereo) {
             writeLog("Processing constraint: " + currentConstraint.getName(), 2);
             notAssessed = Finder.byQualifiedName().find(project, notAssessedPath);
             notAssessed = AutomatonMacroAPI.getOpaqueObject(notAssessed);
 
             opaqueConstraint = AutomatonMacroAPI.getOpaqueObject(currentConstraint);
-            noneAsset = AutomatonMacroAPI.getOpaqueObject(noneAsset);
+
             applicableAssets = opaqueConstraint.Applies;
             for (i = 0; i < applicableAssets.size(); i++) {
                 currentAsset = applicableAssets.get(i);
                 writeLog("Checking Combination: " + currentAsset.Name + " - " + currentConstraint.getName(), 3);
                 present = 0;
-                if(currentAsset != noneAsset) {
+                if(!StereotypesHelper.hasStereotype(currentAsset._getRepresentElement(), noneAssetStereo)) {
                     for (k = 0; k < currentAsset.Owned_Element.size(); k++) {
                         if (currentAsset.Owned_Element.get(k).Type == opaqueConstraint) {
                             present = 1;
@@ -210,19 +210,6 @@ with (CollectionsAndFiles) {
         }
 
         var noneAssetStereo = Finder.byQualifiedName().find(project, noneAssetPath);
-        var noneAssets = StereotypesHelper.getExtendedElements(noneAssetStereo);
-        if(noneAssets.size() > 1)
-        {
-            writeLog("ERROR: More than 1 Asset is typed as a noneAsset. This is not a breaking error, but may lead to unexpected results.", 1);
-        }
-        if(noneAssets) {
-            var noneAsset = noneAssets.get(0);
-            writeLog("Found None Asset: " + noneAsset.getName(), 5);
-            writeLog("Found None Asset: " + noneAsset.getQualifiedName(), 5);
-        }
-        else {
-            writeLog("ERROR: No Assets are typed as a noneAsset. This is not a breaking error, but may lead to unexpected results.", 1);
-        }
 
         //Get selected object from containment tree
         var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
@@ -238,8 +225,8 @@ with (CollectionsAndFiles) {
                     processAction(currentObject, noneControl, systemAsset);
                 }
                 else {
-                    if(StereotypesHelper.hasStereotype(currentObject, securityConstraint) || StereotypesHelper.hasStereotype(currentObject, ISMControl)) {
-                        processConstraint(currentObject, noneAsset);
+                    if(StereotypesHelper.hasStereotypeOrDerived(currentObject, securityConstraint)) {
+                        processConstraint(currentObject, noneAssetStereo);
                     }
                     else{
                         writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
@@ -269,7 +256,7 @@ with (CollectionsAndFiles) {
             writeLog("Got list of securityConstraints: " + securityConstraints, 2);
             writeLog("SecurityConstraints List Size: " + securityConstraints.size(), 2);     
             for (x = 0; x < securityConstraints.size(); x++) {
-                processConstraint(securityConstraints.get(x), noneAsset);
+                processConstraint(securityConstraints.get(x), noneAssetStereo);
             }
         }
     }

@@ -43,7 +43,7 @@ with (CollectionsAndFiles) {
         }
 
         //Checks Constraint name and updates as required
-        function processConstraint(object) {
+        function processProperty(object) {
             writeLog("Processing securityProperty: " + object.getName(), 2);
             type = object.getType().getName();
             name = object.getName();
@@ -54,14 +54,14 @@ with (CollectionsAndFiles) {
             else {
                 new_name = owner + " - " + type;
                 object.setName(new_name);
-                writeLog("Constraint updated: " + object.getName(), 2);
+                writeLog("Property updated: " + object.getName(), 2);
             }
         }
 
         //Initialises by selecting the project and element factory
         var project = Application.getInstance().getProject();
         writeLog("Got project: " + project, 5);
-        newSession(project, "Constraint Creation");
+        newSession(project, "Property Update");
 
         //Grabs the securityProperty stereotypes
         securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
@@ -78,7 +78,7 @@ with (CollectionsAndFiles) {
                 writeLog("Got object name: " + currentObject.getName(), 5);
                 //Process object if it is a securityProperty, otherwise do nothing
                 if(StereotypesHelper.hasStereotype(currentObject,securityProperty)) {
-                    processConstraint(currentObject);
+                    processProperty(currentObject);
                 }
                 else {
                     writeLog("Selected Item is not a SecurityProperty", 1)
@@ -91,7 +91,7 @@ with (CollectionsAndFiles) {
             writeLog("Secuirty Constraint List Size: " + securityProperties.size(), 3);
              for (x = 0; x < securityProperties.size(); x++) {
                 currentObject = securityProperties.get(x);
-                processConstraint(currentObject);
+                processProperty(currentObject);
             }
         }
     }
