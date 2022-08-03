@@ -12,9 +12,9 @@ flowchart TB
       4c("Contextual Assets") --> 4d
     end
     subgraph 5["Matrices"]
-      5b("Security Controls") --> 5c("Security Properties") --> 5g("Implementation Status")
-      5d("Link Assets") --> 5c
-      5f("Security Constraints") --> 5c
+    5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
+    5b("Security Controls") --> 5c
+    5f("Security Constraints") --> 5c
     end
     4 --> 5
   end
@@ -52,7 +52,7 @@ https://user-images.githubusercontent.com/7237737/180377140-f613ddba-a722-4db6-a
 Asset Definition Diagrams use the following CEMT stereotypes:
 
  - [`Asset`](./stereotypes.md#asset)
- - [`System`](./stereotypes.md#system)
+    - [`System`](./stereotypes.md#system)
  - [`DirectedAssociation`](./stereotypes.md#directedassociation)
 
 ### System of Interest
@@ -89,11 +89,13 @@ The `CEMT Asset Definition Diagram` also shows the controls that are applicable 
 
 ## Matrices
 
+Matrices provide the ability for the modeller to rapidly create relationships between the various objects in the model. This step  involves the creation of objects that represent potential mitigation techniques and the linking of those to both the threat model and the assets within the system that have been defined in previous steps. 
+
 ```mermaid
 flowchart TB
     subgraph 5["Matrices"]
-        5b("Security Controls") --> 5c("Security Properties") --> 5g("Implementation Status")
-        5d("Link Assets") --> 5c
+        5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
+        5b("Security Controls") --> 5c
         5f("Security Constraints") --> 5c
     end
      click 5a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
@@ -104,6 +106,79 @@ flowchart TB
     click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
     click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
 ```
+
+The matrices are created using the `Dependency Matrix` diagram that is built into CAMEO Systems Modeler. These are pre-defined as part of the CEMT, and are copied across from the `Cyber Profile` as shown below:
+
+https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9a62-4c394498e6b6.mp4
+
+The matrices are contained in the `Matrices` package, and include:
+
+ - Asset-Action - Allows for the mapping of `Assets` to `ThreatActions` and `DetectionActions`;
+ - Constraint-Asset - Allows for the mapping of `SecurityConstraints` to `Assets`; and
+ - Control-Action - Allows for the mapping of `SecurityControls` to `ThreatActions` and `DetectionActions`.
+
+Matrices use the following CEMT stereotypes:
+
+ - [`SecurityControl`](./stereotypes.md#securitycontrol)
+    - [`NoneControl`](./stereotypes.md#nonecontrol)
+    - [`SecurityConstraint`](./stereotypes.md#securityconstraint)
+        - [`ISMControl`](./stereotypes.md#ismcontrol)
+ - [`Asset`](./stereotypes.md#asset)
+    - [`NoneAsset`](./stereotypes.md#noneasset)
+ - [`Mitigates`](./stereotypes.md#mitigates)
+ - [`Affects`](./stereotypes.md#affects)
+
+### Link Assets
+
+The first step in this process involves linking of the `Assets` created in the `Asset Definition Diagram` to the `ThreatActions` and `DetectionActions` created in the [Threat Modelling](./threat-modelling.md) phase. This is achieved using the `Asset-Action` matrix which provides a table of with all of the `Assets` in the model on one axis and all of the `ThreatActions` and `DetectionActions` in the model on the other axis. Double-clicking on the cell at the junction between a particular `Asset` and `ThreatAction` or `DetectionAction` will create an [`Affects`](./stereotypes.md#affects) relationship between those two objects.
+
+Once this relationship has been created, the `Mal-Activity Diagrams` will be updated to list the affected `Asset` on the `ThreatAction` and/or `DetectionAction`.
+
+**Insert Video**
+
+### Security Controls
+
+The second step in the process is to create [`SecurityControls`](./stereotypes.md#securitycontrol) that could potentially mitigate the threats outlined in the threat model and link those controls to the relevant nodes of the threat model. These controls may be created from first principles for your specific model - ie. the modeller reviews each node in the threat model and proposes specific controls that would mitigate that step - or they could be imported from an existing library of controls, similar to the [ISM profile example](../ISM/README.md).
+
+Once these controls have been created or imported, they will appear in the `Control-Action` matrix, and they can be linked to the `ThreatActions` or `DetectionActions` of the threat model in the same manner the `Assets` were linked. Double-clicking on the cell at the junction between a particular `SecurityControl` and `ThreatAction` or `DetectionAction` will create a [`Mitigates`](./stereotypes.md#mitigates) relationship between those two objects.
+
+In some cases, there may not be a feasible mitigating control for a partiuclar node in the threat model. In this case, a `SecurityControl` with the [`NoneControl`](./stereotypes.md#nonecontrol) stereotype should be created. This `NoneControl` can then be linked to those threat model nodes that do not have any feasible mitigating controls, allowing the modeller and reviewers to differentiate between those threat model nodes that have been assessed to not have any potential controls from those that have not yet been assessed.
+
+**Control List - Description**
+
+**Insert Video**
+
+> **Note**: It is important to note that the purpose of this step is to propose all controls that could feasibly be implemented into the system to mitigate a particular step of the threat path. The modeller should propose and link all of these potential controls, rather than only selecting and documenting those controls that they intend to implement. The purpose of this activity is to demonstrate to decision makers not only what has been done to mitigate a particular threat, but also what further steps could be taken to further mitigate the threat. The act of creating and linking a control is not meant to imply that the control will be implemented, or even that the control *should* be implemented, it is simply to show that it could be implemented. In this context, a non-implemented control is not a non-compliance or a shortcoming that needs addressing, it is simply a acknowledgement that a risk decision has been made to not implement that potential control.
+
+### Security Constraints
+
+This is an **optional** step in the process, that acknowledges the reality of the situation that most systems will have mandated security controls, that come in the form of either specific system requirements or compliance frameworks. As these generic controls have not been derived specifically from the system's threat model, there is a likelihood that these mandated controls may not be able to be linked into the threat model like the `SecurityControls` described in the previous step. [`SecurityConstraints`](./stereotypes.md#securityconstraint) are a specific type of `SecurityControl` that can also be linked directly to an `Asset`, as well as being able to be linked to the threat model. The [ISM profile example](../ISM/README.md) actually uses `SecurityConstraints` as there are a number of generic controls in that control framework (such as governance, management and documentation controls) that do not lend themselves to being tied to specific nodes of a threat model.
+
+Once `SecurityControls` have been created or imported, they will appear in the `Constraint-Asset` matrix, from where they can be linked to the `Assets` in the model. Double-clicking on the cell at the junction between a particular `SecurityConstraint` and `Asset` will create an [`Applies`](./stereotypes.md#applies) relationship between those two objects.
+
+To track `SecurityConstraints` that are not relevant to the system, they should be linked to an `Asset` that is stereotyped as a [`NoneAsset`](./stereotypes.md#noneasset), which can track the fact that the constraint has been assessed, but has been found to be not applicable to the system.
+
+**Constraint List - Description**
+
+**Insert Video**
+
+> **Note**: The use of `SecurityConstraints` should be minimised, as it conflicts with the intention of having a set of mitigating controls that are inherently scoped to the system's context. The prevelance of compliance frameworks with security engineering, however, necessitates that the CEMT can handle these overarching mandated security mitigations which is why `SecurityConstraints` are included. As `SecurityConstraints` inherit from `SecurityControls`, they can still be linked to the threat model and every effort should be made to link them to the threat model, with direct links to the `Assets` used only when absolutely necessary.
+
+### Security Properties
+
+Once all of the `Assets`, `SecurityControls` and `SecurityConstraints` have been linked, `SecurityProperties` can be created. `SecurityProperties` are an instantiation of the `SecurityControl` or `SecurityConstraint` onto a particular `Asset`, and carry the implementation status of the particular security mitigation on that specific asset. 
+
+While these `SecurityProperties` could be created manually as a property on each `Asset`, the [Properties macro](../Macros/README.md#properties) will automatically create the necessary `SecurityProperties` based on the relationships that were created when the assets, threat nodes and mitigations were linked together using the various matrices.
+
+**Insert Video**
+
+### Implementation Status
+
+The final step in the threat mitigation phase involves the determination and documentation of the `Implementation` status of each `SecurityProperty`. 
+
+**Insert Video**
+
+> **Note**: When the `Property List` table becomes large due to a significant number of `SecurityProperties` it can become more efficient to export the table to Microsoft Excel, enter the Implementation status and Implementation Detail in the spreadsheet and then import that data back into the model. This can help with bulk updates, and with getting system SMEs that do not have access to the CAMEO tool to assist with the determination of the Implementation status. This is a built-in feature of CAMEO System Modeler - instructions for how to conduct this export/import/sync can be found on the [NoMagic website](https://docs.nomagic.com/display/MD190/Sync+with+Excel+or+CSV+files).
 
 ![Populated Mal-Activity Diagram](/Documentation/Images/detmalact.png)
 

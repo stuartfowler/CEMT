@@ -3,7 +3,7 @@
 This section provides profiles for the ACSC Information Security Manual.
 
  - Download SSP Annex Excel Template managed by ACSC
- - Chagne Yes to TRUE and No to FALSE
+ - Change Yes to TRUE and No to FALSE
  - Import with mapping
  - Run macro
  - Sync table and use vlookup to bring in Control Description (not all characters handled by CAMEO import)

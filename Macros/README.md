@@ -2,7 +2,7 @@
 
 ## Activities
 
-## Constraints
+## Properties
 
 ## Controls
 

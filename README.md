@@ -148,8 +148,8 @@ flowchart TB
       4c("Contextual Assets") --> 4d
     end
     subgraph 5["Matrices"]
-      5b("Security Controls") --> 5c("Security Properties") --> 5g("Implementation Status")
-      5d("Link Assets") --> 5c
+      5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
+      5b("Security Controls") --> 5c
       5f("Security Constraints") --> 5c
     end
     4 --> 5
