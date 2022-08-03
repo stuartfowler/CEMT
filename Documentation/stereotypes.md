@@ -62,7 +62,7 @@
 
 ### DirectedAssociation
 
-## Matrices
+## Dependency Matrix
 
 ### SecurityControl
 
@@ -77,3 +77,6 @@
 ### Affects
 
 ### Applies
+
+## SysML Parametric Diagrams
+

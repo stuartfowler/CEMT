@@ -24,7 +24,7 @@ flowchart TB
 
 The threat mitigation process requires the allocation of system components and threat mitigations to the threat model developed in the [Threat Modelling](./threat-modelling.md) process. This allows the modeller to describe potential mitigations against the previously identified threat paths, allocate those mitigations to specific system assets and document the implementation state of those mitigations. 
 
-> **Note**: The information contained in this documentation set aims to guide a modeller and provide instructions on how to use the CEMT to produce the necessary views in CAMEO Systems Modeler. The production of an accurate and comprehensive model with appropriate mitigations depends on the cybersecurity expertise and the system knowledge of the modelling team; this documentation simply outlines how to use the CEMT, not how to produce a comprehensive assessment.
+> **Note**: The information contained in this documentation set aims to guide a modeller and provide instructions on how to use the CEMT to produce the necessary views in CAMEO Systems Modeler. The production of an accurate and comprehensive model with appropriate mitigations depends on the cybersecurity expertise and the system knowledge of the modelling team; this documentation simply outlines how to use the CEMT, not how to produce a comprehensive risk assessment.
 
 ## Asset Definition Diagrams
 
@@ -113,9 +113,9 @@ https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9
 
 The matrices are contained in the `Matrices` package, and include:
 
- - Asset-Action - Allows for the mapping of `Assets` to `ThreatActions` and `DetectionActions`;
- - Constraint-Asset - Allows for the mapping of `SecurityConstraints` to `Assets`; and
- - Control-Action - Allows for the mapping of `SecurityControls` to `ThreatActions` and `DetectionActions`.
+ - Asset-Action: Allows for the mapping of `Assets` to `ThreatActions` and `DetectionActions`;
+ - Constraint-Asset: Allows for the mapping of `SecurityConstraints` to `Assets`; and
+ - Control-Action: Allows for the mapping of `SecurityControls` to `ThreatActions` and `DetectionActions`.
 
 Matrices use the following CEMT stereotypes:
 
