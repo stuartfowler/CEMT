@@ -38,9 +38,10 @@ https://user-images.githubusercontent.com/7237737/174941526-18245b64-b436-40c3-b
 
 This imports all of the necessary stereotypes and attributes of the CEMT, as well as macros it relies upon. The source code for these JavaScript macros is captured in this GitHub repo, but can also be viewed inside CAMEO itself if you would like to validate it. These macros can be found at these locations:
  - [Activities.js](./Macros/Activities.js)
- - [Properties.js](./Macros/Properties.js)
  - [Controls.js](./Macros/Controls.js)
+ - [Filter.js](./Macros/Filter.js)
  - [Misuse.js](./Macros/Misuse.js)
+ - [Properties.js](./Macros/Properties.js)
  - [Risk.js](./Macros/Risk.js)
 
 A short description of what each of these macros does can be found in the header of the macro source code.
@@ -178,14 +179,15 @@ flowchart TB
   subgraph RA["Risk Assessment"]
     direction TB
     subgraph 6["Summary Diagrams"]
-      6a("Bowties") --> 6b("Attack Trees")
+      6a("Bowties")
+      6b("Attack Trees")
     end
-    subgraph 7["Parametric Diagrams"]
+    subgraph 7["Parametric Risk Diagrams"]
       7a("Threat Path") --> 7b("Threat Level") --> 7e("Simulate")
       7a --> 7c("Initial Probability") --> 7e
       7a --> 7d("Control Effectiveness") --> 7e
     end
-    subgraph 8["Risk Table"]
+    subgraph 8["Risk Assessment Table"]
       8a("Description") --> 8b("Simulated Probabilities") --> 8c("Risk Rating")
     end
     6 --> 7 --> 8
@@ -194,15 +196,15 @@ flowchart TB
   click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
   click 6b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
 
-  click 7a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
-  click 7b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
-  click 7c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
-  click 7d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
-  click 7e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-diagrams" "Parametric Diagrams"
+  click 7a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
+  click 7b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
+  click 7c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
+  click 7d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
+  click 7e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
 
-  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-table" "Risk Table"
-  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-table" "Risk Table"
-  click 8c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-table" "Risk Table"
+  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
+  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
+  click 8c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
 ```
 
 ## Examples

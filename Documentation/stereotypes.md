@@ -78,5 +78,33 @@
 
 ### Applies
 
+### SecurityProperty
+
 ## SysML Parametric Diagrams
+
+### SecurityRisk
+
+### ValueProperty
+
+#### ThreatLevel
+
+#### InitialProbability
+
+#### ResidualProbability
+
+#### DetectionProbability
+
+#### DetectionControlEffectiveness
+
+#### MitigationControlEffectiveness
+
+#### difficultyProperty
+
+### ConstraintProperty
+
+#### ThreatConstraint
+
+#### DetectConstraint
+
+#### DifficultyConstraint
 

@@ -10,6 +10,7 @@ This section provides profiles for the ACSC Information Security Manual.
 
 Import to project as a profile
 Link to actions (if treated as Control) or directly to Assets (if treated as Constraint)
+NoneAsset
 Tables can be copied or used as is.
 
 Can be used as an example if other control libraries or catalogs need to be imported.

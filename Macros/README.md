@@ -2,10 +2,12 @@
 
 ## Activities
 
-## Properties
-
 ## Controls
 
+## Filter
+
 ## Misuse
+
+## Properties
 
 ## Risk

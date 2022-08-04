@@ -127,6 +127,7 @@ Matrices use the following CEMT stereotypes:
     - [`NoneAsset`](./stereotypes.md#noneasset)
  - [`Mitigates`](./stereotypes.md#mitigates)
  - [`Affects`](./stereotypes.md#affects)
+ - [`SecurityProperty](./stereotypes.md#securityproperty)
 
 ### Link Assets
 
@@ -175,6 +176,8 @@ While these `SecurityProperties` could be created manually as a property on each
 ### Implementation Status
 
 The final step in the threat mitigation phase involves the determination and documentation of the `Implementation` status of each `SecurityProperty`. 
+
+**Property List - Implementation Detail**
 
 **Insert Video**
 
