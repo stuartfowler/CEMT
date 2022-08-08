@@ -304,72 +304,72 @@ The Likelihood, Consequence and Risk Rating values are based on the risk table b
 <table>
   <thead>
     <tr>
-      <th rowspan=2 vertical-align="center" text-align="center">Likelihood</th>
-      <th colspan=6 vertical-align="center" text-align="center">Consequence</th>
+      <th rowspan=2>Likelihood</th>
+      <th colspan=6>Consequence</th>
     </tr>
     <tr>
-      <th vertical-align="center" text-align="center">Minimal</th>
-      <th vertical-align="center" text-align="center">Minor</th>
-      <th vertical-align="center" text-align="center">Moderate</th>
-      <th vertical-align="center" text-align="center">Major</th>
-      <th vertical-align="center" text-align="center">Severe</th>
-      <th vertical-align="center" text-align="center">Catastrophic</th>
+      <th>Minimal</th>
+      <th>Minor</th>
+      <th>Moderate</th>
+      <th>Major</th>
+      <th>Severe</th>
+      <th>Catastrophic</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th vertical-align="center" text-align="center">Extreme</th>
-      <td vertical-align="center" text-align="center">Moderate</td>
-      <td vertical-align="center" text-align="center">Significant</td>
-      <td vertical-align="center" text-align="center">High</td>
-      <td vertical-align="center" text-align="center">Extreme</td>
-      <td vertical-align="center" text-align="center">Extreme</td>
-      <td vertical-align="center" text-align="center">Extreme</td>
+      <th>Extreme</th>
+      <td>Moderate</td>
+      <td>Significant</td>
+      <td>High</td>
+      <td>Extreme</td>
+      <td>Extreme</td>
+      <td>Extreme</td>
     </tr>
     <tr>
-      <th vertical-align="center" text-align="center">High</th>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Significant</td>
-      <td vertical-align="center" text-align="center">High</td>
-      <td vertical-align="center" text-align="center">High</td>
-      <td vertical-align="center" text-align="center">Extreme</td>
-      <td vertical-align="center" text-align="center">Extreme</td>
+      <th>High</th>
+      <td>Low</td>
+      <td>Significant</td>
+      <td>High</td>
+      <td>High</td>
+      <td>Extreme</td>
+      <td>Extreme</td>
     </tr>
     <tr>
-      <th vertical-align="center" text-align="center">Medium</th>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Moderate</td>
-      <td vertical-align="center" text-align="center">Significant</td>
-      <td vertical-align="center" text-align="center">Significant</td>
-      <td vertical-align="center" text-align="center">High</td>
-      <td vertical-align="center" text-align="center">Extreme</td>
+      <th>Medium</th>
+      <td>Low</td>
+      <td>Moderate</td>
+      <td>Significant</td>
+      <td>Significant</td>
+      <td>High</td>
+      <td>Extreme</td>
     </tr>
     <tr>
-      <th vertical-align="center" text-align="center">Low</th>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Moderate</td>
-      <td vertical-align="center" text-align="center">Moderate</td>
-      <td vertical-align="center" text-align="center">Significant</td>
-      <td vertical-align="center" text-align="center">High</td>
+      <th>Low</th>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Moderate</td>
+      <td>Moderate</td>
+      <td>Significant</td>
+      <td>High</td>
     </tr>
     <tr>
-      <th vertical-align="center" text-align="center">Very Low</th>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Moderate</td>
-      <td vertical-align="center" text-align="center">Moderate</td>
-      <td vertical-align="center" text-align="center">Significant</td>
+      <th>Very Low</th>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Moderate</td>
+      <td>Moderate</td>
+      <td>Significant</td>
     </tr>
     <tr>
-      <th vertical-align="center" text-align="center">Negligible</th>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Low</td>
-      <td vertical-align="center" text-align="center">Moderate</td>
+      <th>Negligible</th>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Moderate</td>
     </tr>
   </tbody>
 </table>
