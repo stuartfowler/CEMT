@@ -295,16 +295,15 @@ The next step is to input the critical variables and results from the simulation
 The final step in the process is to select a resultant qualitative consequence, likelihood and risk rating. The modeller should set the following fields in the table:
  - Likelihood - a qualitative assessment of the likelihood, using the simulated probabilities as an input to that decision;
  - Likelihood Justification - a free-form text field where the reasoning behind the likelihood determination should be documented;
- - Consequence - a qualitative assessment of the consequence of the threat being realised, using input from operational and system experts;
- - Consequence Justification - a free-form text field where the reasoning behind the consequemce determination should be documented; and
- - Risk Rating - an overall risk rating which is a function of the Likelihood and Consequence values.
+ - Consequence - a qualitative assessment of the consequence of the threat being realised, using input from operational and system experts; and
+ - Consequence Justification - a free-form text field where the reasoning behind the consequemce determination should be documented.
 
-The Likelihood, Consequence and Risk Rating values are based on the risk table below:
+Once the Likelihood and Consequence values are set, the Risk Rating will be automatically set accordingly. The Likelihood, Consequence and Risk Rating values are based on the risk table below:
 
-<table style="text-align: center">
+<table>
   <thead>
     <tr>
-      <th rowspan=2>Likelihood</th>
+      <th rowspan=2 colspan=2></th>
       <th colspan=6>Consequence</th>
     </tr>
     <tr>
@@ -318,6 +317,7 @@ The Likelihood, Consequence and Risk Rating values are based on the risk table b
   </thead>
   <tbody>
     <tr>
+      <th rowspan=6>Likelihood</th>
       <th>Extreme</th>
       <td>Moderate</td>
       <td>Significant</td>
