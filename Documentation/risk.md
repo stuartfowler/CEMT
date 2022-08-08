@@ -301,7 +301,7 @@ The final step in the process is to select a resultant qualitative consequence, 
 
 The Likelihood, Consequence and Risk Rating values are based on the risk table below:
 
-<table>
+<table style="text-align: center">
   <thead>
     <tr>
       <th rowspan=2>Likelihood</th>
