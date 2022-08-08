@@ -301,7 +301,78 @@ The final step in the process is to select a resultant qualitative consequence, 
 
 The Likelihood, Consequence and Risk Rating values are based on the risk table below:
 
-**Insert Risk Table**
+<table>
+  <thead>
+    <tr>
+      <th rowspan=2 vertical-align="center" text-align="center">Likelihood</th>
+      <th colspan=6 vertical-align="center" text-align="center">Consequence</th>
+    </tr>
+    <tr>
+      <th vertical-align="center" text-align="center">Minimal</th>
+      <th vertical-align="center" text-align="center">Minor</th>
+      <th vertical-align="center" text-align="center">Moderate</th>
+      <th vertical-align="center" text-align="center">Major</th>
+      <th vertical-align="center" text-align="center">Severe</th>
+      <th vertical-align="center" text-align="center">Catastrophic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th vertical-align="center" text-align="center">Extreme</th>
+      <td vertical-align="center" text-align="center">Moderate</td>
+      <td vertical-align="center" text-align="center">Significant</td>
+      <td vertical-align="center" text-align="center">High</td>
+      <td vertical-align="center" text-align="center">Extreme</td>
+      <td vertical-align="center" text-align="center">Extreme</td>
+      <td vertical-align="center" text-align="center">Extreme</td>
+    </tr>
+    <tr>
+      <th vertical-align="center" text-align="center">High</th>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Significant</td>
+      <td vertical-align="center" text-align="center">High</td>
+      <td vertical-align="center" text-align="center">High</td>
+      <td vertical-align="center" text-align="center">Extreme</td>
+      <td vertical-align="center" text-align="center">Extreme</td>
+    </tr>
+    <tr>
+      <th vertical-align="center" text-align="center">Medium</th>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Moderate</td>
+      <td vertical-align="center" text-align="center">Significant</td>
+      <td vertical-align="center" text-align="center">Significant</td>
+      <td vertical-align="center" text-align="center">High</td>
+      <td vertical-align="center" text-align="center">Extreme</td>
+    </tr>
+    <tr>
+      <th vertical-align="center" text-align="center">Low</th>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Moderate</td>
+      <td vertical-align="center" text-align="center">Moderate</td>
+      <td vertical-align="center" text-align="center">Significant</td>
+      <td vertical-align="center" text-align="center">High</td>
+    </tr>
+    <tr>
+      <th vertical-align="center" text-align="center">Very Low</th>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Moderate</td>
+      <td vertical-align="center" text-align="center">Moderate</td>
+      <td vertical-align="center" text-align="center">Significant</td>
+    </tr>
+    <tr>
+      <th vertical-align="center" text-align="center">Negligible</th>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Low</td>
+      <td vertical-align="center" text-align="center">Moderate</td>
+    </tr>
+  </tbody>
+</table>
 
 **Insert Video**
 
