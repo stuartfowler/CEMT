@@ -112,9 +112,9 @@ Intermediate Mal-Activity Diagrams use the following CEMT stereotypes:
    - [`ThreatImpactSignal`](./stereotypes.md#threatimpactsignal)
    - [`ThreatDetectionSignal`](./stereotypes.md#threatdetectionsignal)
  - [`ThreatSendSignal`](./stereotypes.md#threatsendsignal)
+   - [`ThreatImpact`](./stereotypes.md#threatimpact)
+   - [`ThreatDetection`](./stereotypes.md#threatdetection)
  - [`ThreatAcceptEvent`](./stereotypes.md#threatacceptevent)
- - [`ThreatImpact`](./stereotypes.md#threatimpact)
- - [`ThreatDetection`](./stereotypes.md#threatdetection)
 
 ### Threat Start
 

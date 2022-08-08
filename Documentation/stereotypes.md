@@ -23,7 +23,7 @@ The `MaliciousActor` stereotype uses the `Actor` class as a metaclass, inherits 
         CyberActor~Actor~ <|-- MaliciousActor~Actor~
 ```
 
-`MaliciousActor` contains no attributes or constraints.
+`MaliciousActor` contains no attributes or constraints, but inherits from the `CyberActor` stereotype.
 
 #### NonMaliciousActor
 
@@ -34,7 +34,7 @@ The `NonMaliciousActor` stereotype uses the `Actor` class as a metaclass, inheri
         CyberActor~Actor~ <|-- NonMaliciousActor~Actor~
 ```
 
-`MaliciousActor` contains no attributes or constraints.
+`MaliciousActor` contains no attributes or constraints, but inherits from the `CyberActor` stereotype.
 
 ### MisuseCase
 
@@ -141,21 +141,51 @@ The `ThreatModelFlow` stereotype uses the `ControlFlow` class as a metaclass, an
 
 #### ThreatFlow
 
+The `ThreatFlow` stereotype uses the `ControlFlow` class as a metaclass, and provides a labelling stereotype for all `ControlFlow`s used in the CEMT Mal-Activity Diagrams that are associated with a `CyberActor`s actions against the system. This aids with the formation of structured expressions and queries in the model, by differentiating the `ThreatFlow`s used in CEMT Mal-Activity Diagrams from other `ThreatModelFlow`s.
+
+```mermaid
+    classDiagram
+        ThreatModelFlow~ControlFlow~ <|-- ThreatFlow~ControlFlow~
+```
+
+`ThreatFlow` contains no attributes or constraints, but inherits from the `ThreatModelFlow` stereotype.
+
 #### DetectionFlow
 
+The `DetectionFlow` stereotype uses the `ControlFlow` class as a metaclass, aand provides a labelling stereotype for all `ControlFlow`s used in the CEMT Mal-Activity Diagrams that are associated with the system's detection capabilities. This aids with the formation of structured expressions and queries in the model, by differentiating the `DetectionFlow`s used in CEMT Mal-Activity Diagrams from other `ThreatModelFlow`s.
+
+```mermaid
+    classDiagram
+        ThreatModelFlow~ControlFlow~ <|-- DetectionFlow~ControlFlow~
+```
+
+`DetectionFlow` contains no attributes or constraints, but inherits from the `ThreatModelFlow` stereotype.
+
 ### ThreatSignal
+
+The `ThreatSignal` stereotype uses the `Signal` class as a metaclass, and provides a labelling stereotype for all `Signal`s used within the CEMT Mal-Activity Diagrams. This aids with the formation of structured expressions and queries in the model, by differentiating the `ThreatSignal`s used in CEMT Mal-Activity Diagrams from generic `Signal`s which may be used within a broader system model.
+
+```mermaid
+    classDiagram
+        ThreatSignal~Signal~ <|-- ThreatImpactSignal~Signal~
+        ThreatSignal <|-- ThreatDetectionSignal~Signal~
+```
+
+`ThreatSignal` contains no attributes or constraints, but acts as a generalised stereotype for both the `ThreatImpactSignal` and `ThreatDetectionSignal` stereotypes.
+
+`ThreatSignal` also has a related stereotype `Customization` which sets the `Package` metaclass as a `Possible Owner` and the `Signal` metaclass as a `Quick Applying For` property, which allows the `ThreatSignal` stereotype to appear when creating elements under a `Package` and in the context menu for a `Signal`, respectively.
 
 #### ThreatImpactSignal
 
 #### ThreatDetectionSignal
 
-#### ThreatSendSignal
-
-#### ThreatAcceptEvent
+### ThreatSendSignal
 
 #### ThreatImpact
 
 #### ThreatDetection
+
+### ThreatAcceptEvent
 
 ### ThreatModelAction
 
