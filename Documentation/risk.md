@@ -303,7 +303,7 @@ Once the Likelihood and Consequence values are set, the Risk Rating will be auto
 <table>
   <thead>
     <tr>
-      <th rowspan=2 colspan=2></th>
+      <th rowspan=2 colspan=2>6x6 Security Risk Matrix</th>
       <th colspan=6>Consequence</th>
     </tr>
     <tr>
