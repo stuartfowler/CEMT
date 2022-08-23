@@ -436,9 +436,98 @@ The `MalActivity` stereotype uses the `Activity` class as a metaclass and provid
 
 ### Asset
 
+The `Asset` stereotype uses the `Class` class as a metaclass, and provides a stereotype for all `Block`s used within the CEMT Asset Definition Diagram. This aids with the formation of structured expressions and queries in the model, by differentiating the `Asset`s used in CEMT Mal-Activity Diagrams from generic `Block`s which may be used within a broader system model.
+
+```mermaid
+    classDiagram
+        class Asset~Class~ {
+            +[derived] affectedBy~Element~ [0..*]
+            +[derived] applicable~Element~ [0..*]
+            +[derived] Implemented Controls~Class~ [0..*]
+            +[derived] Not Implemented Controls~Class~ [0..*]
+            +[derived] Patially Implemented Controls~Class~ [0..*]
+            +[derived] Not Assessed Controls~Class~ [0..*]
+            +[derived] Implemented~Property~ [0..*]
+            +[derived] Not Implemented~Property~ [0..*]
+            +[derived] Patially Implemented~Property~ [0..*]
+            +[derived] Not Assessed~Property~ [0..*]
+            -[constraint] Affected()
+            -[constraint] Applies()
+        }
+        Asset~Class~ <|-- System~Class~
+        Asset~Class~ <|-- NoneAsset~Class~
+        Block~Class~ <|-- Asset~Class~
+```
+
+`Asset` contains ten derived properties:
+ - mitigatedBy - which lists the `SecurityControl`s which are linked to this `ThreatModelAction` by the `Mitigates` relationship;
+ - affects - which lists the `Asset`s which are linked to this `ThreatModelAction` by the `Affects` relationship;
+ - Implemented Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Implemented`;
+ - Not Implemented Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Not Implemented`;
+ - Partially Implemented Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Partially Implemented`;
+ - Not Assessed Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Not Assessed`;
+ - Implemented - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Implemented`;
+ - Not Implemented - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Not Implemented`;
+ - Partially Implemented - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Partially Implemented`; and
+ - Not Assessed - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Not Assessed`.
+
+`Asset` has two active validation constraints:
+ - Affected() - which checks whether there are any `SecurityControl`s linked to the same `ThreatModelAction` as this `Asset` that do not have a corresponding `SecurityProperty` and flags if there are none; and
+ - Applies() - which checks whether there are any `SecurityConstraint`s linked to this `Asset` that do not have a corresponding `SecurityProperty` and flags if there are none.
+
+`Asset` acts as a generalised stereotype for both the `System` and `NoneAsset` stereotypes.
+
+`Asset` also has a related stereotype `Customization` which sets the `Implemented Controls`, `Not Implemented Controls`, `Patially Implemented Controls` and `Not Assessed Controls` properties as `Properties Displayed In Compartments`, which causes those properties to appear on `Asset` shapes in the CEMT Asset Definition Diagrams. It also sets the `Package` stereotype as `Possible Owners` which allows the `Asset` stereotype to appear when creating elements under a `Package`.
+
 #### System
 
+The `System` stereotype uses the `Class` class as a metaclass, and provides a stereotype for the `Asset` used within the CEMT Asset Definition Diagram that represents the system of interest which is the focus of the assessment. This aids with the formation of structured expressions and queries in the model, by differentiating the `Asset` that represents the system of interest from other `Asset`s used within the threat model.
+
+```mermaid
+    classDiagram
+        class Asset~Class~ {
+            +[derived] affectedBy~Element~ [0..*]
+            +[derived] applicable~Element~ [0..*]
+            +[derived] Implemented Controls~Class~ [0..*]
+            +[derived] Not Implemented Controls~Class~ [0..*]
+            +[derived] Patially Implemented Controls~Class~ [0..*]
+            +[derived] Not Assessed Controls~Class~ [0..*]
+            +[derived] Implemented~Property~ [0..*]
+            +[derived] Not Implemented~Property~ [0..*]
+            +[derived] Patially Implemented~Property~ [0..*]
+            +[derived] Not Assessed~Property~ [0..*]
+            -[constraint] Affected()
+            -[constraint] Applies()
+        }
+        Asset~Class~ <|-- System~Class~
+```
+
+`System` contains no attributes or constraints, but inherits from the `Asset` stereotype.
+
 #### NoneAsset
+
+The `NoneAsset` stereotype uses the `Class` class as a metaclass, and provides a stereotype for a null `Asset` which is used when a `SecurityContraint` is not applicable to any `Asset`s. This aids with the formation of structured expressions and queries in the model, by differentiating the `NoneAsset` that represents the lack of an applicable asset from other `Asset`s used within the threat model.
+
+```mermaid
+    classDiagram
+        class Asset~Class~ {
+            +[derived] affectedBy~Element~ [0..*]
+            +[derived] applicable~Element~ [0..*]
+            +[derived] Implemented Controls~Class~ [0..*]
+            +[derived] Not Implemented Controls~Class~ [0..*]
+            +[derived] Patially Implemented Controls~Class~ [0..*]
+            +[derived] Not Assessed Controls~Class~ [0..*]
+            +[derived] Implemented~Property~ [0..*]
+            +[derived] Not Implemented~Property~ [0..*]
+            +[derived] Patially Implemented~Property~ [0..*]
+            +[derived] Not Assessed~Property~ [0..*]
+            -[constraint] Affected()
+            -[constraint] Applies()
+        }
+        Asset~Class~ <|-- NoneAsset~Class~
+```
+
+`NoneAsset` contains no attributes or constraints, but inherits from the `Asset` stereotype.
 
 ### DirectedAssociation
 
@@ -448,19 +537,208 @@ This is the built-in `DirectedAssociation` class within CAMEO System Modeler. Fu
 
 ### SecurityControl
 
+The `SecurityControl` stereotype uses the `Requirement` class as a metaclass, and provides a stereotype for all security controls used within the CEMT process. `SecurityControl`s are used to identify any security mitigations which are linked to the `ThreatModelAction`s in the threat model.
+
+```mermaid
+    classDiagram
+        class SecurityControl~Class~ {
+            +Control Number
+            +[derived] Mitigates~Element~ [0..*]
+            +[derived] Implemented~Property~ [0..*]
+            +[derived] Not Implemented~Property~ [0..*]
+            +[derived] Patially Implemented~Property~ [0..*]
+            +[derived] Not Assessed~Property~ [0..*]
+            -[constraint] Description()
+            -[constraint] Mitigates()
+        }
+        class SecurityConstraint~Class~ {
+            +Constraint Number
+            +[derived] Applies~Element~ [0..*]
+            -[constraint] Description()
+            -[constraint] Applies()
+        }
+        Requirement~Class~ <|-- SecurityControl~Class~
+        SecurityControl~Class~ <|-- NoneControl~Class~
+        SecurityControl~Class~ <|-- SecurityConstraint~Class~
+```
+
+`SecurityControl` contains a single attribute:
+ - Control Number - which contains a unique identifier for the each `SecurityControl`.
+
+`SecurityControl` contains five derived properties:
+ - Mitigates - which lists the `ThreatModelAction`s which are linked to this `SecurityControl` by the `Mitigates` relationship;
+ - Implemented - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Implemented`;
+ - Not Implemented - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Not Implemented`;
+ - Partially Implemented - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Partially Implemented`; and
+ - Not Assessed - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Not Assessed`.
+
+`SecurityControl` has two active validation constraints:
+ - Description() - which checks whether the Control Description attribute is empty and flags if it is; and
+ - Mitigates() - which checks whether there are any `ThreatModelAction`s linked to this `SecurityControl` and flags if there are none.
+
+`SecurityControl` acts as a generalised stereotype for both the `SecurityConstraint` and `NoneControl` stereotypes.
+
+`SecurityControl` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Control Description`. It also sets the `Package` stereotype as `Possible Owners` which allows the `Asset` stereotype to appear when creating elements under a `Package` and sets the `SecurityConstraint` stereotype as a `Quick Applying For` property, which allows the `SecurityControl` stereotype to appear in the context menu for a `SecurityConstraint`.
+
 ### NoneControl
+
+The `NoneControl` stereotype uses the `Class` class as a metaclass, and provides a stereotype for a null `SecurityControl` which is used when a `ThreatModelAction` does not have any feasible security miitgations. This aids with the formation of structured expressions and queries in the model, by differentiating the `NoneControl` that represents the lack of an applicable security controls from other `SecurityControl`s used within the threat model.
+
+```mermaid
+    classDiagram
+        class SecurityControl~Class~ {
+            +Control Number
+            +[derived] Mitigates~Element~ [0..*]
+            +[derived] Implemented~Property~ [0..*]
+            +[derived] Not Implemented~Property~ [0..*]
+            +[derived] Patially Implemented~Property~ [0..*]
+            +[derived] Not Assessed~Property~ [0..*]
+            -[constraint] Description()
+            -[constraint] Mitigates()
+        }
+        SecurityControl~Class~ <|-- NoneControl~Class~
+```
+
+`NoneControl` contains no attributes or constraints, but inherits from the `SecurityControl` stereotype.
 
 #### SecurityConstraint
 
+The `SecurityConstraint` stereotype uses the `Requirement` class as a metaclass, and provides a stereotype for all `SecurityControl`s that are included in the cyberworthiness analysis because they are constraints on the project - in the form of formal security requirements or compliance controls - rather than being derived from the `ThreatModelAction`s in the threat model. `SecurityConstraint`s are able to be linked directly to `Asset`s, rather than being linked to a `ThreatModelAction`. The use of `SecurityConstraint`s should be avoided unless it is absolutely necessary, as it undermines the inherent scoping of the security controls to the system that occurs when controls are derived from the threat model itself.
+
+```mermaid
+    classDiagram
+        class SecurityControl~Class~ {
+            +Control Number
+            +[derived] Mitigates~Element~ [0..*]
+            +[derived] Implemented~Property~ [0..*]
+            +[derived] Not Implemented~Property~ [0..*]
+            +[derived] Patially Implemented~Property~ [0..*]
+            +[derived] Not Assessed~Property~ [0..*]
+            -[constraint] Description()
+            -[constraint] Mitigates()
+        }
+        class SecurityConstraint~Class~ {
+            +Constraint Number
+            +[derived] Applies~Element~ [0..*]
+            -[constraint] Description()
+            -[constraint] Applies()
+        }
+        class ISMControl~Class~ {
+            +ISM Number
+            +Revision~Integer~
+            +Updated~String~
+            +Applicability All~Boolean~
+            +Applicability O~Boolean~
+            +Applicability P~Boolean~
+            +Applicability S~Boolean~
+            +Applicability TS~Boolean~
+            +E8 ML2~Boolean~
+            +E8 ML3~Boolean~
+            +ISM ID~String~
+            +Guideline~String~
+            +Section~String~
+            +Topic~String~
+        }
+        SecurityControl~Class~ <|-- SecurityConstraint~Class~
+        SecurityConstraint~Class~ <|-- ISMControl~Class~
+```
+
+`SecurityConstraint` contains a single attribute:
+ - Constraint Number - which contains a unique identifier for the each `SecurityConstraint`.
+
+`SecurityConstraint` contains one derived property:
+ - Applies - which lists the `Asset`s which are linked to this `SecurityConstraint` by the `Applies` relationship.
+
+`SecurityConstraint` has two active validation constraints:
+ - Description() - which checks whether the Control Description attribute is empty and flags if it is; and
+ - Applies() - which checks whether there are any `Asset`s linked to this `SecurityConstraint` and flags if there are none.
+
+`SecurityConstraint` acts as a generalised stereotype for  the `ISMControl` stereotype.
+
+`SecurityConstraint` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Control Description`. It also sets the `Package` stereotype as `Possible Owners` which allows the `Asset` stereotype to appear when creating elements under a `Package` and sets the `SecurityControl` stereotype as a `Quick Applying For` property, which allows the `SecurityConstraint` stereotype to appear in the context menu for a `SecurityControl`.
+
 ##### ISMControl
+
+The `ISMControl` stereotype uses the `Requirement` class as a metaclass, and provides a stereotype for all `SecurityControl`s that are imported from the Information Security Manual. This stereotype can be used as a template for other control catalogs that you may want to import into the model. As this stereotype inherits from both the `SecurityControl` and `SecurityConstraint` stereotypes, `ISMControl`s can be linked to either `ThreatModelAction`s or directly to `Asset`s. Where possible, they should be linked to `ThreatModelAction`s.
+
+```mermaid
+    classDiagram
+        class SecurityConstraint~Class~ {
+            +Constraint Number
+            +[derived] Applies~Element~ [0..*]
+            -[constraint] Description()
+            -[constraint] Applies()
+        }
+        class ISMControl~Class~ {
+            +ISM Number
+            +Revision~Integer~
+            +Updated~String~
+            +Applicability All~Boolean~
+            +Applicability O~Boolean~
+            +Applicability P~Boolean~
+            +Applicability S~Boolean~
+            +Applicability TS~Boolean~
+            +E8 ML2~Boolean~
+            +E8 ML3~Boolean~
+            +ISM ID~String~
+            +Guideline~String~
+            +Section~String~
+            +Topic~String~
+        }
+        SecurityConstraint~Class~ <|-- ISMControl~Class~
+```
+
+`ISMControl` contains fourteen attributes:
+ - ISM Number - which contains a unique identifier for the each `ISMControl`;
+ - Revision - which captures the Revision attribute taken from the ISM, which identifies the current revision of the control;
+ - Updated - which captures the Updated attribute taken from the ISM, which identifies when the control was last modified;
+ - Applicability All - which captures the Applicability All attribute taken from the ISM, which identifies whether the control is applicable to all classifications;
+ - Applicability O - which captures the Applicability O attribute taken from the ISM, which identifies whether the control is applicable to the Official classification;
+ - Applicability P - which captures the Applicability P attribute taken from the ISM, which identifies whether the control is applicable to the Protected classification;
+ - Applicability S - which captures the Applicability S attribute taken from the ISM, which identifies whether the control is applicable to the Secret classification;
+ - Applicability TS - which captures the Applicability TS attribute taken from the ISM, which identifies whether the control is applicable to the Top Secret classification;
+ - E8 ML2 - which captures the E8 ML2 attribute taken from the ISM, which identifies whether the control is required for Maturity Level 2 of the Essential Eight Maturity Model; 
+ - E8 ML3 - which captures the E8 ML3 attribute taken from the ISM, which identifies whether the control is required for Maturity Level 3 of the Essential Eight Maturity Model;
+ - ISM ID - which captures the ISM ID Number attribute taken from the ISM;
+ - Guideline - which captures the Guideline heading under which the control is placed in the ISM;
+ - Section - which captures the Section heading under which the control is placed in the ISM; and
+ - Topic - which captures the Topic heading under which the control is placed in the ISM;
+
+`ISMControl` also has a related stereotype `Customization` which sets the `SecurityConstraint` stereotype as a `Quick Applying For` property, which allows the `ISMControl` stereotype to appear in the context menu for a `SecurityConstraint`.
 
 ### Mitigates
 
+```mermaid
+    classDiagram
+        class Mitigates~Dependency~
+```
+
 ### Affects
+
+```mermaid
+    classDiagram
+        class Affects~Dependency~
+```
 
 ### Applies
 
+```mermaid
+    classDiagram
+        class Applies~Dependency~
+```
+
 ### SecurityProperty
+
+```mermaid
+    classDiagram
+        class SecurityProperty~Property~ {
+            +Implementation~Implementation~ = Not Assessed
+            +[derived] Control Description~String~ [1]
+            -[constraint] Implementation()
+            -[constraint] Implementation Detail()
+            -[constraint] Type()
+        }
+```
 
 ## SysML Parametric Diagrams
 
@@ -507,3 +785,9 @@ This is the built-in `DirectedAssociation` class within CAMEO System Modeler. Fu
 ## Likelihood
 
 ## Consequence
+
+## Implementation
+
+## Risk
+
+## Threat
