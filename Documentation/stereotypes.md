@@ -582,7 +582,7 @@ The `SecurityControl` stereotype uses the `Requirement` class as a metaclass, an
 
 ### NoneControl
 
-The `NoneControl` stereotype uses the `Class` class as a metaclass, and provides a stereotype for a null `SecurityControl` which is used when a `ThreatModelAction` does not have any feasible security miitgations. This aids with the formation of structured expressions and queries in the model, by differentiating the `NoneControl` that represents the lack of an applicable security controls from other `SecurityControl`s used within the threat model.
+The `NoneControl` stereotype uses the `Class` class as a metaclass, and provides a stereotype for a null `SecurityControl` which is used when a `ThreatModelAction` does not have any feasible security mitigations. This aids with the formation of structured expressions and queries in the model, by differentiating the `NoneControl` that represents the lack of an applicable security controls from other `SecurityControl`s used within the threat model.
 
 ```mermaid
     classDiagram
@@ -655,7 +655,7 @@ The `SecurityConstraint` stereotype uses the `Requirement` class as a metaclass,
 
 `SecurityConstraint` acts as a generalised stereotype for  the `ISMControl` stereotype.
 
-`SecurityConstraint` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Control Description`. It also sets the `Package` stereotype as `Possible Owners` which allows the `Asset` stereotype to appear when creating elements under a `Package` and sets the `SecurityControl` stereotype as a `Quick Applying For` property, which allows the `SecurityConstraint` stereotype to appear in the context menu for a `SecurityControl`.
+`SecurityConstraint` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Control Description`. It also sets the `Package` stereotype as `Possible Owners` which allows the `SecurityConstraint` stereotype to appear when creating elements under a `Package` and sets the `SecurityControl` stereotype as a `Quick Applying For` property, which allows the `SecurityConstraint` stereotype to appear in the context menu for a `SecurityControl`.
 
 ##### ISMControl
 
@@ -708,26 +708,46 @@ The `ISMControl` stereotype uses the `Requirement` class as a metaclass, and pro
 
 ### Mitigates
 
+The `Mitigates` stereotype uses the `Dependency` class as a metaclass, and provides a stereotype for the relationship that links `SecurityControl`s to the `ThreatModelAction`s they mitigate. This aids with the formation of structured expressions and queries in the model, by identifying the relationship between these `SecurityControl`s and `ThreatModelAction`s.
+
 ```mermaid
     classDiagram
         class Mitigates~Dependency~
 ```
 
+`Mitigates` contains no attributes or constraints.
+
+`Mitigates` has a related stereotype `Customization` which sets the `SecurityControl` stereotype as a `typesForSource` property and the `ThreatModelAction` stereotype as a `typesForTarget`, which allows the `Mitigates` relationship to appear be created between from a `SecurityControl` to a `ThreatModelAction`.
+
 ### Affects
+
+The `Affects` stereotype uses the `Dependency` class as a metaclass, and provides a stereotype for the relationship that links `ThreatModelAction`s to the `Asset`s they affect. This aids with the formation of structured expressions and queries in the model, by identifying the relationship between these `ThreatModelAction`s and `Asset`s.
 
 ```mermaid
     classDiagram
         class Affects~Dependency~
 ```
 
+`Affects` contains no attributes or constraints.
+
+`Affects` has a related stereotype `Customization` which sets the `ThreatModelAction` stereotype as a `typesForSource` property and the `Asset` stereotype as a `typesForTarget`, which allows the `Mitigates` relationship to appear be created between from a `ThreatModelAction` to an `Asset`.
+
 ### Applies
+
+The `Applies` stereotype uses the `Dependency` class as a metaclass, and provides a stereotype for the relationship that links `SecurityConstraint`s to the `Asset`s to which they apply. This aids with the formation of structured expressions and queries in the model, by identifying the relationship between these `SecurityConstraint`s and `Asset`s.
 
 ```mermaid
     classDiagram
         class Applies~Dependency~
 ```
 
+`Applies` contains no attributes or constraints.
+
+`Applies` has a related stereotype `Customization` which sets the `SecurityConstraint` stereotype as a `typesForSource` property and the `Asset` stereotype as a `typesForTarget`, which allows the `Mitigates` relationship to appear be created between from a `SecurityConstraint` to an `Asset`.
+
 ### SecurityProperty
+
+The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and provides a stereotype for all `Property`s that represent an instantiation of a `SecurityControl` onto an `Asset`. 
 
 ```mermaid
     classDiagram
@@ -739,6 +759,19 @@ The `ISMControl` stereotype uses the `Requirement` class as a metaclass, and pro
             -[constraint] Type()
         }
 ```
+
+`SecurityProperty` contains a single attribute:
+ - Implementation - which tracks the implementation state of the `SecurityProperty`, using the [`Implementation`](#implementation) enumeration as a type, with `Not Assessed` set as the Default Value.
+
+`SecurityProperty` contains one derived property:
+ - Control Description - which displays the `Control Description` attribute of the `SecurityControl` which is used as the Type of the `SecurityProperty`.
+
+`SecurityProperty` has three active validation constraints:
+ - Implementation() - which checks whether an Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
+ - Implementation Detail() - which checks whether the `SecurityProperty` has an Implementation state set, but no Implementation Detail recorded, and flags if that is true; and
+ - Type() - which checks whether the `SecurityProperty` has a valid Type set, and will flag if it has not.
+
+`SecurityProperty` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Implementation Detail`. It also sets the `Asset` stereotype as `Possible Owners` which allows the `SecurityProperty` stereotype to appear when creating elements under an `Asset`.
 
 ## SysML Parametric Diagrams
 
