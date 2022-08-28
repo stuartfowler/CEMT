@@ -62,13 +62,13 @@ Misuse Case Diagrams use the following CEMT stereotypes:
 
 ### Misuse Cases, Actors and Associations
 
-The diagrams are created by placing [`MaliciousActors`](./stereotypes.md#maliciousactor), [`NonMaliciousActors`](./stereotypes.md#nonmaliciousactor) and [`MisuseCases`](./stereotypes.md#misusecase), naming them appropriately and then connecting them together using the Association relationship. The CEMT also includes a `Mis-use Case` legend, which will apply the appropriate colouring and adornments. This is shown in the video snippet below.
+The diagrams are created by placing [`MaliciousActor`](./stereotypes.md#maliciousactor)s, [`NonMaliciousActor`](./stereotypes.md#nonmaliciousactor)s and [`MisuseCase`](./stereotypes.md#misusecase)s, naming them appropriately and then connecting them together using the Association relationship. The CEMT also includes a `Mis-use Case` legend, which will apply the appropriate colouring and adornments. This is shown in the video snippet below.
 
 https://user-images.githubusercontent.com/7237737/177487459-e7660d65-c24c-4d7c-ab7b-ba983d8c70a6.mp4
 
 ### Additional Optional Steps
 
-Additional `MaliciousActors`, `NonMaliciousActors` and `MisuseCases` can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
+Additional `MaliciousActor`s, `NonMaliciousActor`s and `MisuseCase`s can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
 
 ![Misuse Case Diagram](/Documentation/Images/misuse.png)
 
@@ -128,7 +128,7 @@ Signals should be created next that capture the expected outcomes of the misuse 
 
 https://user-images.githubusercontent.com/7237737/179894602-a06bb366-dccd-4b64-b699-6d282032b7d4.mp4
 
-These are drawn on the `CEMT Mal-Activity Diagram` by placing a [`ThreatImpact`](./stereotypes.md#threatimpact) object for the undesirable threat outcomes and a [`ThreatDetection`](./stereotypes.md#threatdetection) object for the detection outcomes. The `ThreatImpactSignals` and `ThreatDetectionSignals` can then be dragged from the containment tree onto the `ThreatImpacts` and `ThreatDetections`.
+These are drawn on the `CEMT Mal-Activity Diagram` by placing a [`ThreatImpact`](./stereotypes.md#threatimpact) object for the undesirable threat outcomes and a [`ThreatDetection`](./stereotypes.md#threatdetection) object for the detection outcomes. The `ThreatImpactSignal`s and `ThreatDetectionSignal`s can then be dragged from the containment tree onto the `ThreatImpact`s and `ThreatDetection`s.
 
 https://user-images.githubusercontent.com/7237737/179894631-5e16f41e-77cd-48c8-ab3e-415a7e39c97f.mp4
 
@@ -136,34 +136,34 @@ https://user-images.githubusercontent.com/7237737/179894631-5e16f41e-77cd-48c8-a
 
 ### Aggregated Actions
 
-The next step in the threat modelling process is to define and draw the [`AggregatedActions`](./stereotypes.md#aggregatedaction) that describe the high level actions that an attacker needs to take between the `ThreatStart` and the `ThreatImpact`. These `AggregatedActions` are logical groupings that are designed to manage the complexity of the actual steps in the threat flow during the modelling process, and will not appear in the final [Attack Trees](./risk.md#attack-trees) as nodes.
+The next step in the threat modelling process is to define and draw the [`AggregatedAction`](./stereotypes.md#aggregatedaction)s that describe the high level actions that an attacker needs to take between the `ThreatStart` and the `ThreatImpact`. These `AggregatedAction`s are logical groupings that are designed to manage the complexity of the actual steps in the threat flow during the modelling process, and will not appear in the final [Attack Trees](./risk.md#attack-trees) as nodes.
 
 https://user-images.githubusercontent.com/7237737/179895990-d646c9e8-21ec-4400-8c0d-408636918cf2.mp4
 
 ### Pins
 
-Pins must be added to the `AggregatedActions` before connecting the flows, as this is the mechanism that allows the flows to transition into the more detailed mal-activity diagrams inside the `AggregatedActions`. [`ThreatInputs`](./stereotypes.md#threatinput) are used to create the input pins for flows into the `AggregatedAction` while [`ThreatOutputs`](./stereotypes.md#threatoutput) are used to create the output pins for flows out of the `AggregatedAction`. As there are usually multiple `ThreatOutputs` for each `AggregatedAction`, the `ThreatOutputs` should be labelled by setting the name of the object to something that describes the condition by which the flow would be active.
+Pins must be added to the `AggregatedAction`s before connecting the flows, as this is the mechanism that allows the flows to transition into the more detailed mal-activity diagrams inside the `AggregatedAction`s. [`ThreatInputs`](./stereotypes.md#threatinput) are used to create the input pins for flows into the `AggregatedAction` while [`ThreatOutput`](./stereotypes.md#threatoutput)s are used to create the output pins for flows out of the `AggregatedAction`. As there are usually multiple `ThreatOutput`s for each `AggregatedAction`, the `ThreatOutput`s should be labelled by setting the name of the object to something that describes the condition by which the flow would be active.
 
 https://user-images.githubusercontent.com/7237737/179895999-0bed82a1-8370-4173-af7c-3371656b298e.mp4
 
-> **Note**: The `ThreatOutput` stereotype is used for all output pins from an `AggregatedAction`. This includes pins that carry `ThreatFlows` and pins that carry `DetectionFlows`.
+> **Note**: The `ThreatOutput` stereotype is used for all output pins from an `AggregatedAction`. This includes pins that carry `ThreatFlow`s and pins that carry `DetectionFlow`s.
 
 ### Flows
 
-[`ThreatModelFlows`](./stereotypes.md#threatmodelflow) are used to connect together the various objects on the `CEMT Mal-Activity Diagram`. There are two types of flows that are used:
+[`ThreatModelFlow`](./stereotypes.md#threatmodelflow)s are used to connect together the various objects on the `CEMT Mal-Activity Diagram`. There are two types of flows that are used:
 
- - [`ThreatFlows`](./stereotypes.md#threatflow) - which are used to model the path that the attacker must take; and
- - [`DetectionFlows`](./stereotypes.md#detectionflow) - which are used to model the path that a system takes to detect the attacker.
+ - [`ThreatFlow`](./stereotypes.md#threatflow) - which are used to model the path that the attacker must take; and
+ - [`DetectionFlow`](./stereotypes.md#detectionflow) - which are used to model the path that a system takes to detect the attacker.
 
- `ThreatFlows` should be drawn from the `ThreatStart` to the input pins of an `AggregatedAction` and from the output pins of an `AggregatedAction` to either another `AggregatedAction` or to a `ThreatImpact`.
+ `ThreatFlow`s should be drawn from the `ThreatStart` to the input pins of an `AggregatedAction` and from the output pins of an `AggregatedAction` to either another `AggregatedAction` or to a `ThreatImpact`.
 
- `DetectionFlows` should be drawn from the output pins of an `AggregatedAction` to a `ThreatDetection`.
+ `DetectionFlow`s should be drawn from the output pins of an `AggregatedAction` to a `ThreatDetection`.
 
 https://user-images.githubusercontent.com/7237737/179896018-0a9a8697-a03b-4ad0-a180-3a0faba7e495.mp4
 
 ### Additional Optional Steps
 
-The CEMT does not limit modellers to a single Intermediate Mal-Activity diagram. If the modeller wishes to use multiple levels of nested mal-activity diagrams by using `AggregatedActions` within `AggregatedActions` that is currently supported to a depth of 3. These can be created by following the same process outlined in the [Detailed Mal-Activity Diagrams](#detailed-mal-activity-diagrams) section, but continuing to use `AggregatedActions`, `ThreatInputs` and `ThreatOutputs` to draw the next intermediate level of detail.
+The CEMT does not limit modellers to a single Intermediate Mal-Activity diagram. If the modeller wishes to use multiple levels of nested mal-activity diagrams by using `AggregatedAction`s within `AggregatedAction`s that is currently supported to a depth of 3. These can be created by following the same process outlined in the [Detailed Mal-Activity Diagrams](#detailed-mal-activity-diagrams) section, but continuing to use `AggregatedAction`s, `ThreatInput`s and `ThreatOutput`s to draw the next intermediate level of detail.
 
 The CEMT also provides the ability to link together different mal-activity diagrams which may reside under different misuse cases to avoid duplication of mal-activity diagrams. This is achieved using the [`ThreatSendSignal`](./stereotypes.md#threatsendsignal), [`ThreatAcceptEvent`](./stereotypes.md#threatacceptevent) and [`ThreatSignal`](./stereotypes.md#threatsignal) stereotypes. The `ThreatSendSignal` would be drawn on the mal-activity diagram that is the source of the `ThreatFlow` being passed between the two mal-activity diagrams and the `ThreatAcceptEvent` would be drawn on the mal-activity diagram that is the destination of the `ThreatFlow` being passed between the two mal-activity diagrams. A `ThreatSignal` would be created and assigned to both the `ThreatAcceptEvent` and `ThreatSendSignal`, linking them together. 
 
@@ -211,15 +211,15 @@ Detailed Mal-Activity Diagrams use the following CEMT stereotypes:
 
 ### Threat Actions
 
-The first step in drawing the Detailed Mal-Activity Diagrams is to insert [`ThreatActions`](./stereotypes.md#threataction) which represent the specific steps an attacker is taking at this point of the threat flow. This is achieved by simply selecting `ThreatAction` from the drawing palette, placing it on the `CEMT Mal-Activity Diagram` and typing in a name for the `ThreatAction`.
+The first step in drawing the Detailed Mal-Activity Diagrams is to insert [`ThreatAction`](./stereotypes.md#threataction)s which represent the specific steps an attacker is taking at this point of the threat flow. This is achieved by simply selecting `ThreatAction` from the drawing palette, placing it on the `CEMT Mal-Activity Diagram` and typing in a name for the `ThreatAction`.
 
-The purpose here is to create `ThreatActions` that define the steps the attacker needs to take to move between the input nodes and the output nodes of the `CEMT Mal-Activity Diagram`. That could be a single `ThreatAction`, as shown in the videos below, or it could be a number of sequential `ThreatActions`, or it could be parallel `ThreatActions` that represent multiple paths the attack may take from the input. The goal here is to manage the complexity of the threat model by appropriately grouping these detailed `ThreatActions` into `AggregatedActions` which are the basis of the [Intermediate Mal-Activity Diagrams](#intermediate-mal-activity-diagrams). If these Detailed Mal-Activity Diagrams start to become too complex and confusing, the modeller should reassess whether the diagram could become more intuitive and understandable by adding another layer of `AggregatedActions`.
+The purpose here is to create `ThreatAction`s that define the steps the attacker needs to take to move between the input nodes and the output nodes of the `CEMT Mal-Activity Diagram`. That could be a single `ThreatAction`, as shown in the videos below, or it could be a number of sequential `ThreatAction`s, or it could be parallel `ThreatAction`s that represent multiple paths the attack may take from the input. The goal here is to manage the complexity of the threat model by appropriately grouping these detailed `ThreatAction`s into `AggregatedActions` which are the basis of the [Intermediate Mal-Activity Diagrams](#intermediate-mal-activity-diagrams). If these Detailed Mal-Activity Diagrams start to become too complex and confusing, the modeller should reassess whether the diagram could become more intuitive and understandable by adding another layer of `AggregatedActions`.
 
 https://user-images.githubusercontent.com/7237737/180129375-b821794b-79b5-4076-8328-e7339aaaa203.mp4
 
 ### Threat Difficulty
 
-Once the `ThreatActions` have been drawn, the modeller needs to assign a `Difficulty` property to each `ThreatAction`. This property represents the difficulty of the step irrespective of any mitigations being in place. This is meant to represent a relative difficulty between the steps in your threat model, and is used in the [Risk Assessment](./risk.md) step of the analysis. 
+Once the `ThreatAction`s have been drawn, the modeller needs to assign a `Difficulty` property to each `ThreatAction`. This property represents the difficulty of the step irrespective of any mitigations being in place. This is meant to represent a relative difficulty between the steps in your threat model, and is used in the [Risk Assessment](./risk.md) step of the analysis. 
 
 As an example, inserting a removable media device into a USB port is trivially difficult, and any attacker would be able to do that, whereas a complex Electronic Attack that targets bespoke signal processors is likely to require a higher level of attacker expertise and resources. In this case, those steps on the Electronic Attack threat path would have a higher `Difficulty` value than those associated with inserting the removable media device.
 
@@ -227,29 +227,29 @@ https://user-images.githubusercontent.com/7237737/180129383-8d8faaae-19a8-49fa-b
 
 ### Detection Actions
 
-Every `ThreatAction` taken by an attacker will generate some sort of activity that the system may be able to detect. [`DetectionActions`](./stereotypes.md#detectionaction) are added by selecting `DetectionAction` from the drawing palette, placing it on the `CEMT Mal-Activity Diagram` and typing in a name for the `DetectionAction`. Each `ThreatAction` should have a corresponding `DetectionAction`, which represents the system's ability to detect that specific `ThreatAction`.
+Every `ThreatAction` taken by an attacker will generate some sort of activity that the system may be able to detect. [`DetectionAction`](./stereotypes.md#detectionaction)s are added by selecting `DetectionAction` from the drawing palette, placing it on the `CEMT Mal-Activity Diagram` and typing in a name for the `DetectionAction`. Each `ThreatAction` should have a corresponding `DetectionAction`, which represents the system's ability to detect that specific `ThreatAction`.
 
 https://user-images.githubusercontent.com/7237737/180129398-448faac0-72cd-4571-a897-fe51d74e7134.mp4
 
 ### Threat Ends
 
-[`ThreatEnds`](./stereotypes.md#threatend) represent a potential end point for a threat flow in the threat model. While one potential path is for the attacker to reach their desired outcome (the `ThreatImpacts` described in the [Signals](#signals) section), the attacker may be stopped because an attacker was unable to complete a particular step in the attacker path and the attack was stopped. These objects can be created by simply selecting `ThreatImpact` from the drawing palette and placing it on the diagram.
+[`ThreatEnd`](./stereotypes.md#threatend)s represent a potential end point for a threat flow in the threat model. While one potential path is for the attacker to reach their desired outcome (the `ThreatImpact`s described in the [Signals](#signals) section), the attacker may be stopped because an attacker was unable to complete a particular step in the attacker path and the attack was stopped. These objects can be created by simply selecting `ThreatImpact` from the drawing palette and placing it on the diagram.
 
 https://user-images.githubusercontent.com/7237737/180129648-8858f33c-c866-4065-8233-c045d93fa45e.mp4
 
 ### Flows
 
-Once the building blocks of the `CEMT Mal-Activity Diagram` have been placed, you can connect them up using [`ThreatFlows`](./stereotypes.md#threatflow) and [`DetectionFlows`](./stereotypes.md#detectionflow). 
+Once the building blocks of the `CEMT Mal-Activity Diagram` have been placed, you can connect them up using [`ThreatFlow`](./stereotypes.md#threatflow)s and [`DetectionFlow`](./stereotypes.md#detectionflow)s. 
 
-`ThreatFlows` should start at the input parameter, pass through each `ThreatAction` in the order the attacker would need to complete those actions and then end at the output parameter. `ThreatFlows` should also connect each `ThreatAction` to a `ThreatEnd`.
+`ThreatFlow`s should start at the input parameter, pass through each `ThreatAction` in the order the attacker would need to complete those actions and then end at the output parameter. `ThreatFlow`s should also connect each `ThreatAction` to a `ThreatEnd`.
 
-`DetectionFlows` should start at a `ThreatAction` and connect to the corresponding `DetectionAction`. Each `DetectionAction` should also connect to a `ThreatEnd` and the output parameter associated with a detection event via `DetectionFlows`.
+`DetectionFlow`s should start at a `ThreatAction` and connect to the corresponding `DetectionAction`. Each `DetectionAction` should also connect to a `ThreatEnd` and the output parameter associated with a detection event via `DetectionFlow`s.
 
 https://user-images.githubusercontent.com/7237737/180129660-3e8ae33c-5b9e-42a4-8f3f-bb849691c2a8.mp4
 
 ### Labels
 
-Labels should be added to the `ThreatFlows` and `DetectionFlows` to provide context for the reviewers. These labels are not used by the model, but they are important because they provide reviewers with the necessary information to understand and review the model.
+Labels should be added to the `ThreatFlow`s and `DetectionFlow`s to provide context for the reviewers. These labels are not used by the model, but they are important because they provide reviewers with the necessary information to understand and review the model.
 
 There are two types of labels used:
  - Names - used to label a flow when that flow always occurs when the proceeding action is attempted; and
@@ -263,7 +263,7 @@ https://user-images.githubusercontent.com/7237737/180129680-d85b2138-7889-4742-8
 
 ### Additional Optional Steps
 
-In some cases, you may want to have multiple `ThreatEnds` on a single `CEMT Mal-Activity Diagram` to simplify the routing of `ThreatFlows` and `DetectionFlows` around a diagram. While you can just drag on a new `ThreatEnd` from the drawing palette, this would actually create a new object in the model. A cleaner way to do this would be to select the existing `ThreatEnd` object for a particular diagram in the containment tree (you can do this by selecting the object on the drawing and using the `Alt + B` keyboard shortcut) and then dragging that object from the containment tree onto the diagram. This will create a second representation of the same object, which can then be used as the sink of multiple `ThreatFlows` and `DetectionFlows` without creating unnecessary object in the model.
+In some cases, you may want to have multiple `ThreatEnd`s on a single `CEMT Mal-Activity Diagram` to simplify the routing of `ThreatFlow`s and `DetectionFlow`s around a diagram. While you can just drag on a new `ThreatEnd` from the drawing palette, this would actually create a new object in the model. A cleaner way to do this would be to select the existing `ThreatEnd` object for a particular diagram in the containment tree (you can do this by selecting the object on the drawing and using the `Alt + B` keyboard shortcut) and then dragging that object from the containment tree onto the diagram. This will create a second representation of the same object, which can then be used as the sink of multiple `ThreatFlow`s and `DetectionFlow`s without creating unnecessary object in the model.
 
 This technique can also be used to duplicate the representation of any other object in the `CEMT Mal-Activity Diagram` if doing so would make your diagram more understandable.
 

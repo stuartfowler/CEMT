@@ -87,19 +87,19 @@ There are three different Bowtie Diagrams included in the CEMT:
 
 #### Bowtie - Misuse Case
 
-The Misuse Case Bowtie Diagram depicts all of the threat and detection nodes within the selected Misuse Case, along with the `SecurityProperties` associated with those threat and detection nodes, colour-coded by their implementation status. This diagrams provides a high level overview of the implementation status of all relevant controls that could feasibly be implemented. As noted in the [Security Controls](./threat-mitigation.md#security-controls) section, it is important to remember that it is not necessary a bad outcome if the controls are not implemented; the purpose of this bowtie diagram is not to assess some level of compliance status, but rather to provide a high level summary that can be used to inform a risk decision. An example Misuse Case Bowtie Diagram is shown below:
+The Misuse Case Bowtie Diagram depicts all of the threat and detection nodes within the selected Misuse Case, along with the `SecurityProperty`s associated with those threat and detection nodes, colour-coded by their implementation status. This diagrams provides a high level overview of the implementation status of all relevant controls that could feasibly be implemented. As noted in the [Security Control](./threat-mitigation.md#security-controls)s section, it is important to remember that it is not necessary a bad outcome if the controls are not implemented; the purpose of this bowtie diagram is not to assess some level of compliance status, but rather to provide a high level summary that can be used to inform a risk decision. An example Misuse Case Bowtie Diagram is shown below:
 
 ![Bowtie - Misuse Case](./Images/Bowtie%20-%20Misuse%20Case.png)
 
 #### Bowtie - Action
 
-The Action Bowtie Diagram provides a more focused summary of a single threat node from the attack tree. This diagram will show the `ThreatActions` set in the `Action Filter` smart package, as well as the associated mitigating or preventative threats on the left, the linked detection action and then the associated detecting controls on the right. Each of the controls will be colour coded according to their implementation state. These focused diagrams are useful when reviewing the [`Attack Trees`](#attack-trees) and you want to display detailed information of a particular node of the attack tree. An example Action Bowtie Diagram is shown below:
+The Action Bowtie Diagram provides a more focused summary of a single threat node from the attack tree. This diagram will show the `ThreatAction`s set in the `Action Filter` smart package, as well as the associated mitigating or preventative threats on the left, the linked detection action and then the associated detecting controls on the right. Each of the controls will be colour coded according to their implementation state. These focused diagrams are useful when reviewing the [`Attack Trees`](#attack-trees) and you want to display detailed information of a particular node of the attack tree. An example Action Bowtie Diagram is shown below:
 
 ![Bowtie - Action](./Images/Bowtie%20-%20Action.png)
 
 ### Bowtie - Asset
 
-The Asset Bowtie Diagram shows the controls associated with a particular asset. This diagram will show the `Assets` set in the `Asset Filter` smart package, as well as the associated security controls, split into mitigating or preventative controls on the left and detecting controls on the right. Each of the controls will be colour coded according to their implementation state on that particular asset. These diagrams can be useful when considering changes to assets, such as obsolescence studies, or to investigate the level of control implementation in particularly critical assets. An example Asset Bowtie Diagram is shown below:
+The Asset Bowtie Diagram shows the controls associated with a particular asset. This diagram will show the `Asset`s set in the `Asset Filter` smart package, as well as the associated security controls, split into mitigating or preventative controls on the left and detecting controls on the right. Each of the controls will be colour coded according to their implementation state on that particular asset. These diagrams can be useful when considering changes to assets, such as obsolescence studies, or to investigate the level of control implementation in particularly critical assets. An example Asset Bowtie Diagram is shown below:
 
 ![Bowtie - Asset](./Images/Bowtie%20-%20Asset.png)
 
@@ -115,7 +115,7 @@ There are two different Attack Tree Diagrams included in the CEMT:
 
 #### Attack Tree - Misuse Case
 
-The Misuse Case Attack Tree Diagram shows the paths that an attacker would need to take to compromise the system from the initial startig point of one or more `Misuse Cases`. This provides an intuitive and informative summary of the threat surface of a system and provides insight into the relative criticality of securing particular nodes in the kill chain. As an example, shorter branches or nodes that are common across multiple branches are likely to be areas of increased docus in the risk assessment and overall cyberworthiness evaluation. The attack tree allows you to identify these critical nodes, and in conjunction with the [Action Bowtie Diagram](#bowtie---action), the modellers, reviewers and decision makers to focus in on those threat nodes and ask whether the current level of controls on those nodes are appropriate and acceptable. An example Misuse Case Attack Tree is shown below.
+The Misuse Case Attack Tree Diagram shows the paths that an attacker would need to take to compromise the system from the initial startig point of one or more `Misuse Case`s. This provides an intuitive and informative summary of the threat surface of a system and provides insight into the relative criticality of securing particular nodes in the kill chain. As an example, shorter branches or nodes that are common across multiple branches are likely to be areas of increased docus in the risk assessment and overall cyberworthiness evaluation. The attack tree allows you to identify these critical nodes, and in conjunction with the [Action Bowtie Diagram](#bowtie---action), the modellers, reviewers and decision makers to focus in on those threat nodes and ask whether the current level of controls on those nodes are appropriate and acceptable. An example Misuse Case Attack Tree is shown below.
 
 ![Attack Tree - Misuse Case](./Images/Attack%20Tree%20-%20Misuse%20Case.png)
 
@@ -176,7 +176,7 @@ The macro has two arguments, which you will be asked for when running the macro:
  - `threatName`; and
  - `assetSelection`.
 
-`threatName` is the name that you want to give to the particular threat path you have selected. This will be used to name the risk. `assetSelection` is an optional argument, where you can provide the `Qualified Name` of a particular `Asset` and the macro will only include that asset in the parametric diagram. If you leave the `assetSelection` argument blank, all relevant `Assets` will be included in the parametric risk diagram that hte macro generates.
+`threatName` is the name that you want to give to the particular threat path you have selected. This will be used to name the risk. `assetSelection` is an optional argument, where you can provide the `Qualified Name` of a particular `Asset` and the macro will only include that asset in the parametric diagram. If you leave the `assetSelection` argument blank, all relevant `Asset`s will be included in the parametric risk diagram that hte macro generates.
 
 **Insert Video**
 
@@ -192,7 +192,7 @@ The next step once the Parametric Risk Diagram has been created is to set the [T
  - Intermediate; and
  - Novice.
 
-This setting determines how likely the threat actor is to be able to complete the threat node of a particular difficulty and to evade the detection capabilities of the system. The lookup table used to convert these `ThreatLevels` into likelihoods to complete threat nodes of a particular difficulty in shown below.
+This setting determines how likely the threat actor is to be able to complete the threat node of a particular difficulty and to evade the detection capabilities of the system. The lookup table used to convert these `ThreatLevel`s into likelihoods to complete threat nodes of a particular difficulty in shown below.
 
 | Difficulty Level | Novice   | Intermediate | Activist     | Nation State |
 |:----------------:|:--------:|:------------:|:------------:|:------------:|
@@ -225,7 +225,7 @@ Determining this value is not an exact science, and inevitably this will be a ca
 
 **Insert Video**
 
-> **Note**: It is important to be clear about the limitations of this methodology in calculating an accurate residual risk. The simulation treats each of the control effectiveness values (and indeed, the ability of a particular threat actor to complete a task of particular difficulty) as independent events. While the attacker does need to do all of the actions in sequence, in many circumstances these events may not be truly independent - ie. if a particular controls was ineffective early in the threat path and was linked again later in the threat path, the simulation would treat these as independent even though if the contorl was bypassed earlier, it should actually have an effectiveness of 0 the second time. This is a known limitation of the calculation, and the purpose of this note is to say that the quantitative figures from these simulations should be used as a guide, rather than an answer. It is for this reason that the calculated likelihood values are converted back into a qualitative rating in the [Risk Assessment Table](#risk-assessment-table), so as not to give the incorrect impression of an accurate answer. For a detailed understanding of how the values are calculated in the simulation, please refer to the stereotype definitions, particularly the [`ThreatConstraint`](./stereotypes.md#threatconstraint) and [`DetectConstraint`](./stereotypes.md#detectconstraint) stereotypes.
+> **Note**: It is important to be clear about the limitations of this methodology in calculating an accurate residual risk. The simulation treats each of the control effectiveness values (and indeed, the ability of a particular threat actor to complete a task of particular difficulty) as independent events. While the attacker does need to do all of the actions in sequence, in many circumstances these events may not be truly independent - ie. if a particular controls was ineffective early in the threat path and was linked again later in the threat path, the simulation would treat these as independent even though if the contorl was bypassed earlier, it should actually have an effectiveness of 0 the second time. This is a known limitation of the calculation, and the purpose of this note is to say that the quantitative figures from these simulations should be used as a guide, rather than an answer. It is for this reason that the calculated likelihood values are converted back into a qualitative rating in the [Risk Assessment Table](#risk-assessment-table), so as not to give the incorrect impression of an accurate answer. For a detailed understanding of how the values are calculated in the simulation, please refer to the constraint definitions, particularly the [`Threat`](./constraints.md#threat) and [`Detect`](./constraints.md#detect) stereotypes.
 
 ### Simulate
 
