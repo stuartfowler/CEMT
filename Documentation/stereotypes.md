@@ -368,7 +368,7 @@ The `ThreatAction` stereotype uses the `CallBehaviorAction` class as a metaclass
 ```
 
 `ThreatAction` contains one tagged value:
- - Difficulty - which captures the difficulty of the adversary action in absence of any mitigating controls, using the [Difficulty](#difficulty) enumeration.
+ - Difficulty - which captures the difficulty of the adversary action in absence of any mitigating controls, using the [Difficulty](./enumerations.md#difficulty) enumeration.
 
 `ThreatAction` contains three derived properties:
  - NextThreatAction - which traverses the `ThreatFlow`s to determine which other `ThreatAction`s are connected to this `ThreatAction`;
@@ -761,7 +761,7 @@ The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and 
 ```
 
 `SecurityProperty` contains a single attribute:
- - Implementation - which tracks the implementation state of the `SecurityProperty`, using the [`Implementation`](#implementation) enumeration as a type, with `Not Assessed` set as the Default Value.
+ - Implementation - which tracks the implementation state of the `SecurityProperty`, using the [`Implementation`](./enumerations.md#implementation) enumeration as a type, with `Not Assessed` set as the Default Value.
 
 `SecurityProperty` contains one derived property:
  - Control Description - which displays the `Control Description` attribute of the `SecurityControl` which is used as the Type of the `SecurityProperty`.
@@ -777,50 +777,140 @@ The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and 
 
 ### SecurityRisk
 
+The `SecurityRisk` stereotype uses the `Class` class as a metaclass, and provides a stereotype for all `Block`s used to represent the overall security risks tot he system of interest. This aids with the formation of structured expressions and queries in the model, by differentiating the `SecurityRisk`s used in the CEMT from other `Block`s used within the model.
+
+```mermaid
+    classDiagram
+        class SecurityRisk~Class~ {
+            +Likelihood~Likelihood~
+            +Likelihood Justification~String~
+            +Consequence~Consequence~
+            +Consequence Justification~String~
+            +Simulation Initial Probability~Real~
+            +Simulation Residual Probability~Real~
+            +Simulation Detection Probability~Real~
+            +Simulation Threat Level~Threat~
+            -[derived] Participating Asset~Class~ [0..1]
+            -[derived] Threat Path~CallBehaviorAction~ [0..1]
+            -[derived] Mitigating Controls~Element~ [0..1]
+            -[derived] Potential Additional Controls~Element~ [0..1]
+            -[derived] Detecting Controls~Element~ [0..1]
+            -[derived] Risk Rating~Risk~ [0..1]
+        }
+        
+        Block~Class~ <|-- SecurityRisk~Class~
+```
+
+`SecurityRisk` contains eight attributes:
+ - Likelihood - which tracks the qualitative likelihood of the `SecurityRisk`, using the [`Likelihood`](./enumerations.md#likelihood) enumeration as a type;
+ - Likelihood Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative likelihood rating;
+ - Consequence - which tracks the qualitative consequence of the `SecurityRisk`, using the [`Consequence`](./enumerations.md#consequence) enumeration as a type;
+ - Consequence Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative consequence rating;
+ - Simulation Initial Probability - captures the quantitiate initial probability used in the simulation of the `SecurityRisk`;
+ - Simulation Residual Probability - captures the quantitative residual risk probability resulting from the simulation of the `SecurityRisk`;
+ - Simulation Detection Probability - captures the quantitative detection probability resulting from the simulation of the `SecurityRisk`; and
+ - Simulation Threat Level - captures the threat level used in the simulation of the `SecurityRisk`, using the [`Threat`](./enumerations.md#threat) enumeration as a type.
+
+`SecurityRisk` contains six derived properties:
+ - Participating Asset - which lists the `Asset`s that are associated with this `SecurityRisk`;
+ - Threat Path - which lists the `ThreatAction`s that are associated with this `SecurityRisk`;
+ - Mitigating Controls - which lists the mitigating `SecurityControl`s associated with this `SecurityRisk`;
+ - Potential Additional Controls - which lists the `SecurityControl`s that could be implemented to address this `SecurityRisk`, but which have not been implemented;
+ - Detecting Controls - which lists the detecting `SecurityControl`s associated with this `SecurityRisk`; and
+ - Risk Rating - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood` and `Consequence` attributes, using the [`Risk`](#risk) enumeration as a type.
+
+`SecurityRisk` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Description`.
+
 ### ValueProperty
+
+This is the built-in `ValueProperty` class within CAMEO System Modeler. Further detail can be found in the CAMEO documentation on their website.
 
 #### ThreatLevel
 
+The `ThreatLevel` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the threat level used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- ThreatLevel~Property~
+```
+
+`ThreatLevel` contains no attributes or constraints.
+
+This value property is used in the `SecurityRisk` simulation to capture the skill and resource level of the threat actor attempting to enact the threat, and uses the [`Threat`](./enumerations.md#threat) enumeration for the values of the property. Modification of this value impacts the likelihood of the threat actor being able to perform `ThreatAction`s of a particular `Difficulty`, as well as the likelihood that the threat actor will evade detection. The [`Difficulty`](./constraints.md#difficulty) constraint block dictates the way in which the `ThreatLevel` impacts the quantitative likelihood that a threat actor will be able to complete an activity of a specific difficulty and the quantitative likelihood that a threat actor will be able to evade detection.
+
 #### InitialProbability
+
+The `InitialProbability` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the initial probability values used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- InitialProbability~Property~
+```
+
+`InitialProbability` contains no attributes or constraints.
+
+This value property is used in the `SecurityRisk` simulation to capture the quantitative likelihood that the threat will be attempted, expressed as a percentage. For an engineering risk assessment of the system design, this should be set to `100`, whereas operational risk assessments that are seeking to cpature the residual risk of a particular mission or mission set, should set the `InitialProbability` value to a percentage that represents the expected likelihood of the threat being attempted during that mission or mission set.
 
 #### ResidualProbability
 
+The `ResidualProbability` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the residual probability values used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- ResidualProbability~Property~
+```
+
+`ResidualProbability` contains no attributes or constraints.
+
+This value property is used in the `SecurityRisk` simulation to capture the quantitative likelihood that the threat will be successful and the risk will be realised, expressed as a percentage. This is one of the primary outputs of the `SecurityRisk` simulation.
+
 #### DetectionProbability
+
+The `DetectionProbability` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the detection probability values used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- DetectionProbability~Property~
+```
+
+`DetectionProbability` contains no attributes or constraints.
+
+This value property is used in the `SecurityRisk` simulation to capture the quantitative likelihood that the threat will be detected by the system, expressed as a percentage. This is one of the primary outputs of the `SecurityRisk` simulation. The [`DetectX`](./constraints.md#detectx) constraint blocks dictate the way in which the overall `DetectionProbability` is calculated.
 
 #### DetectionControlEffectiveness
 
+The `DetectionControlEffectiveness` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the effectiveness of detection controls used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- DetectionControlEffectiveness~Property~
+```
+
+`DetectionControlEffectiveness` contains no attributes or constraints.
+
+This value property is used in the `SecurityRisk` simulation to capture the effectiveness of a particular set of `SecurityProperty`s in completing a particular `DetectionAction`. Modification of this value impacts the likelihood of the threat actor being detected while attempting to perform a `ThreatAction`. The [`Detect`](./constraints.md#detect) constraint block dictates the way in which the `DetectionControlEffectiveness` impacts the quantitative likelihood that a threat actor will be detected.
+
 #### MitigationControlEffectiveness
+
+The `MitigationControlEffectiveness` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the effectiveness of mitigating controls used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- MitigationControlEffectiveness~Property~
+```
+
+`MitigationControlEffectiveness` contains no attributes or constraints.
+
+This value property is used in the `SecurityRisk` simulation to capture the effectiveness of a particular set of `SecurityProperty`s in preventing a particular `ThreatAction`. Modification of this value impacts the likelihood of the threat actor completing a `ThreatAction`. The [`Threat`](./constraints.md#threat) constraint block dictates the way in which the `MitigationControlEffectiveness` impacts the quantitative likelihood that a threat actor will be detected.
 
 #### difficultyProperty
 
 ### ConstraintProperty
+
+This is the built-in `ConstraintProperty` class within CAMEO System Modeler. Further detail can be found in the CAMEO documentation on their website.
 
 #### ThreatConstraint
 
 #### DetectConstraint
 
 #### DifficultyConstraint
-
-# Expressions
-
-## NextThreatAction
-
-## PreviousThreatAction
-
-## DetectionAction
-
-## LinkedDiagram
-
-# Enumerations
-
-## Difficulty
-
-## Likelihood
-
-## Consequence
-
-## Implementation
-
-## Risk
-
-## Threat
