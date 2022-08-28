@@ -834,7 +834,7 @@ The `ThreatLevel` stereotype uses the `Property` class as a metaclass, and provi
         ValueProperty~Property~ <|-- ThreatLevel~Property~
 ```
 
-`ThreatLevel` contains no attributes or constraints.
+`ThreatLevel` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
 
 This value property is used in the `SecurityRisk` simulation to capture the skill and resource level of the threat actor attempting to enact the threat, and uses the [`Threat`](./enumerations.md#threat) enumeration for the values of the property. Modification of this value impacts the likelihood of the threat actor being able to perform `ThreatAction`s of a particular `Difficulty`, as well as the likelihood that the threat actor will evade detection. The [`Difficulty`](./constraints.md#difficulty) constraint block dictates the way in which the `ThreatLevel` impacts the quantitative likelihood that a threat actor will be able to complete an activity of a specific difficulty and the quantitative likelihood that a threat actor will be able to evade detection.
 
@@ -847,7 +847,7 @@ The `InitialProbability` stereotype uses the `Property` class as a metaclass, an
         ValueProperty~Property~ <|-- InitialProbability~Property~
 ```
 
-`InitialProbability` contains no attributes or constraints.
+`InitialProbability` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
 
 This value property is used in the `SecurityRisk` simulation to capture the quantitative likelihood that the threat will be attempted, expressed as a percentage. For an engineering risk assessment of the system design, this should be set to `100`, whereas operational risk assessments that are seeking to cpature the residual risk of a particular mission or mission set, should set the `InitialProbability` value to a percentage that represents the expected likelihood of the threat being attempted during that mission or mission set.
 
@@ -860,7 +860,7 @@ The `ResidualProbability` stereotype uses the `Property` class as a metaclass, a
         ValueProperty~Property~ <|-- ResidualProbability~Property~
 ```
 
-`ResidualProbability` contains no attributes or constraints.
+`ResidualProbability` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
 
 This value property is used in the `SecurityRisk` simulation to capture the quantitative likelihood that the threat will be successful and the risk will be realised, expressed as a percentage. This is one of the primary outputs of the `SecurityRisk` simulation.
 
@@ -873,7 +873,7 @@ The `DetectionProbability` stereotype uses the `Property` class as a metaclass, 
         ValueProperty~Property~ <|-- DetectionProbability~Property~
 ```
 
-`DetectionProbability` contains no attributes or constraints.
+`DetectionProbability` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
 
 This value property is used in the `SecurityRisk` simulation to capture the quantitative likelihood that the threat will be detected by the system, expressed as a percentage. This is one of the primary outputs of the `SecurityRisk` simulation. The [`DetectX`](./constraints.md#detectx) constraint blocks dictate the way in which the overall `DetectionProbability` is calculated.
 
@@ -886,9 +886,9 @@ The `DetectionControlEffectiveness` stereotype uses the `Property` class as a me
         ValueProperty~Property~ <|-- DetectionControlEffectiveness~Property~
 ```
 
-`DetectionControlEffectiveness` contains no attributes or constraints.
+`DetectionControlEffectiveness` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
 
-This value property is used in the `SecurityRisk` simulation to capture the effectiveness of a particular set of `SecurityProperty`s in completing a particular `DetectionAction`. Modification of this value impacts the likelihood of the threat actor being detected while attempting to perform a `ThreatAction`. The [`Detect`](./constraints.md#detect) constraint block dictates the way in which the `DetectionControlEffectiveness` impacts the quantitative likelihood that a threat actor will be detected.
+This value property is used in the `SecurityRisk` simulation to capture the effectiveness of a particular set of `SecurityProperty`s in completing a particular `DetectionAction`. These control effectiveness values have some uncertainty around them, so they are defined by the modeller as a uniform distribution between a `min` and `max` value, which should both be expressed as a percentage. Modification of this value impacts the likelihood of the threat actor being detected while attempting to perform a `ThreatAction`. The [`Detect`](./constraints.md#detect) constraint block dictates the way in which the `DetectionControlEffectiveness` impacts the quantitative likelihood that a threat actor will be detected.
 
 #### MitigationControlEffectiveness
 
@@ -899,11 +899,22 @@ The `MitigationControlEffectiveness` stereotype uses the `Property` class as a m
         ValueProperty~Property~ <|-- MitigationControlEffectiveness~Property~
 ```
 
-`MitigationControlEffectiveness` contains no attributes or constraints.
+`MitigationControlEffectiveness` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
 
-This value property is used in the `SecurityRisk` simulation to capture the effectiveness of a particular set of `SecurityProperty`s in preventing a particular `ThreatAction`. Modification of this value impacts the likelihood of the threat actor completing a `ThreatAction`. The [`Threat`](./constraints.md#threat) constraint block dictates the way in which the `MitigationControlEffectiveness` impacts the quantitative likelihood that a threat actor will be detected.
+This value property is used in the `SecurityRisk` simulation to capture the effectiveness of a particular set of `SecurityProperty`s in preventing a particular `ThreatAction`. These control effectiveness values have some uncertainty around them, so they are defined by the modeller as a uniform distribution between a `min` and `max` value, which should both be expressed as a percentage. Modification of this value impacts the likelihood of the threat actor completing a `ThreatAction`. The [`Threat`](./constraints.md#threat) constraint block dictates the way in which the `MitigationControlEffectiveness` impacts the quantitative likelihood that a threat actor will be detected.
 
 #### difficultyProperty
+
+The `difficultyProperty` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the difficulty input parameters used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ValueProperty~Property~ <|-- difficultyProperty~Property~
+```
+
+`difficultyProperty` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
+
+This value property is used in the `SecurityRisk` simulation to capture the likelihood that particular threats will be able to perform an action of a particular difficulty. These difficulty values have some uncertainty around them, so they are defined by the modeller as a uniform distribution between a `min` and `max` value, which should both be expressed as a percentage. Modification of this value impacts the likelihood of a given threat actor being able to perform `ThreatAction`s of a particular `Difficulty`, as well as the likelihood that the threat actor will evade detection. The [`Difficulty`](./constraints.md#difficulty) constraint block dictates the way in which a `difficultyProperty` impacts the quantitative likelihood that a threat actor will be able to complete an activity of a specific difficulty and the quantitative likelihood that a threat actor will be able to evade detection.
 
 ### ConstraintProperty
 
@@ -911,6 +922,42 @@ This is the built-in `ConstraintProperty` class within CAMEO System Modeler. Fur
 
 #### ThreatConstraint
 
+The `ThreatConstraint` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the `ThreatAction`s used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ConstraintProperty~Property~ <|-- ThreatConstraint~Property~
+```
+
+`ThreatConstraint` contains no attributes or constraints and inherits from the built-in `ConstraintProperty` stereotype.
+
+This value property is used in the `SecurityRisk` simulation to represent the `ThreatAction`s that an attacker needs to take to realise the risk, and contributes to the calculation of the overall residual risk. The [`Threat`](./constraints.md#threat) constraint block is used to type these `ThreatConstraint`s, which determines the way the inputs to the `ThreatConstraint` are transformed into the outputs of the `ThreatConstraint`.
+
 #### DetectConstraint
 
+The `DetectConstraint` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the `DetectionAction`s used in a `SecurityRisk` simulation and the calculation of the overall detection likelihood.
+
+```mermaid
+    classDiagram
+        ConstraintProperty~Property~ <|-- DetectConstraint~Property~
+```
+
+`DetectConstraint` contains no attributes or constraints and inherits from the built-in `ConstraintProperty` stereotype.
+
+This value property is used in two way in the `SecurityRisk` simulation:
+ - to represent the `DetectionAction`s where the attacker might be detected; and
+ - to combine the likelihood of the attacker being detected at each node into an overall detection probability.
+The [`Detect`](./constraints.md#detect) constraint block is used to type these `DetectConstraint`s when they are representing a `DetectionAction` and the [`DetectX`](./constraints.md#detectx) constraint block is used to type these `DetectConstraint`s when they are being used to combine indivudal detection probabilities into an overall detection probability. Thes constraint blocks determine the way the inputs to the `DetectConstraint` are transformed into the outputs of the `DetectConstraint`.
+
 #### DifficultyConstraint
+
+The `DifficultyConstraint` stereotype uses the `Property` class as a metaclass, and provides a labelling stereotype for all `Property`s used within the SysML Parametric Diagrams that are associated with the calcuklation of difficulty likelihoods used in a `SecurityRisk` simulation.
+
+```mermaid
+    classDiagram
+        ConstraintProperty~Property~ <|-- ThreatConstraint~Property~
+```
+
+`DifficultyConstraint` contains no attributes or constraints and inherits from the built-in `ConstraintProperty` stereotype.
+
+This value property is used in the `SecurityRisk` simulation to convert the input `ThreatLevel` and `DifficultyProperty`s into a likelihood that the simualted attacker will be able to complete a `ThreatAction` of a particular difficulty. The [`Difficulty`](./constraints.md#difficulty) constraint block is used to type these `DifficultyConstraint`s, which determines the way the inputs to the `DifficultyConstraint` are transformed into the outputs of the `DifficultyConstraint`.

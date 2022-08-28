@@ -2,6 +2,7 @@
 
 This section provides profiles for the ACSC Information Security Manual.
 
+A profile for a new ISM release can be made by:
  - Download SSP Annex Excel Template managed by ACSC
  - Change Yes to TRUE and No to FALSE
  - Import with mapping
