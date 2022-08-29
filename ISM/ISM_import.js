@@ -5,7 +5,7 @@ When a particular control is selected in the containment tree, only that control
 When nothing is selected in the containment tree, all ISM Controls are processed. 
 
 Author: Stuart Fowler
-Date: 18 March 2020
+Date: 18 March 2022
 */
 
 var CollectionsAndFiles = new JavaImporter(

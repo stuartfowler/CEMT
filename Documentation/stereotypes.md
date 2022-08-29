@@ -194,7 +194,7 @@ The `ThreatImpactSignal` stereotype uses the `Signal` class as a metaclass, and 
 ```
 
 `ThreatImpactSignal` contains a single derived property:
- - PreviousThreatAction - which traverses the `ThreatFlow`s in reverse to determine which `ThreatAction`s are connected to this `ThreatImpactSignal`.
+ - [PreviousThreatAction](./expressions.md#previousthreataction) - which traverses the `ThreatFlow`s in reverse to determine which `ThreatAction`s are connected to this `ThreatImpactSignal`.
 
 `ThreatImpactSignal` inherits from the `ThreatSignal` stereotype.
 
@@ -213,7 +213,7 @@ The `ThreatDetectionSignal` stereotype uses the `Signal` class as a metaclass, a
 ```
 
 `ThreatDetectionSignal` contains a single derived property:
- - PreviousDetectionAction - which traverses the `DetectionFlow`s in reverse to determine which `DetectionAction`s are connected to this `ThreatDetectionSignal`.
+ - [PreviousDetectionAction](./expressions.md#previousdetectionaction) - which traverses the `DetectionFlow`s in reverse to determine which `DetectionAction`s are connected to this `ThreatDetectionSignal`.
 
 `ThreatDetectionSignal` inherits from the `ThreatSignal` stereotype.
 
@@ -233,7 +233,7 @@ The `ThreatSendSignal` stereotype uses the `SendSignalAction` class as a metacla
 ```
 
 `ThreatSendSignal` contains a single derived property:
- - LinkedDiagram - which lists the `Diagram`s which contains the `ThreatAcceptEvent`s that are linked to this `ThreatSendSignal` by the `ThreatSignal` that they share.
+ - [LinkedDiagram](./expressions.md#linkeddiagram) - which lists the `Diagram`s which contains the `ThreatAcceptEvent`s that are linked to this `ThreatSendSignal` by the `ThreatSignal` that they share.
 
 `ThreatSendSignal`acts as a generalised stereotype for both the `ThreatImpact` and `ThreatDetection` stereotypes.
 
@@ -262,7 +262,7 @@ The `ThreatDetection` stereotype uses the `SendSignalAction` class as a metaclas
 ```mermaid
     classDiagram
         class ThreatSendSignal~SendSignalAction~ {      
-            -[derived] LinkedDiagram~Diagram~[0..*]
+            -[derived] [LinkedDiagram](./expressions.md#linkeddiagram)~Diagram~[0..*]
         }
         ThreatSendSignal~SendSignalAction~ <|-- ThreatDetection~SendSignalAction~
 ```
@@ -283,7 +283,7 @@ The `ThreatAcceptEvent` stereotype uses the `AcceptEventAction` class as a metac
 ```
 
 `ThreatAcceptEvent` contains a single derived property:
- - LinkedDiagram - which lists the `Diagram`s which contains the `ThreatSendSignal`s that are linked to this `ThreatAcceptEvent` by the `ThreatSignal` that they share.
+ - [LinkedDiagram](./expressions.md#linkeddiagram) - which lists the `Diagram`s which contains the `ThreatSendSignal`s that are linked to this `ThreatAcceptEvent` by the `ThreatSignal` that they share.
 
 `ThreatAcceptEvent` also has a related stereotype `Customization` which sets the `AcceptEventAction` metaclass as a `Quick Applying For` property, which allows the `ThreatAcceptEvent` stereotype to appear in the context menu for a `AcceptEventAction`.
 
@@ -326,12 +326,12 @@ The `ThreatModelAction` stereotype uses the `CallBehaviorAction` class as a meta
 ```
 
 `ThreatModelAction` contains six derived properties:
- - mitigatedBy - which lists the `SecurityControl`s which are linked to this `ThreatModelAction` by the `Mitigates` relationship;
- - affects - which lists the `Asset`s which are linked to this `ThreatModelAction` by the `Affects` relationship;
- - Implemented Controls - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of `Implemented`;
- - Not Implemented Controls - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of ` Not Implemented`;
- - Partially Implemented Controls - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of `Partially Implemented`; and
- - Not Assessed Controls - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of `Not Assessed`.
+ - [mitigatedBy](./expressions.md#mitigatedby) - which lists the `SecurityControl`s which are linked to this `ThreatModelAction` by the `Mitigates` relationship;
+ - [affects](./expressions.md#affects) - which lists the `Asset`s which are linked to this `ThreatModelAction` by the `Affects` relationship;
+ - [Implemented Controls](./expressions.md#implemented-controls) - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of `Implemented`;
+ - [Not Implemented Controls](./expressions.md#not-implemented-controls) - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of ` Not Implemented`;
+ - [Partially Implemented Controls](./expressions.md#partially-implemented-controls) - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of `Partially Implemented`; and
+ - [Not Assessed Controls](./expressions.md#not-assessed-controls) - which lists the `SecurityProperty`s associated with this `ThreatModelAction` that have an `Implementation` status of `Not Assessed`.
 
 `ThreatModelAction`acts as a generalised stereotype for both the `ThreatAction` and `DetectionAction` stereotypes.
 
@@ -371,9 +371,9 @@ The `ThreatAction` stereotype uses the `CallBehaviorAction` class as a metaclass
  - Difficulty - which captures the difficulty of the adversary action in absence of any mitigating controls, using the [Difficulty](./enumerations.md#difficulty) enumeration.
 
 `ThreatAction` contains three derived properties:
- - NextThreatAction - which traverses the `ThreatFlow`s to determine which other `ThreatAction`s are connected to this `ThreatAction`;
- - PreviousThreatAction - which traverses the `ThreatFlow`s in reverse to determine which other `ThreatAction`s are connected to this `ThreatAction`; and
- - DetectionAction - which traverses the `DetectionFlow`s to determine which `DetectionAction`s are connected to this `ThreatAction`.
+ - [NextThreatAction](./expressions.md#nextthreataction) - which traverses the `ThreatFlow`s to determine which other `ThreatAction`s are connected to this `ThreatAction`;
+ - [PreviousThreatAction](./expressions.md#previousthreataction) - which traverses the `ThreatFlow`s in reverse to determine which other `ThreatAction`s are connected to this `ThreatAction`; and
+ - [DetectionAction](./expressions.md#detectionaction) - which traverses the `DetectionFlow`s to determine which `DetectionAction`s are connected to this `ThreatAction`.
 
 `ThreatAction` inherits from the `ThreatModelAction` stereotype.
 
@@ -460,16 +460,16 @@ The `Asset` stereotype uses the `Class` class as a metaclass, and provides a ste
 ```
 
 `Asset` contains ten derived properties:
- - mitigatedBy - which lists the `SecurityControl`s which are linked to this `ThreatModelAction` by the `Mitigates` relationship;
- - affects - which lists the `Asset`s which are linked to this `ThreatModelAction` by the `Affects` relationship;
- - Implemented Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Implemented`;
- - Not Implemented Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Not Implemented`;
- - Partially Implemented Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Partially Implemented`;
- - Not Assessed Controls - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Not Assessed`;
- - Implemented - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Implemented`;
- - Not Implemented - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Not Implemented`;
- - Partially Implemented - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Partially Implemented`; and
- - Not Assessed - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Not Assessed`.
+ - [mitigatedBy](./expressions.md#mitigatedby) - which lists the `SecurityControl`s which are linked to this `ThreatModelAction` by the `Mitigates` relationship;
+ - [affects](./expressions.md#affects) - which lists the `Asset`s which are linked to this `ThreatModelAction` by the `Affects` relationship;
+ - [Implemented Controls](./expressions.md#implemented-controls) - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Implemented`;
+ - [Not Implemented Controls](./expressions.md#not-implemented-controls) - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Not Implemented`;
+ - [Partially Implemented Controls](./expressions.md#partially-implemented-controls) - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Partially Implemented`;
+ - [Not Assessed Controls](./expressions.md#not-assessed-controls) - which lists the `SecurityControl`s related to this `Asset` that have an associated `SecurityProperty` with an `Implementation` status of `Not Assessed`;
+ - [Implemented](./expressions.md#implemented) - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Implemented`;
+ - [Not Implemented](./expressions.md#not-implemented) - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Not Implemented`;
+ - [Partially Implemented](./expressions.md#partially-implemented) - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Partially Implemented`; and
+ - [Not Assessed](./expressions.md#not-assessed) - which lists the `SecurityProperty`s associated with this `Asset` that have an `Implementation` status of `Not Assessed`.
 
 `Asset` has two active validation constraints:
  - Affected() - which checks whether there are any `SecurityControl`s linked to the same `ThreatModelAction` as this `Asset` that do not have a corresponding `SecurityProperty` and flags if there are none; and
@@ -566,11 +566,11 @@ The `SecurityControl` stereotype uses the `Requirement` class as a metaclass, an
  - Control Number - which contains a unique identifier for the each `SecurityControl`.
 
 `SecurityControl` contains five derived properties:
- - Mitigates - which lists the `ThreatModelAction`s which are linked to this `SecurityControl` by the `Mitigates` relationship;
- - Implemented - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Implemented`;
- - Not Implemented - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Not Implemented`;
- - Partially Implemented - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Partially Implemented`; and
- - Not Assessed - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Not Assessed`.
+ - [Mitigates](./expressions.md#mitigates) - which lists the `ThreatModelAction`s which are linked to this `SecurityControl` by the `Mitigates` relationship;
+ - [Implemented](./expressions.md#implemented) - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Implemented`;
+ - [Not Implemented](./expressions.md#not-implemented) - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Not Implemented`;
+ - [Partially Implemented](./expressions.md#partially-implemented) - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Partially Implemented`; and
+ - [Not Assessed](./expressions.md#not-assessed) - which lists the `SecurityProperty`s associated with this `SecurityControl` that have an `Implementation` status of `Not Assessed`.
 
 `SecurityControl` has two active validation constraints:
  - Description() - which checks whether the Control Description attribute is empty and flags if it is; and
@@ -647,7 +647,7 @@ The `SecurityConstraint` stereotype uses the `Requirement` class as a metaclass,
  - Constraint Number - which contains a unique identifier for the each `SecurityConstraint`.
 
 `SecurityConstraint` contains one derived property:
- - Applies - which lists the `Asset`s which are linked to this `SecurityConstraint` by the `Applies` relationship.
+ - [Applies](./expressions.md#applies) - which lists the `Asset`s which are linked to this `SecurityConstraint` by the `Applies` relationship.
 
 `SecurityConstraint` has two active validation constraints:
  - Description() - which checks whether the Control Description attribute is empty and flags if it is; and
@@ -764,7 +764,7 @@ The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and 
  - Implementation - which tracks the implementation state of the `SecurityProperty`, using the [`Implementation`](./enumerations.md#implementation) enumeration as a type, with `Not Assessed` set as the Default Value.
 
 `SecurityProperty` contains one derived property:
- - Control Description - which displays the `Control Description` attribute of the `SecurityControl` which is used as the Type of the `SecurityProperty`.
+ - [Control Description](./expressions.md#control-description) - which displays the `Control Description` attribute of the `SecurityControl` which is used as the Type of the `SecurityProperty`.
 
 `SecurityProperty` has three active validation constraints:
  - Implementation() - which checks whether an Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
@@ -812,12 +812,12 @@ The `SecurityRisk` stereotype uses the `Class` class as a metaclass, and provide
  - Simulation Threat Level - captures the threat level used in the simulation of the `SecurityRisk`, using the [`Threat`](./enumerations.md#threat) enumeration as a type.
 
 `SecurityRisk` contains six derived properties:
- - Participating Asset - which lists the `Asset`s that are associated with this `SecurityRisk`;
- - Threat Path - which lists the `ThreatAction`s that are associated with this `SecurityRisk`;
- - Mitigating Controls - which lists the mitigating `SecurityControl`s associated with this `SecurityRisk`;
- - Potential Additional Controls - which lists the `SecurityControl`s that could be implemented to address this `SecurityRisk`, but which have not been implemented;
- - Detecting Controls - which lists the detecting `SecurityControl`s associated with this `SecurityRisk`; and
- - Risk Rating - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood` and `Consequence` attributes, using the [`Risk`](#risk) enumeration as a type.
+ - [Participating Asset](./expressions.md#participating-asset) - which lists the `Asset`s that are associated with this `SecurityRisk`;
+ - [Threat Path](./expressions.md#threat-path) - which lists the `ThreatAction`s that are associated with this `SecurityRisk`;
+ - [Mitigating Controls](./expressions.md#mitigating-controls) - which lists the mitigating `SecurityControl`s associated with this `SecurityRisk`;
+ - [Potential Additional Controls](./expressions.md#potential-additional-controls) - which lists the `SecurityControl`s that could be implemented to address this `SecurityRisk`, but which have not been implemented;
+ - [Detecting Controls](./expressions.md#detecting-controls) - which lists the detecting `SecurityControl`s associated with this `SecurityRisk`; and
+ - [Risk Rating](./expressions.md#risk-rating) - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood` and `Consequence` attributes, using the [`Risk`](#risk) enumeration as a type.
 
 `SecurityRisk` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Description`.
 
