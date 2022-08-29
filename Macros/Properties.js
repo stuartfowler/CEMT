@@ -1,8 +1,8 @@
 /* 
 This macro updates Security Properties to ensure they fit the "<Asset Name> - <Control Name>" format.
 This macro should be run when the modeller changes the name of a Security Control.
-When a particular constraint is selected in the containment tree, only that constraint is processed.
-When nothing is selected in the containment tree, all Security Constraints are processed. 
+When a particular property is selected in the containment tree, only that constraint is processed.
+When nothing is selected in the containment tree, all Security Properties are processed. 
 
 Author: Stuart Fowler
 Date: 16 March 2020
@@ -42,7 +42,7 @@ with (CollectionsAndFiles) {
             SessionManager.getInstance().createSession(project, sessionName);
         }
 
-        //Checks Constraint name and updates as required
+        //Checks Property name and updates as required
         function processProperty(object) {
             writeLog("Processing securityProperty: " + object.getName(), 2);
             type = object.getType().getName();

@@ -113,6 +113,8 @@ There are two different Attack Tree Diagrams included in the CEMT:
  - `Attack Tree - Misuse Case`
  - `Attack Tree - Impact`
 
+> **Note**: If the attack tree is not being drawn correctly, the [NextThreatAction](./expressions.md#nextthreataction) and [PreviousThreatAction](./expressions.md#previousthreataction) expressions would be the first place to troubleshoot. Namely, the expressions are limited in how many layers of `AggregatedAction`s they will traverse, so there may be an edge case in your particular model that is not handled yet.
+
 #### Attack Tree - Misuse Case
 
 The Misuse Case Attack Tree Diagram shows the paths that an attacker would need to take to compromise the system from the initial startig point of one or more `Misuse Case`s. This provides an intuitive and informative summary of the threat surface of a system and provides insight into the relative criticality of securing particular nodes in the kill chain. As an example, shorter branches or nodes that are common across multiple branches are likely to be areas of increased docus in the risk assessment and overall cyberworthiness evaluation. The attack tree allows you to identify these critical nodes, and in conjunction with the [Action Bowtie Diagram](#bowtie---action), the modellers, reviewers and decision makers to focus in on those threat nodes and ask whether the current level of controls on those nodes are appropriate and acceptable. An example Misuse Case Attack Tree is shown below.

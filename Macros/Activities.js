@@ -1,5 +1,5 @@
 /* 
-This macro creates activities for AggregatedActions.
+This macro ensures activities that define AggregatedActions are Mal-Activities.
 When a particular action is selected in the containment tree, only that action is processed.
 When nothing is selected in the containment tree, all AggregatedActions are processed. 
 

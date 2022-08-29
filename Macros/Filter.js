@@ -103,7 +103,7 @@ with (CollectionsAndFiles) {
             writeLog("Processing Misuse Case: " + object.getName(), 2);
             var misuseFilter = Finder.byQualifiedName().find(project, misuseFilterPath);
             if(!misuseFilter) {
-                writeLog("Impact Filter not found at " + misuseFilterPath + ". No action taken.", 1);
+                writeLog("Misuse Case Filter not found at " + misuseFilterPath + ". No action taken.", 1);
                 return;
             }
             misuseObject = AutomatonMacroAPI.getOpaqueObject(object);

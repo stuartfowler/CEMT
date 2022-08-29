@@ -1,5 +1,5 @@
 /* 
-This macro ensures that activities under MisuseCases are apporpriate stereotyped.
+This macro ensures that activities under MisuseCases are appropriate stereotyped.
 When a particular misuse case is selected in the containment tree, only that misuse case is processed.
 When nothing is selected in the containment tree, all MisuseCases are processed. 
 Author: Stuart Fowler

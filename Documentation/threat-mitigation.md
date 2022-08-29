@@ -169,7 +169,7 @@ Once the `SecurityConstraint`s have been created, the `Control Description` fiel
 
 Once all of the `Asset`s, `SecurityControl`s and `SecurityConstraint`s have been linked, `SecurityProperty`s can be created. `SecurityProperty`s are an instantiation of the `SecurityControl` or `SecurityConstraint` onto a particular `Asset`, and carry the implementation status of the particular security mitigation on that specific asset. 
 
-While these `SecurityProperty`s could be created manually as a property on each `Asset`, the [Properties macro](../Macros/README.md#properties) will automatically create the necessary `SecurityProperty`s based on the relationships that were created when the assets, threat nodes and mitigations were linked together using the various matrices.
+While these `SecurityProperty`s could be created manually as a property on each `Asset`, the [Controls macro](../Macros/README.md#controls) will automatically create the necessary `SecurityProperty`s based on the relationships that were created when the assets, threat nodes and mitigations were linked together using the various matrices.
 
 **Insert Video**
 

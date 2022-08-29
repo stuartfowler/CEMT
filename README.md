@@ -36,13 +36,13 @@ The CEMT is can be installed by copying the `Cyber_Profile.mdzip` file into the 
 
 https://user-images.githubusercontent.com/7237737/174941526-18245b64-b436-40c3-be4a-6464bf09f30f.mp4
 
-This imports all of the necessary stereotypes and attributes of the CEMT, as well as macros it relies upon. The source code for these JavaScript macros is captured in this GitHub repo, but can also be viewed inside CAMEO itself if you would like to validate it. These macros can be found at these locations:
- - [Activities.js](./Macros/Activities.js)
- - [Controls.js](./Macros/Controls.js)
- - [Filter.js](./Macros/Filter.js)
- - [Misuse.js](./Macros/Misuse.js)
- - [Properties.js](./Macros/Properties.js)
- - [Risk.js](./Macros/Risk.js)
+This imports all of the necessary stereotypes and attributes of the CEMT, as well as macros it relies upon. The source code for these JavaScript macros is captured in this GitHub repo, but can also be viewed inside CAMEO itself if you would like to validate it. These documentation for these macros can be found at these locations:
+ - [Activities.js](./Macros/README.md#activities)
+ - [Controls.js](./Macros/README.md#controls)
+ - [Filter.js](./Macros/README.md#filter)
+ - [Misuse.js](./Macros/README.md#misuse)
+ - [Properties.js](./Macros/README.md#properties)
+ - [Risk.js](./Macros/README.md#risk)
 
 A short description of what each of these macros does can be found in the header of the macro source code.
 
