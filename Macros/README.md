@@ -18,6 +18,8 @@ If one of more `AggregatedAction` is selected in the containment tree, only thos
 
 When nothing is selected in the containment tree, all `AggregatedAction`s in the model are processed. 
 
+This macros source code can be found [here](./Activities.js).
+
 ## Controls
 
 This macro is used to create `SecurityProperty`s from the `Asset`s and `SecurityControl`s allocated to `ThreatAction`s and `DetectionAction`s. It also creates `SecurityProperty`s from the `SecurityConstraint`s allocated to `Asset`s. It is primarily used during the [Security Properties](../Documentation/threat-mitigation.md#security-properties) step of the threat mitigation phase.
@@ -38,6 +40,8 @@ If one of more `ThreatAction`, `DetectionAction` or `SecurityConstraint` is sele
 
 When nothing is selected in the containment tree, all `ThreatAction`s, `DetectionAction`s and `SecurityConstraint`s in the model are processed. 
 
+This macros source code can be found [here](./Controls.js).
+
 ## Filter
 
 This macro is used to quickly manipulate the filters for the [Summary Diagrams](../Documentation/risk.md#summary-diagrams) by adding the selected `Asset`s, `ThreatAction`s, `ThreatImpactSignal`s and/or `MisuseCase`s to the appropriate filters for the Bowtie Diagrams and Attack Trees. This macro can be used as a shortcut when added objects to these filters instead of dragging and dropping the object in the model.
@@ -51,6 +55,8 @@ Specifically, the macro performs the following steps:
 If one of more `Asset`, `ThreatAction`, `ThreatImpactSignal` or `MisuseCase` is selected in the containment tree, only those assets, actions, signals and misuse cases are processed and added to their respective filters.
 
 When nothing is selected in the containment tree, the script will not make any modifications. 
+
+This macros source code can be found [here](./Filter.js).
 
 ## Misuse
 
@@ -68,6 +74,8 @@ If one of more `MisuseCase` is selected in the containment tree, only those misu
 
 When nothing is selected in the containment tree, all `MisuseCase`s in the model are processed. 
 
+This macros source code can be found [here](./Misuse.js).
+
 ## Properties
 
 This macro updates Security Properties to ensure they fit the "\<Asset Name\> - \<Control Name\>" format.
@@ -77,6 +85,8 @@ This macro is not required during the normal modelling process, but should be ru
 If one of more `SecurityProperty` is selected in the containment tree, only those properties are processed.
 
 When nothing is selected in the containment tree, all `SecurityProperty`s in the model are processed. 
+
+This macros source code can be found [here](./Properties.js).
 
 ## Risk
 
@@ -102,3 +112,4 @@ Specifically, the macro performs the following steps:
 
 To run the macro, a `ThreatStart`, `ThreatImpactSignal` and a series of `ThreatAction`s that form a complete branch of the attack tree must be selected in the containment tree. This can be achieved by selecting all of those nodes in the attack tree and then pressing `Alt + B` to select those objects in the containment tree. 
 
+This macros source code can be found [here](./Risk.js).
