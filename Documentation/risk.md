@@ -97,7 +97,7 @@ The Action Bowtie Diagram provides a more focused summary of a single threat nod
 
 ![Bowtie - Action](./Images/Bowtie%20-%20Action.png)
 
-### Bowtie - Asset
+#### Bowtie - Asset
 
 The Asset Bowtie Diagram shows the controls associated with a particular asset. This diagram will show the `Asset`s set in the `Asset Filter` smart package, as well as the associated security controls, split into mitigating or preventative controls on the left and detecting controls on the right. Each of the controls will be colour coded according to their implementation state on that particular asset. These diagrams can be useful when considering changes to assets, such as obsolescence studies, or to investigate the level of control implementation in particularly critical assets. An example Asset Bowtie Diagram is shown below:
 
