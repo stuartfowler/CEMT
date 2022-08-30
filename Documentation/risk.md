@@ -72,7 +72,7 @@ The table below shows which filters must be set for each type of Summary Diagram
 
 Filters are set by dragging an object from the 'Unassigned' smart packages into the Filter smart packages. Objects can also be added to the filter by selecting them in the containment tree and running the [Filter macro](../Macros/Filter.js). They can be removed from the filter by selecting the object in the Filter smart package and pressing delete.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187450843-6cc65c0d-5f8f-4d00-a8a0-153fb5e6378a.mp4
 
 ### Bowties
 
@@ -97,7 +97,7 @@ The Action Bowtie Diagram provides a more focused summary of a single threat nod
 
 ![Bowtie - Action](./Images/Bowtie%20-%20Action.png)
 
-### Bowtie - Asset
+#### Bowtie - Asset
 
 The Asset Bowtie Diagram shows the controls associated with a particular asset. This diagram will show the `Asset`s set in the `Asset Filter` smart package, as well as the associated security controls, split into mitigating or preventative controls on the left and detecting controls on the right. Each of the controls will be colour coded according to their implementation state on that particular asset. These diagrams can be useful when considering changes to assets, such as obsolescence studies, or to investigate the level of control implementation in particularly critical assets. An example Asset Bowtie Diagram is shown below:
 
@@ -176,11 +176,11 @@ The first step is to run the [Risk Macro](../Macros/Risk.js) to generate the bas
 
 The macro has two arguments, which you will be asked for when running the macro:
  - `threatName`; and
- - `assetSelection`.
+ - `assetSelectionPath`.
 
-`threatName` is the name that you want to give to the particular threat path you have selected. This will be used to name the risk. `assetSelection` is an optional argument, where you can provide the `Qualified Name` of a particular `Asset` and the macro will only include that asset in the parametric diagram. If you leave the `assetSelection` argument blank, all relevant `Asset`s will be included in the parametric risk diagram that hte macro generates.
+`threatName` is the name that you want to give to the particular threat path you have selected. This will be used to name the risk. `assetSelectionPath` is an optional argument, where you can provide the `Qualified Name` of a particular `Asset` and the macro will only include that asset in the parametric diagram. If you leave the `assetSelectionPath` argument blank, all relevant `Asset`s will be included in the parametric risk diagram that hte macro generates.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187450973-33cd8e1b-dd81-4d9f-94bf-35ee0db8b66c.mp4
 
 An example of the generated parametric risk diagram is shown below:
 
@@ -207,7 +207,7 @@ This setting determines how likely the threat actor is to be able to complete th
 
 While the lookup table above is hardcoded into the CEMT profile, the quantitative definition of each of those qualitative likelihoods can be modified by the modeller in the parametric risk diagram. By modifying the `min` and `max` vlaues of the `Certain`, `HighlyLikely`, `Likely`, `Possible`, `Unlikely` and `Rare` property values in the diagram the modeller can set the values that are used for each of these likelihood descriptors in the simulation. These values are set to a reasonable default by the [Risk Macro](../Macros/Risk.js) the generates the parametric risk diagram, but the flexibility for the modeller to modify these is available, if required.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451027-026042b4-d49f-491c-8591-cebff0d18a89.mp4
 
 > **Note**: The `min` and `max` values represent the minimum and maximum values of a uniform distribution to account for the uncertainty in the estimation of these likelihoods. The simulation will select a value within that uniform distribution for each simulation run when calculating the result. A sensitivity analysis of each value can be conducted by fixing every other variable and allowing just one to vary across the uniform distribution.
 
@@ -217,7 +217,7 @@ The next step is to set the [`InitialProbability`](./stereotypes.md#initialproba
 
 If you wanted to perform an operational assessment of risk, the likelihood that this particular attack will be attempted should be modelled by adjusting the initial probability to match the expected likelihood of the attack being attempted by an adversary on that particular operation.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451063-502b3b3d-5c0e-48a4-b09e-d738735553aa.mp4
 
 ### Control Effectiveness
 
@@ -225,7 +225,7 @@ The next step involves selecting the [`MitigationControlEffectiveness`](./stereo
 
 Determining this value is not an exact science, and inevitably this will be a case of expert judgement to determine the value. While this is undesirable, the primary focus here is to eliminate opqaue expert judgement by requiring these estimations and judgements to be made at a specific level of detail which can be reviewed, interrogated and ultimately agreed. The ability to set a `min` and `max` value allows us to handle some of this uncertainty, and a sensitivity analysis can be performed on these effectiveness values by setting all other simulation variables to a constant and observing the impact on the output.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451095-2a77208b-de6f-4ead-93d6-a8b8df733b31.mp4
 
 > **Note**: It is important to be clear about the limitations of this methodology in calculating an accurate residual risk. The simulation treats each of the control effectiveness values (and indeed, the ability of a particular threat actor to complete a task of particular difficulty) as independent events. While the attacker does need to do all of the actions in sequence, in many circumstances these events may not be truly independent - ie. if a particular controls was ineffective early in the threat path and was linked again later in the threat path, the simulation would treat these as independent even though if the contorl was bypassed earlier, it should actually have an effectiveness of 0 the second time. This is a known limitation of the calculation, and the purpose of this note is to say that the quantitative figures from these simulations should be used as a guide, rather than an answer. It is for this reason that the calculated likelihood values are converted back into a qualitative rating in the [Risk Assessment Table](#risk-assessment-table), so as not to give the incorrect impression of an accurate answer. For a detailed understanding of how the values are calculated in the simulation, please refer to the constraint definitions, particularly the [`Threat`](./constraints.md#threat) and [`Detect`](./constraints.md#detect) stereotypes.
 
@@ -233,7 +233,7 @@ Determining this value is not an exact science, and inevitably this will be a ca
 
 The final step on the parametric risk diagram is to run the simulation. This will cause the model to randomly choose a value for each input variable within the ranges that were set and calculate the resultant [`ResidualProbability`](./stereotypes.md#residualprobability) and [`DetectionProbability`](./stereotypes.md#detectionprobability). This will be repeated 500 times, with the results plotted onto two histograms, along with a mean and standard deviation for the full dataset.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451124-6fc77d92-0638-41f2-a74d-be9e1e2b5a9d.mp4
 
 The histograms will be automatically saved to the file system where the model is located, but it is a good idea to take your own copy, and the file could be overwritten if the simulation is run again. An example of the resulting histograms is shown below:
 
@@ -280,7 +280,7 @@ The remaining fields require manual input, as outlined in the following secitons
 
 The first step is finalising the risk assessment table is to input a Risk Description. This is a free-form text field where the modeller should describe the risk so that reviewers and decision makers understand what this risk is in understandable terminology.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451206-df4cdfb9-11d8-4cfa-bbb1-31ea8acdabdc.mp4
 
 ### Simulated Probabilities
 
@@ -290,7 +290,7 @@ The next step is to input the critical variables and results from the simulation
  - Simuation Residual Probability - which should reflect the mean `ResidualProbability` value on the Threat Histogram; and 
  - Simulation Detection Probability - which should reflect the mean `DetectionProbability` value on the Detection Histogram.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451227-bdbead4a-31de-4dfd-8546-1e491d3ef043.mp4
 
 ### Risk Rating
 
@@ -376,6 +376,6 @@ Once the Likelihood and Consequence values are set, the Risk Rating will be auto
   </tbody>
 </table>
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187451275-5fcef7c8-818a-4169-b707-3fdebb94fcc2.mp4
 
  > [Return to Modelling Process Flowchart](/README.md#risk-assessment)
