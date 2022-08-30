@@ -135,7 +135,7 @@ The first step in this process involves linking of the `Asset`s created in the `
 
 Once this relationship has been created, the `Mal-Activity Diagrams` will be updated to list the affected `Asset` on the `ThreatAction` and/or `DetectionAction`.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187433155-08b4f9a0-f8e7-4925-8493-db2cb5abef39.mp4
 
 ### Security Controls
 
@@ -147,7 +147,9 @@ In some cases, there may not be a feasible mitigating control for a partiuclar n
 
 Once the `SecurityControl`s have been created, the `Control Description` field should be set. This description should provide a summary description of the control to explain to reviewers what the control is and what it does. This field can also be set for each control using the `Control List` Summary Diagram.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187433193-682f571b-4893-4012-b03b-77bccc10ee50.mp4
+
+https://user-images.githubusercontent.com/7237737/187433200-e9e91792-bb8e-474d-89d7-59f8c077ad19.mp4
 
 > **Note**: It is important to note that the purpose of this step is to propose all controls that could feasibly be implemented into the system to mitigate a particular step of the threat path. The modeller should propose and link all of these potential controls, rather than only selecting and documenting those controls that they intend to implement. The purpose of this activity is to demonstrate to decision makers not only what has been done to mitigate a particular threat, but also what further steps could be taken to further mitigate the threat. The act of creating and linking a control is not meant to imply that the control will be implemented, or even that the control *should* be implemented, it is simply to show that it could be implemented. In this context, a non-implemented control is not a non-compliance or a shortcoming that needs addressing, it is simply a acknowledgement that a risk decision has been made to not implement that potential control.
 
@@ -161,7 +163,9 @@ To track `SecurityConstraint`s that are not relevant to the system, they should 
 
 Once the `SecurityConstraint`s have been created, the `Control Description` field should be set. This description should provide a summary description of the control to explain to reviewers what the control is and what it does. This field can also be set for each control using the `Constraint List` Summary Diagram.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187433243-fc00a9d1-64cb-458a-833f-a3a5e9713e20.mp4
+
+https://user-images.githubusercontent.com/7237737/187433274-8d48c090-a34b-462d-8495-8499142919c2.mp4
 
 > **Note**: The use of `SecurityConstraint`s should be minimised, as it conflicts with the intention of having a set of mitigating controls that are inherently scoped to the system's context. The prevelance of compliance frameworks with security engineering, however, necessitates that the CEMT can handle these overarching mandated security mitigations which is why `SecurityConstraint`s are included. As `SecurityConstraint`s inherit from `SecurityControl`s, they can still be linked to the threat model and every effort should be made to link them to the threat model, with direct links to the `Asset`s used only when absolutely necessary.
 
@@ -171,13 +175,13 @@ Once all of the `Asset`s, `SecurityControl`s and `SecurityConstraint`s have been
 
 While these `SecurityProperty`s could be created manually as a property on each `Asset`, the [Controls macro](../Macros/README.md#controls) will automatically create the necessary `SecurityProperty`s based on the relationships that were created when the assets, threat nodes and mitigations were linked together using the various matrices.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187433301-1361e647-6aad-4aa5-a73c-eadf65edabcf.mp4
 
 ### Implementation Status
 
 The final step in the threat mitigation phase involves the determination and documentation of the `Implementation` status of each `SecurityProperty`. Once the `Implementation` status has been set, the `Implementation Detail` field should be set. This should provide a summary of how the `SecurityProperty` was implemented to provide additional detail as to the level and method of implementation. This field can also be set for each property using the `Property List` Summary Diagram.
 
-**Insert Video**
+https://user-images.githubusercontent.com/7237737/187433326-a972a6c6-97af-4ebf-83e7-502b80430b9f.mp4
 
 > **Note**: When the `Property List` table becomes large due to a significant number of `SecurityProperty`s it can become more efficient to export the table to Microsoft Excel, enter the Implementation status and Implementation Detail in the spreadsheet and then import that data back into the model. This can help with bulk updates, and with getting system SMEs that do not have access to the CAMEO tool to assist with the determination of the Implementation status. This is a built-in feature of CAMEO System Modeler - instructions for how to conduct this export/import/sync can be found on the [NoMagic website](https://docs.nomagic.com/display/MD190/Sync+with+Excel+or+CSV+files).
 
