@@ -55,6 +55,8 @@ Installing the plugin will also install a template that can be used as a quick s
  - Creating a suggested package hierarchy to organise the model; and
  - Creating a blank `CEMT Asset Definition Diagram` and `CEMT Misuse Case Diagram` to get you started.
 
+https://user-images.githubusercontent.com/7237737/188266737-f5af546d-4f19-454c-8ab6-19d3e25f35c0.mp4
+
 > **Note**: Many of the steps and tutorials in this documentation set show how to build a model from scratch. If you start from this template, several of the steps will have already been done for you, and there is no need to repeat them. Crucially though, the template does not automatically include any optional [ISM Profiles](#information-security-manual-ism). These must still be manually including if you wish to use them.
 
 ### Install from Source
