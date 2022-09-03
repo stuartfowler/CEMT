@@ -26,11 +26,38 @@ CEMT approaches cyberworthiness from the perspective that the overall objective 
 
 ## Installation
 
-### CEMT
+### Dependencies
 
 The CEMT is distributed as an importable profile for [CAMEO Systems Modeler](https://www.3ds.com/products-services/catia/products/no-magic/cameo-systems-modeler/), which is a commercially available MBSE environment. The CEMT requires a licensed install of CAMEO Systems Modeler to function.
 
 The simulated risk assessment portion of the CEMT also requires the [CAMEO Simulation Toolkit](https://www.3ds.com/products-services/catia/products/no-magic/cameo-simulation-toolkit/) which is a feature of CAMEO System Modeler that is included as part of the *Enterprise Edition* of CAMEO Systems Modeler - it is not included in the entry level *Architect Edition*. Without this feature installed, there may be unexpected errors in some of the CEMT functionality.
+
+### Install as Plugin Package
+
+The [releases](https://github.com/stuartfowler/CEMT/releases) page hosts the self-contained plugins which can be imported into the Resource Manager of CAMEO Systems Modeler.
+
+These plugin packages can be installed by downloading the .zip file contained in a particular release, selecting `Help -> Resource/Plugin Manager` menu in CAMEO System Modeler, clicking `Import` and then selecting the .zip file you downloaded from the relase page.
+
+This will automatically install the following resources:
+ - `Cyber_Profile.mdzip` and the latest ISM profile will be installed into your local `profiles` directory;
+ - `CEMT_sample.mdzip` will be installed into your local `samples` directory;
+ - the [Custom CEMT Diagrams](#custom-diagrams) will be installed into your local CAMEO environment; and
+ - a CEMT_template will be installed into your local `template` directory.
+
+You will need to restart your CAMEO application, as prompted, to complete the install.
+
+#### Quick Start with a Template
+
+Installing the plugin will also install a template that can be used as a quick start for a new model. When creating a new project, the `CEMT_template.mdzip` can be selected from the default template directory. This completes some of the basic steps in setting up a project from scratch, including:
+ - Including the `Cyber_Profile` and `Simulation` profiles into the project;
+ - Copying the necessary Macros, Summary Diagrams and Matrices from the `Cyber_Profile` into the local project;
+ - Creating a navigation `Content Diagram` for easy access to common views;
+ - Creating a suggested package hierarchy to organise the model; and
+ - Creating a blank `CEMT Asset Definition Diagram` and `CEMT Misuse Case Diagram` to get you started.
+
+> **Note**: Many of the steps and tutorials in this documentation set show how to build a model from scratch. If you start from this template, several of the steps will have already been done for you, and there is no need to repeat them. Crucially though, the template does not automatically include any optional [ISM Profiles](#information-security-manual-ism). These must still be manually including if you wish to use them.
+
+### Install from Source
 
 The CEMT is can be installed by copying the `Cyber_Profile.mdzip` file into the `profiles` directory of your CAMEO install directory (this defaults to `C:\Program Files\Cameo Systems Modeler\profiles\`). Once the mdzip file has been placed into the `profiles` folder, you should be able to import the model via the Options > Project Usages menu, as shown in the video below. It is recommended that you import the profile as Read-Only to prevent accidental modification of the library.
 
@@ -50,10 +77,9 @@ There are also anumber of standard tables, matrices and summary diagrams that mu
 
 https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9a62-4c394498e6b6.mp4
 
-
 > **Note**: You will also need to ensure that `SimulationProfile.mdzip` is also imported into your project. This comes as part of the CAMEO Simulation Toolkit, and it should default into the same default `profiles` directory. Just follow the same process as used to import `Cyber_Profile.mdzip` but scroll down until you find `SimulationProfile.mdzip`.
 
-### Custom Diagrams
+#### Custom Diagrams
 
 While the CEMT supports models being created with the the standard SysML Use Case Diagrams, Activity Diagrams and Block Definition Diagrams, custom variants of these diagrams have been created with modified drawing pallettes to simplify the process of developing a cyberworthiness model. 
 
@@ -66,7 +92,7 @@ The diagrams can be imported into your model in the following manner:
 
 https://user-images.githubusercontent.com/7237737/177089770-5f734733-ed71-44fe-a073-71a4f998a2b1.mp4
 
-### Information Security Manual (ISM)
+#### Information Security Manual (ISM)
 
 While the CEMT primarily implements a first-principles threat modelling approach, rather than one built upon compliance to best-practice mitigation lists, it does also accommodate those assessments if a hybrid approach is desired by the assessor. This has initially been implemented for the Information Security Manual (ISM) that is published by the Australian Cyber Security Centre (ACSC). The `ISM_MMM-YYYY_Profile.mdzip` files contain profiles that include the entire list of ISM controls imported as a set of objects that can be incorporated into the CEMT. These can be imported into a project in the same way described above for the main CEMT package.
 
@@ -207,8 +233,8 @@ flowchart TB
   click 8c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
 ```
 
-## Examples
+## Samples
 
-An [example threat model](/Threat%20Model/Threat%20Model.mdzip) can be found in this GitHub repository. It contains an example of the CEMT being applied against a generic system. The example is incomplete, providing detail primarily in the Insider Threat misuse case, but this misuse case does contain an instantiation of most of the functionality in the CEMT.
+A [sample threat model](/sample/CEMT_sample.mdzip) can be found in this GitHub repository. It contains an example of the CEMT being applied against a generic system. The example is incomplete, providing detail primarily in the Insider Threat misuse case, but this misuse case does contain an instantiation of most of the functionality in the CEMT.
 
 > **Note**: This sample threat model uses the optional [Custom Diagrams](#custom-diagrams). You will get a number of non-breaking errors if you load the sample model without first importing the custom diagrams.
