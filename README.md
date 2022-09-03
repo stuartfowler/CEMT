@@ -46,6 +46,8 @@ This will automatically install the following resources:
 
 You will need to restart your CAMEO application, as prompted, to complete the install.
 
+https://user-images.githubusercontent.com/7237737/188266915-c1b44035-d83e-4245-95e4-c5560ff38c44.mp4
+
 #### Quick Start with a Template
 
 Installing the plugin will also install a template that can be used as a quick start for a new model. When creating a new project, the `CEMT_template.mdzip` can be selected from the default template directory. This completes some of the basic steps in setting up a project from scratch, including:
