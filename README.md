@@ -178,12 +178,16 @@ flowchart TB
       4b("Assets") --> 4d
       4c("Contextual Assets") --> 4d
     end
-    subgraph 5["Matrices"]
-      5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
-      5b("Security Controls") --> 5c
-      5f("Security Constraints") --> 5c
+    subgraph 6["Security Mitigations"]
+      6a("Security Controls")
+      6c("Security Constraints")
     end
-    4 --> 5
+    subgraph 5["Dependency Matrices"]
+      5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
+      5b("Link Controls") --> 5c
+      5f("Link Constraints") --> 5c
+    end
+    4 --> 6 --> 5
   end
   
   click 4a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
@@ -191,13 +195,14 @@ flowchart TB
   click 4c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
   click 4d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
 
-  click 5a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-  click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-  click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-  click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-  click 5e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-  click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-  click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+  click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
+  click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
+  click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
+  click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
+  click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
+
+  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
+  click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
 ```
 
 ### Risk Assessment

@@ -11,10 +11,14 @@ flowchart TB
       4b("Assets") --> 4d
       4c("Contextual Assets") --> 4d
     end
+    subgraph 6["Security Mitigations"]
+      6a("Security Controls")
+      6c("Security Constraints")
+    end
     subgraph 5["Matrices"]
-    5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
-    5b("Security Controls") --> 5c
-    5f("Security Constraints") --> 5c
+      5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
+      5b("Link Controls") --> 5c
+      5f("Link Constraints") --> 5c
     end
     4 --> 5
   end
@@ -87,24 +91,60 @@ The `CEMT Asset Definition Diagram` also shows the controls that are applicable 
 
 ![Asset Definition Diagram](/Documentation/Images/add.png)
 
-## Matrices
+## Security Mitigations
 
-Matrices provide the ability for the modeller to rapidly create relationships between the various objects in the model. This step  involves the creation of objects that represent potential mitigation techniques and the linking of those to both the threat model and the assets within the system that have been defined in previous steps. 
+Security Mitigations allow the modeller to propose a set of security controls that can be used to mitigate the threat paths identified in the Threat Modelling phase. This creates objects that represent the controls that could potentially be implemented in order to mitigate the risks enumerated in the threat model. 
+
+```mermaid
+flowchart TB
+    subgraph 6["Security Mitigations"]
+      6a("Security Controls")
+      6c("Security Constraints")
+    end
+
+  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
+  click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
+```
+
+### Security Controls
+
+The first step in the process is to create [`SecurityControl`](./stereotypes.md#securitycontrol)s that could potentially mitigate the threats outlined in the threat model. These controls may be created from first principles for your specific model - ie. the modeller reviews each node in the threat model and proposes specific controls that would mitigate that step - or they could be imported from an existing library of controls, similar to the [ISM profile example](../ISM/README.md).
+
+In some cases, there may not be a feasible mitigating control for a particular node in the threat model. In this case, a `SecurityControl` with the [`NoneControl`](./stereotypes.md#nonecontrol) stereotype should be created. This `NoneControl` can then be linked to those threat model nodes that do not have any feasible mitigating controls, allowing the modeller and reviewers to differentiate between those threat model nodes that have been assessed to not have any potential controls from those that have not yet been assessed.
+
+Once the `SecurityControl`s have been created, the `Control Description` field should be set. This description should provide a summary description of the control to explain to reviewers what the control is and what it does. This field can also be set for each control using the `Control List` Summary Diagram.
+
+https://user-images.githubusercontent.com/7237737/187433193-682f571b-4893-4012-b03b-77bccc10ee50.mp4
+
+> **Note**: It is important to note that the purpose of this step is to propose all controls that could feasibly be implemented into the system to mitigate a particular step of the threat path. The modeller should propose all of these potential controls, rather than only selecting and documenting those controls that they intend to implement. The purpose of this activity is to demonstrate to decision makers not only what has been done to mitigate a particular threat, but also what further steps could be taken to further mitigate the threat. The act of creating a control is not meant to imply that the control will be implemented, or even that the control *should* be implemented, it is simply to show that it could be implemented. In this context, a non-implemented control is not a non-compliance or a shortcoming that needs addressing, it is simply a acknowledgement that a risk decision has been made to not implement that potential control.
+
+### Security Constraints
+
+This is an **optional** step in the process, that acknowledges the reality of the situation that most systems will have mandated security controls, that come in the form of either specific system requirements or compliance frameworks. As these generic controls have not been derived specifically from the system's threat model, there is a likelihood that these mandated controls may not be able to be linked into the threat model like the `SecurityControl`s described in the previous step. [`SecurityConstraint`](./stereotypes.md#securityconstraint)s are a specific type of `SecurityControl` that can also be linked directly to an `Asset`, as well as being able to be linked to the threat model. The [ISM profile example](../ISM/README.md) actually uses `SecurityConstraint`s as there are a number of generic controls in that control framework (such as governance, management and documentation controls) that do not lend themselves to being tied to specific nodes of a threat model.
+
+Once the `SecurityConstraint`s have been created, the `Control Description` field should be set. This description should provide a summary description of the control to explain to reviewers what the control is and what it does. This field can also be set for each control using the `Constraint List` Summary Diagram.
+
+https://user-images.githubusercontent.com/7237737/187433243-fc00a9d1-64cb-458a-833f-a3a5e9713e20.mp4
+
+> **Note**: The use of `SecurityConstraint`s should be minimised, as it conflicts with the intention of having a set of mitigating controls that are inherently scoped to the system's context. The prevelance of compliance frameworks with security engineering, however, necessitates that the CEMT can handle these overarching mandated security mitigations which is why `SecurityConstraint`s are included. As `SecurityConstraint`s inherit from `SecurityControl`s, they can still be linked to the threat model and every effort should be made to link them to the threat model, with direct links to the `Asset`s used only when absolutely necessary.
+
+## Dependency Matrices
+
+Dependency Matrices provide the ability for the modeller to rapidly create relationships between the various objects in the model. This step  involves the creation of objects that represent potential mitigation techniques and the linking of those to both the threat model and the assets within the system that have been defined in previous steps. 
 
 ```mermaid
 flowchart TB
     subgraph 5["Matrices"]
-        5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
-        5b("Security Controls") --> 5c
-        5f("Security Constraints") --> 5c
+      5d("Link Assets") --> 5c("Security Properties") --> 5g("Implementation Status")
+      5b("Link Controls") --> 5c
+      5f("Link Constraints") --> 5c
     end
-     click 5a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-    click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-    click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-    click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-    click 5e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-    click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
-    click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#matrices" "Matrices"
+
+    click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#link-controls" "Link Controls"
+    click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-properties" "Security Properties"
+    click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#link-assets" "Link Assets"
+    click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#link-constraints" "Link Constraints"
+    click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#implementation-status" "Implementation Status"
 ```
 
 The matrices are created using the `Dependency Matrix` diagram that is built into CAMEO Systems Modeler. These are pre-defined as part of the CEMT, and are copied across from the `Cyber Profile` as shown below:
@@ -137,33 +177,23 @@ Once this relationship has been created, the `Mal-Activity Diagrams` will be upd
 
 https://user-images.githubusercontent.com/7237737/187433155-08b4f9a0-f8e7-4925-8493-db2cb5abef39.mp4
 
-### Security Controls
+### Link Controls
 
-The second step in the process is to create [`SecurityControl`](./stereotypes.md#securitycontrol)s that could potentially mitigate the threats outlined in the threat model and link those controls to the relevant nodes of the threat model. These controls may be created from first principles for your specific model - ie. the modeller reviews each node in the threat model and proposes specific controls that would mitigate that step - or they could be imported from an existing library of controls, similar to the [ISM profile example](../ISM/README.md).
+The second step in the process is to linked the created [`SecurityControl`](./stereotypes.md#securitycontrol)s to the relevant nodes of the threat model. The controls will appear in the `Control-Action` matrix, and they can be linked to the `ThreatAction`s or `DetectionAction`s of the threat model in the same manner the `Asset`s were linked. Double-clicking on the cell at the junction between a particular `SecurityControl` and `ThreatAction` or `DetectionAction` will create a [`Mitigates`](./stereotypes.md#mitigates) relationship between those two objects.
 
-Once these controls have been created or imported, they will appear in the `Control-Action` matrix, and they can be linked to the `ThreatAction`s or `DetectionAction`s of the threat model in the same manner the `Asset`s were linked. Double-clicking on the cell at the junction between a particular `SecurityControl` and `ThreatAction` or `DetectionAction` will create a [`Mitigates`](./stereotypes.md#mitigates) relationship between those two objects.
-
-In some cases, there may not be a feasible mitigating control for a partiuclar node in the threat model. In this case, a `SecurityControl` with the [`NoneControl`](./stereotypes.md#nonecontrol) stereotype should be created. This `NoneControl` can then be linked to those threat model nodes that do not have any feasible mitigating controls, allowing the modeller and reviewers to differentiate between those threat model nodes that have been assessed to not have any potential controls from those that have not yet been assessed.
-
-Once the `SecurityControl`s have been created, the `Control Description` field should be set. This description should provide a summary description of the control to explain to reviewers what the control is and what it does. This field can also be set for each control using the `Control List` Summary Diagram.
-
-https://user-images.githubusercontent.com/7237737/187433193-682f571b-4893-4012-b03b-77bccc10ee50.mp4
+In some cases, there may not be a feasible mitigating control for a particular node in the threat model. In this case, a `SecurityControl` with the [`NoneControl`](./stereotypes.md#nonecontrol) stereotype can be linked to those threat model nodes that do not have any feasible mitigating controls, allowing the modeller and reviewers to differentiate between those threat model nodes that have been assessed to not have any potential controls from those that have not yet been assessed.
 
 https://user-images.githubusercontent.com/7237737/187433200-e9e91792-bb8e-474d-89d7-59f8c077ad19.mp4
 
 > **Note**: It is important to note that the purpose of this step is to propose all controls that could feasibly be implemented into the system to mitigate a particular step of the threat path. The modeller should propose and link all of these potential controls, rather than only selecting and documenting those controls that they intend to implement. The purpose of this activity is to demonstrate to decision makers not only what has been done to mitigate a particular threat, but also what further steps could be taken to further mitigate the threat. The act of creating and linking a control is not meant to imply that the control will be implemented, or even that the control *should* be implemented, it is simply to show that it could be implemented. In this context, a non-implemented control is not a non-compliance or a shortcoming that needs addressing, it is simply a acknowledgement that a risk decision has been made to not implement that potential control.
 
-### Security Constraints
+### Link Constraints
 
-This is an **optional** step in the process, that acknowledges the reality of the situation that most systems will have mandated security controls, that come in the form of either specific system requirements or compliance frameworks. As these generic controls have not been derived specifically from the system's threat model, there is a likelihood that these mandated controls may not be able to be linked into the threat model like the `SecurityControl`s described in the previous step. [`SecurityConstraint`](./stereotypes.md#securityconstraint)s are a specific type of `SecurityControl` that can also be linked directly to an `Asset`, as well as being able to be linked to the threat model. The [ISM profile example](../ISM/README.md) actually uses `SecurityConstraint`s as there are a number of generic controls in that control framework (such as governance, management and documentation controls) that do not lend themselves to being tied to specific nodes of a threat model.
+The next step is to link any created [`SecurityConstraint`](./stereotypes.md#securityconstraint)s directly to an `Asset`. `SecurityConstraint`s will appear in the `Constraint-Asset` matrix, from where they can be linked to the `Asset`s in the model. Double-clicking on the cell at the junction between a particular `SecurityConstraint` and `Asset` will create an [`Applies`](./stereotypes.md#applies) relationship between those two objects.
 
-Once `SecurityConstraint`s have been created or imported, they will appear in the `Constraint-Asset` matrix, from where they can be linked to the `Asset`s in the model. Double-clicking on the cell at the junction between a particular `SecurityConstraint` and `Asset` will create an [`Applies`](./stereotypes.md#applies) relationship between those two objects.
-
-To track `SecurityConstraint`s that are not relevant to the system, they should be linked to an `Asset` that is stereotyped as a [`NoneAsset`](./stereotypes.md#noneasset), which can track the fact that the constraint has been assessed, but has been found to be not applicable to the system.
+To track `SecurityConstraint`s that are not relevant to the system, they should be linked to an `Asset` that is stereotyped as a [`NoneAsset`](./stereotypes.md#noneasset), which can track the fact that the constraint has been assessed, but has been found to be not applicable to the system. A `NoneAsset` should be included in any imported profile, as seen in the [ISM profile example](../ISM/README.md), but may need to be created manually by the modeller if bespoke `SecurityConstraint`s have been created.
 
 Once the `SecurityConstraint`s have been created, the `Control Description` field should be set. This description should provide a summary description of the control to explain to reviewers what the control is and what it does. This field can also be set for each control using the `Constraint List` Summary Diagram.
-
-https://user-images.githubusercontent.com/7237737/187433243-fc00a9d1-64cb-458a-833f-a3a5e9713e20.mp4
 
 https://user-images.githubusercontent.com/7237737/187433274-8d48c090-a34b-462d-8495-8499142919c2.mp4
 
