@@ -102,8 +102,8 @@ flowchart TB
       6c("Security Constraints")
     end
 
-  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
-  click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
+  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-controls" "Security Controls"
+  click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-constraints" "Security Constraints"
 ```
 
 ### Security Controls
