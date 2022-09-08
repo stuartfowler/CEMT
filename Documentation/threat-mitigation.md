@@ -20,7 +20,7 @@ flowchart TB
       5b("Link Controls") --> 5c
       5f("Link Constraints") --> 5c
     end
-    4 --> 5
+    4 --> 6 --> 5
   end
 ```
 
