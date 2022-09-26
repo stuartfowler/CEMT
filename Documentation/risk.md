@@ -15,8 +15,9 @@ flowchart TB
       7a --> 7c("Initial Probability") --> 7e
       7a --> 7d("Control Effectiveness") --> 7e
     end
-    subgraph 8["Risk Assessment Table"]
-      8a("Description") --> 8b("Simulated Probabilities") --> 8c("Risk Rating")
+    subgraph 8["Risk Assessment Tables"]
+      8a("Risk Lists")
+      8b("Risk Summary")
     end
     6 --> 7 --> 8
   end
@@ -84,6 +85,8 @@ There are three different Bowtie Diagrams included in the CEMT:
  - `Bowtie - Misuse Case`
  - `Bowtie - Action`
  - `Bowtie - Asset`
+
+> **Note**: The bowtie diagrams depict the implementation status of the `SecurityProperty`s in the system. The implementation status (Proposed, Designed or Verified) that is displayed in the bowtie diagrams is dependent on the `Assessment Phase` selected on the [`System`](./stereotypes.md#system) object.
 
 #### Bowtie - Misuse Case
 
@@ -235,69 +238,75 @@ The final step on the parametric risk diagram is to run the simulation. This wil
 
 https://user-images.githubusercontent.com/7237737/187451124-6fc77d92-0638-41f2-a74d-be9e1e2b5a9d.mp4
 
-The histograms will be automatically saved to the file system where the model is located, but it is a good idea to take your own copy, and the file could be overwritten if the simulation is run again. An example of the resulting histograms is shown below:
+The histograms will be automatically saved to the file system where the model is located, but it is a good idea to take your own copy, as the file could be overwritten if the simulation is run again. An example of the resulting histograms is shown below:
 
 ![Threat Histogram](./Images/threathistogram.png)
 ![Detection Histogram](./Images/detecthistogram.png)
 
-## Risk Assessment Table
+## Risk Assessment Tables
 
-The Risk Assessment Table is used to provide a summary of the risks that have been assessed through the CEMT process. It provides the mitigation details relevant to each risk and ultimately produces a qualitative residual risk assessment for each risk.
+The Risk Assessment Tables are used to provide a summary of the risks that have been assessed through the CEMT process. They provide the mitigation details relevant to each risk and ultimately produces a qualitative residual risk assessment for each risk.
 
 ```mermaid
 flowchart TB
   subgraph RA["Risk Assessment"]
     direction TB
-    subgraph 8["Risk Assessment Table"]
-      8a("Description") --> 8b("Simulated Probabilities") --> 8c("Risk Rating")
+    subgraph 8["Risk Assessment Tables"]
+      8a("Risk Lists")
+      8b("Risk Summary")
     end
   end
   
-  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#description" "Risk Description"
-  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#simulated-probabilities" "Simulated Risk Probabilities"
-  click 8c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-rating" "Risk Ratings"
+  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-lists" "Risk Input Tables"
+  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-summary" "Risk Summary Table"
 ```
 
-The Risk Assessment Table is created using the `Generic Table` diagram that is built into CAMEO Systems Modeler. This is pre-defined as part of the CEMT, and is copied across from the `Cyber Profile` as shown below:
+The Risk Assessment Tables are created using the `Generic Table` diagram that is built into CAMEO Systems Modeler. This is pre-defined as part of the CEMT template, but can be manually copied across from the `Cyber Profile` as shown below:
 
 https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9a62-4c394498e6b6.mp4
 
-The Risk Assessment Table is contained in the `Summary Diagrams` package. An example of a populated risk table is shown below. 
+### Risk Lists
 
-![Risk Table](./Images/risk.png)
+The Risk Lists, are actually three separate tables:
+ - Risk List - Proposed: which should be populated when the assessment is being done prior to the detail of a system being designed;
+ - Risk List - Designed: which should be populated when the assessment is being done as part of detailed system design; and
+ - Risk List - Verified: which should be populated when the assessment is being done following a verfication activity on the built system to determine `SecurityProperty` status.
 
-Many of the fields in this table are auto-populated by the model. These automatically populated fields are:
- - Name - is generated based on the name given to the [`SecurityRisk`](./stereotypes.md#securityrisk) created when the parametric risk diagram was created;
- - Participating Asset - lists all of the `Assets` that are linked to the threat path in this risk;
- - Threat Path - lists the steps that an attacker must take to realise this risk;
- - Mitigating Controls - lists all of the preventative controls that are fully or partially implemented;
- - Detecting Controls - lists all of the detecting controls that are fully or partially implemented; and
- - Potential Additional Controls - lists all of the controls linked to the threat path that are not implemented.
+ These tables are used to capture additional data about the risk which needs to be input by the modeller. The three tables are functionally identical and all of them contain a complete list all of the `SecurityRisk`s in the project, however, they each display a different subset of the `SecurityRisk` attributes associated with each of the `Assessment Phase`s.
 
-The remaining fields require manual input, as outlined in the following secitons.
+ The fields that need to be set by the modeller are listed below.
 
-### Description
+#### Description
 
-The first step is finalising the risk assessment table is to input a Risk Description. This is a free-form text field where the modeller should describe the risk so that reviewers and decision makers understand what this risk is in understandable terminology.
+The first step is populating the risk list is to input a Risk Description. This is a free-form text field where the modeller should describe the risk so that reviewers and decision makers understand what this risk is in understandable terminology.
+
+This field is common between the three Risk Lists, and only needs to be manually set in one of them.
 
 https://user-images.githubusercontent.com/7237737/187451206-df4cdfb9-11d8-4cfa-bbb1-31ea8acdabdc.mp4
 
-### Simulated Probabilities
+#### Simulated Probabilities
 
-The next step is to input the critical variables and results from the simulation that was run. These fields do not automatically populate, because it would result in the last simulation run being populated into the risk table and the decision was made to have the fields manually set instead. To do this, the modeller should set the following fields in the table:
+The next step is to input the critical variables and results from the simulation that was run. These fields do not automatically populate, because it would result in the last simulation run being populated into the risk table and the decision was made to have the fields manually set instead. To do this, the modeller should set the following fields in the risk list:
  - Simulation Initial Probability - which should reflect the `InitialProbability` used in the simulation;
  - Simulation Threat Level - which should reflect the `ThreatLevel` used in the simulation;
- - Simuation Residual Probability - which should reflect the mean `ResidualProbability` value on the Threat Histogram; and 
- - Simulation Detection Probability - which should reflect the mean `DetectionProbability` value on the Detection Histogram.
+ - Simuation Residual Probability - which should reflect the mean `ResidualProbability` value on the Threat Histogram;
+ - Simulation Detection Probability - which should reflect the mean `DetectionProbability` value on the Detection Histogram;
+ - Threat Histogram - which contains the image of the threat histogram results from the simulation;
+ - Detection Histogram - which contains the image of the detection histogram results form the simulation; and
+ - Parametric - which contains an image of the parametric risk diagram, capturing the input variables for the simulation.
+
+To attach the histogram and parametric diagram images, the saved images can be dragged into the containment tree from the file system, which will create an `AttachedFile` object which can then be linked via the Risk List.
+
+Each Risk List has a different set of attributes to cover these Simulated Probabilities, allowing for later risk assessments to also be captured, without overwritting the historic results from earlier lifecycle phases.
 
 https://user-images.githubusercontent.com/7237737/187451227-bdbead4a-31de-4dfd-8546-1e491d3ef043.mp4
 
-### Risk Rating
+#### Risk Rating
 
 The final step in the process is to select a resultant qualitative consequence, likelihood and risk rating. The modeller should set the following fields in the table:
- - Likelihood - a qualitative assessment of the likelihood, using the simulated probabilities as an input to that decision;
+ - [Likelihood](./enumerations.md#likelihood) - a qualitative assessment of the likelihood, using the simulated probabilities as an input to that decision;
  - Likelihood Justification - a free-form text field where the reasoning behind the likelihood determination should be documented;
- - Consequence - a qualitative assessment of the consequence of the threat being realised, using input from operational and system experts; and
+ - [Consequence](./enumerations.md#consequence) - a qualitative assessment of the consequence of the threat being realised, using input from operational and system experts; and
  - Consequence Justification - a free-form text field where the reasoning behind the consequemce determination should be documented.
 
 Once the Likelihood and Consequence values are set, the Risk Rating will be automatically set accordingly. The Likelihood, Consequence and Risk Rating values are based on the risk table below:
@@ -376,6 +385,39 @@ Once the Likelihood and Consequence values are set, the Risk Rating will be auto
   </tbody>
 </table>
 
+Each Risk List has a different set of attributes to cover these Risk Ratings, allowing for later risk assessments to also be captured, without overwritting the historic results from earlier lifecycle phases.
+
 https://user-images.githubusercontent.com/7237737/187451275-5fcef7c8-818a-4169-b707-3fdebb94fcc2.mp4
+
+![Risk List](./Images/list.png)
+
+### Risk Summary
+
+The Risk Summary table is contained in the `Summary Diagrams` package. 
+
+All of the fields in this table are auto-populated by the model. These automatically populated fields are:
+ - Name - is generated based on the name given to the [`SecurityRisk`](./stereotypes.md#securityrisk) created when the parametric risk diagram was created;
+ - Participating Asset - lists all of the `Assets` that are linked to the threat path in this risk;
+ - Threat Path - lists the steps that an attacker must take to realise this risk;
+ - Assessment Phase - displays the `Assessment Phase` currently selected on the `System` object;
+ - Mitigating Controls - lists all of the preventative controls that are fully or partially implemented;
+ - Detecting Controls - lists all of the detecting controls that are fully or partially implemented; 
+ - Potential Additional Controls - lists all of the controls linked to the threat path that are not implemented;
+ - [Likelihood](./enumerations.md#likelihood) - a qualitative assessment of the likelihood, using the simulated probabilities as an input to that decision;
+ - Likelihood Justification - a free-form text field where the reasoning behind the likelihood determination should be documented;
+ - [Consequence](./enumerations.md#consequence) - a qualitative assessment of the consequence of the threat being realised, using input from operational and system experts; and
+ - Consequence Justification - a free-form text field where the reasoning behind the consequemce determination should be documented.
+ - Simulation Initial Probability - which should reflect the `InitialProbability` used in the simulation;
+ - Simulation Threat Level - which should reflect the `ThreatLevel` used in the simulation;
+ - Simuation Residual Probability - which should reflect the mean `ResidualProbability` value on the Threat Histogram;  
+ - Simulation Detection Probability - which should reflect the mean `DetectionProbability` value on the Detection Histogram;
+ - Threat Histogram - which contains the image of the threat histogram results from the simulation;
+ - Detection Histogram - which contains the image of the detection histogram results form the simulation; and
+ - Parametric - which contains an image of the parametric risk diagram, capturing the input variables for the simulation.
+
+The Risk Summary table will display the information from the relevant Risk List and `SecurityProperty` attributes, based on the `Assessment Phase` selected on the [`System`](./stereotypes.md#system) object. An example of a populated Risk Summary table is shown below. 
+
+![Risk Table](./Images/risk.png)
+
 
  > [Return to Modelling Process Flowchart](/README.md#risk-assessment)

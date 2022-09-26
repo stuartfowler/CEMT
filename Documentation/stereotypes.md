@@ -454,6 +454,10 @@ The `Asset` stereotype uses the `Class` class as a metaclass, and provides a ste
             -[constraint] Affected()
             -[constraint] Applies()
         }
+        class System~Class~ {
+            +Assessment Phase~Maturity~
+            -[constraint] Phase()
+        }
         Asset~Class~ <|-- System~Class~
         Asset~Class~ <|-- NoneAsset~Class~
         Block~Class~ <|-- Asset~Class~
@@ -499,10 +503,20 @@ The `System` stereotype uses the `Class` class as a metaclass, and provides a st
             -[constraint] Affected()
             -[constraint] Applies()
         }
+        class System~Class~ {
+            +Assessment Phase~Maturity~
+            -[constraint] Phase()
+        }
         Asset~Class~ <|-- System~Class~
 ```
 
-`System` contains no attributes or constraints, but inherits from the `Asset` stereotype.
+`System` contains a single attribute:
+ - Assessment Phase - which tracks the phase of the system lifecycle during which this cyberworthiness assessment is being completed, using the [`Maturity`](./enumerations.md#maturity) enumeration as a type, with `Proposed` set as the Default Value.
+
+`System` has a single active validation constraint:
+ - Phase() - which checks whether an `Assessment Phase` is selected and flags if one is not.
+
+`System` inherits from the `Asset` stereotype.
 
 #### NoneAsset
 
@@ -752,26 +766,44 @@ The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and 
 ```mermaid
     classDiagram
         class SecurityProperty~Property~ {
-            +Implementation~Implementation~ = Not Assessed
+            +Proposed Implementation~Implementation~ = Not Assessed
+            +Designed Implementation~Implementation~ = Not Assessed
+            +Verified Implementation~Implementation~ = Not Assessed
+            +Implementation Detail - Proposed~String~
+            +Implementation Detail - Designed~String~
+            +Implementation Detail - Verified~String~
             +[derived] Control Description~String~ [1]
-            -[constraint] Implementation()
-            -[constraint] Implementation Detail()
+            -[constraint] Proposed Implementation()
+            -[constraint] Designed Implementation()
+            -[constraint] Verified Implementation()
+            -[constraint] Implementation Detail - Proposed()
+            -[constraint] Implementation Detail - Designed()
+            -[constraint] Implementation Detail - Verified()
             -[constraint] Type()
         }
 ```
 
-`SecurityProperty` contains a single attribute:
- - Implementation - which tracks the implementation state of the `SecurityProperty`, using the [`Implementation`](./enumerations.md#implementation) enumeration as a type, with `Not Assessed` set as the Default Value.
+`SecurityProperty` contains six attributes:
+ - Proposed Implementation - which tracks the proposed implementation state of the `SecurityProperty` as defined during the project definition phases, using the [`Implementation`](./enumerations.md#implementation) enumeration as a type, with `Not Assessed` set as the Default Value;
+ - Implementation Detail - Proposed - a free-form test field which allows the modeller to capture detailed related to the proposed level of implementation and proposed methods of implementation;
+ - Designed Implementation - which tracks the designed implementation state of the `SecurityProperty` as defined in the detailed design of the system, using the [`Implementation`](./enumerations.md#implementation) enumeration as a type, with `Not Assessed` set as the Default Value;
+ - Implementation Detail - Designed - a free-form test field which allows the modeller to capture detailed related to the designed level of implementation and designed methods of implementation;
+ - Verified Implementation - which tracks the verified implementation state of the `SecurityProperty` as defined following system verification, using the [`Implementation`](./enumerations.md#implementation) enumeration as a type, with `Not Assessed` set as the Default Value; and 
+ - Implementation Detail - Verified - a free-form test field which allows the modeller to capture detailed related to the verified level of implementation and verified methods of implementation.
 
 `SecurityProperty` contains one derived property:
  - Control Description - which displays the `Control Description` attribute of the `SecurityControl` which is used as the Type of the `SecurityProperty`.
 
-`SecurityProperty` has three active validation constraints:
- - Implementation() - which checks whether an Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
- - Implementation Detail() - which checks whether the `SecurityProperty` has an Implementation state set, but no Implementation Detail recorded, and flags if that is true; and
+`SecurityProperty` has seven active validation constraints:
+ - Proposed Implementation() - which checks whether a Proposed Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
+ - Implementation Detail - Proposed() - which checks whether the `SecurityProperty` has a Proposed Implementation state set, but no Implementation Detail - Proposed recorded, and flags if that is true;
+ - Designed Implementation() - which checks whether a Designed Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
+ - Implementation Detail - Designed() - which checks whether the `SecurityProperty` has a Designed Implementation state set, but no Implementation Detail - Designed recorded, and flags if that is true;
+ - Verified Implementation() - which checks whether a Verified Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
+ - Implementation Detail - Verified() - which checks whether the `SecurityProperty` has a Verified Implementation state set, but no Implementation Detail - Verified recorded, and flags if that is true; and
  - Type() - which checks whether the `SecurityProperty` has a valid Type set, and will flag if it has not.
 
-`SecurityProperty` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Implementation Detail`. It also sets the `Asset` stereotype as `Possible Owners` which allows the `SecurityProperty` stereotype to appear when creating elements under an `Asset`.
+`SecurityProperty` also has a related stereotype `Customization` that sets the `Asset` stereotype as `Possible Owners` which allows the `SecurityProperty` stereotype to appear when creating elements under an `Asset`.
 
 ## SysML Parametric Diagrams
 
@@ -782,42 +814,97 @@ The `SecurityRisk` stereotype uses the `Class` class as a metaclass, and provide
 ```mermaid
     classDiagram
         class SecurityRisk~Class~ {
-            +Likelihood~Likelihood~
-            +Likelihood Justification~String~
-            +Consequence~Consequence~
-            +Consequence Justification~String~
-            +Simulation Initial Probability~Real~
-            +Simulation Residual Probability~Real~
-            +Simulation Detection Probability~Real~
-            +Simulation Threat Level~Threat~
-            -[derived] Participating Asset~Class~ [0..1]
-            -[derived] Threat Path~CallBehaviorAction~ [0..1]
-            -[derived] Mitigating Controls~Element~ [0..1]
-            -[derived] Potential Additional Controls~Element~ [0..1]
-            -[derived] Detecting Controls~Element~ [0..1]
-            -[derived] Risk Rating~Risk~ [0..1]
+            +Likelihood - Proposed~Likelihood~
+            +Likelihood Justification - Proposed~String~ [1]
+            +Consequence - Proposed~Consequence~
+            +Consequence Justification - Proposed~String~ [1]
+            +Simulation Initial Probability - Proposed~Real~ [1]
+            +Simulation Residual Probability - Proposed~Real~ [1]
+            +Simulation Detection Probabilit - Proposedy~Real~ [1]
+            +Simulation Threat Level - Proposed~Threat~
+            +Threat Histogram - Proposed~AttachedFile~ [1]
+            +Detection Histogram - Proposed~AttachedFile~ [1]
+            +Parametric - Proposed~AttachedFile~ [1]
+
+            ++Likelihood - Designed~Likelihood~
+            +Likelihood Justification - Designed~String~ [1]
+            +Consequence - Designed~Consequence~
+            +Consequence Justification - Designed~String~ [1]
+            +Simulation Initial Probability - Designed~Real~ [1]
+            +Simulation Residual Probability - Designed~Real~ [1]
+            +Simulation Detection Probabilit - Designed~Real~ [1]
+            +Simulation Threat Level - Designed~Threat~
+            +Threat Histogram - Designed~AttachedFile~ [1]
+            +Detection Histogram - Designed~AttachedFile~ [1]
+            +Parametric - Designed~AttachedFile~ [1]
+
+            +Likelihood - Verified~Likelihood~
+            +Likelihood Justification - Verified~String~ [1]
+            +Consequence - Verified~Consequence~
+            +Consequence Justification - Verified~String~ [1]
+            +Simulation Initial Probability - Verified~Real~ [1]
+            +Simulation Residual Probability - Verified~Real~ [1]
+            +Simulation Detection Probabilit - Verified~Real~ [1]
+            +Simulation Threat Level - Verified~Threat~
+            +Threat Histogram - Verified~AttachedFile~ [1]
+            +Detection Histogram - Verified~AttachedFile~ [1]
+            +Parametric - Verified~AttachedFile~ [1]
+
+            +[derived] Likelihood~Likelihood~
+            +[derived] Likelihood Justification~String~ [1]
+            +[derived] Consequence~Consequence~
+            +[derived] Consequence Justification~String~ [1]
+            +[derived] Simulation Initial Probability~Real~ [1]
+            +[derived] Simulation Residual Probability~Real~ [1]
+            +[derived] Simulation Detection Probability~Real~ [1]
+            +[derived] Simulation Threat Level~Threat~
+            +[derived] Threat Histogram~AttachedFile~ [1]
+            +[derived] Detection Histogram~AttachedFile~ [1]
+            +[derived] Parametric~AttachedFile~ [1]
+            +[derived] Risk Rating - Proposed~Risk~ [0..1]
+            +[derived] Risk Rating - Designed~Risk~ [0..1]
+            +[derived] Risk Rating - Verified~Risk~ [0..1]
+            -[derived] Risk Rating~Risk~ [1]
+            -[derived] Participating Asset~Class~ [0..*]
+            -[derived] Threat Path~CallBehaviorAction~ [0..*]
+            -[derived] Mitigating Controls~Element~ [0..*]
+            -[derived] Potential Additional Controls~Element~ [0..*]
+            -[derived] Detecting Controls~Element~ [0..*]
+            -[derived] Not Assessed Controls~Element~ [0..*]
+
+            -[constraint] Not Assessed()
         }
         
         Block~Class~ <|-- SecurityRisk~Class~
 ```
 
-`SecurityRisk` contains eight attributes:
+`SecurityRisk` contains thirty-three attributes, which are the eleven following attributes instantiated for the three [`Assessment Phase`s](./enumerations.md#maturity):
  - Likelihood - which tracks the qualitative likelihood of the `SecurityRisk`, using the [`Likelihood`](./enumerations.md#likelihood) enumeration as a type;
  - Likelihood Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative likelihood rating;
  - Consequence - which tracks the qualitative consequence of the `SecurityRisk`, using the [`Consequence`](./enumerations.md#consequence) enumeration as a type;
  - Consequence Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative consequence rating;
  - Simulation Initial Probability - captures the quantitiate initial probability used in the simulation of the `SecurityRisk`;
  - Simulation Residual Probability - captures the quantitative residual risk probability resulting from the simulation of the `SecurityRisk`;
- - Simulation Detection Probability - captures the quantitative detection probability resulting from the simulation of the `SecurityRisk`; and
- - Simulation Threat Level - captures the threat level used in the simulation of the `SecurityRisk`, using the [`Threat`](./enumerations.md#threat) enumeration as a type.
+ - Simulation Detection Probability - captures the quantitative detection probability resulting from the simulation of the `SecurityRisk`;
+ - Simulation Threat Level - captures the threat level used in the simulation of the `SecurityRisk`, using the [`Threat`](./enumerations.md#threat) enumeration as a type;
+ - Threat Histogram - captures an image of the threat histogram generated from simulating the parametric diagram associated with the `SecurityRisk`;
+ - Detection Histogram - captures an image of the detection histogram generated from simulating the parametric diagram associated with the `SecurityRisk`; and
+ - Parametric - captures an image of the parametric diagram associated with the `SecurityRisk` at the time of simulation.
 
-`SecurityRisk` contains six derived properties:
+`SecurityRisk` contains twenty-one derived properties. Eleven of these derived properties are aligned with teh eleven attributes listed above, with the derived property reflecting the appropriate value based on the currently selected [`Assessment Phase`](./enumerations.md#maturity). The remaining ten derived properties are:
  - Participating Asset - which lists the `Asset`s that are associated with this `SecurityRisk`;
  - Threat Path - which lists the `ThreatAction`s that are associated with this `SecurityRisk`;
  - Mitigating Controls - which lists the mitigating `SecurityControl`s associated with this `SecurityRisk`;
  - Potential Additional Controls - which lists the `SecurityControl`s that could be implemented to address this `SecurityRisk`, but which have not been implemented;
- - Detecting Controls - which lists the detecting `SecurityControl`s associated with this `SecurityRisk`; and
- - Risk Rating - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood` and `Consequence` attributes, using the [`Risk`](#risk) enumeration as a type.
+ - Detecting Controls - which lists the detecting `SecurityControl`s associated with this `SecurityRisk`;
+ - Not Assessed Controls - which lists the `SecurityControl`s associated with the `SecurityRisk` that have not had an implementation state selected; 
+ - Risk Rating - Proposed - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood - Proposed` and `Consequence - Proposed` attributes, using the [`Risk`](#risk) enumeration as a type;
+ - Risk Rating - Designed - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood - Designed` and `Consequence - Designed` attributes, using the [`Risk`](#risk) enumeration as a type;
+ - Risk Rating - Verified - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood - Verified` and `Consequence - Verified` attributes, using the [`Risk`](#risk) enumeration as a type; and
+ - Risk Rating - which derives the qualitative risk of the `SecurityRisk` based on the `Likelihood` and `Consequence` derived properties, using the [`Risk`](#risk) enumeration as a type.
+
+`SecurityRisk` has a single active validation constraints:
+ - Not Assessed() - which checks any of the `SecurityProperty`s associated with this risk have an implementation state of `Not Assessed` and flags if there are.
 
 `SecurityRisk` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Description`.
 

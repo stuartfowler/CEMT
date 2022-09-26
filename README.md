@@ -118,7 +118,7 @@ The CEMT is primarily focused on providing a high level of assurance for the lik
 
 The focus on providing assurance of the likelihood value is a deliberate choice. Discussions regarding criticality and consequence of cybersecurity risks are typically less opaque and less subjective, while top level threats to most systems are typically well documented in best-practice literature and therefore reasonably well understood. Traditionally, it is the likelihood determination where there is most subjectivity and opaque reasoning, and hence this determination is the primary focus of the CEMT.
 
-### Threat Modelling
+### [Threat Modelling](./Documentation/threat-modelling.md)
 
 The threat modelling stage involves the use of Misuse Case Diagrams and Mal-Activity Diagrams to model the way threat actors interact with the attack surface to achieve their malicious intent. The purpose of this activity is to enumerate the paths that an attacker must take to compromise the system. Click on the steps in the flowchart below to see additional detail and instructions.
 
@@ -164,7 +164,7 @@ flowchart TB
   click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
 ```
 
-### Threat Mitigation
+### [Threat Mitigation](./Documentation/threat-mitigation.md)
 
 The threat mitigation stage involves the use of Asset Definition Diagrams and Dependency Matrices to tie the threat paths generated during the threat modelling stage to the Assets within the system and potential security mitigations. The purpose of this activity is to provide traceability between system components, security controls and malicious actions. Click on the steps in the flowchart below to see additional detail and instructions.
 
@@ -205,7 +205,7 @@ flowchart TB
   click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
 ```
 
-### Risk Assessment
+### [Risk Assessment](./Documentation/risk.md)
 
 The risk assessment stage involves the use of Relationship Maps and Parametric Diagrams to assess the likelihood of a particular threat succeeding. The purpose of this activity is to provide determine a risk rating for key threat paths identified in the earlier stages. Click on the steps in the flowchart below to see additional detail and instructions.
 
@@ -222,8 +222,9 @@ flowchart TB
       7a --> 7c("Initial Probability") --> 7e
       7a --> 7d("Control Effectiveness") --> 7e
     end
-    subgraph 8["Risk Assessment Table"]
-      8a("Description") --> 8b("Simulated Probabilities") --> 8c("Risk Rating")
+    subgraph 8["Risk Assessment Tables"]
+      8a("Risk Lists")
+      8b("Risk Summary")
     end
     6 --> 7 --> 8
   end
@@ -237,9 +238,8 @@ flowchart TB
   click 7d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
   click 7e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
 
-  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
-  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
-  click 8c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-table" "Risk Table"
+  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-tables" "Risk Table"
+  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-tables" "Risk Table"
 ```
 
 ## Samples

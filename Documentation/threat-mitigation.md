@@ -61,7 +61,13 @@ Asset Definition Diagrams use the following CEMT stereotypes:
 
 ### System of Interest
 
-The first step in developing the Asset Definition Diagram is to insert a [`System`](./stereotypes.md#system) object that represents the system that is being evaluated using the CEMT. This is done by selecting `System of Interest` from the drawing palette and placing it on the diagram.
+The first step in developing the Asset Definition Diagram is to insert a [`System`](./stereotypes.md#system) object that represents the system that is being evaluated using the CEMT. This is done by selecting `System of Interest` from the drawing palette and placing it on the diagram. Once the `System` object has been placed, the `Assessment Phase` attribute should be set, which tracks the maturity of the assessment:
+
+ - `Proposed` should be set when the assessment is being performed on an early conceptual architecture for a system;
+ - `Designed` should be set when the assessment is being performed on a preliminary or detailed design of the system; and
+ - `Verified` should be set when the assessment is being performed on a built or implemented system.
+
+Ideally, this would be set to `Proposed` when the CEMT is used during conceptual design phases to perform a preliminary risk assessment, then updated to `Designed` when the CEMT is repeated during the detailed design phase and then updated to `Verified` when the CEMT is repeated following system implementation.
 
 https://user-images.githubusercontent.com/7237737/180377207-68d1d84a-75a0-4ad4-802e-9b629b8ca3ab.mp4
 
@@ -147,7 +153,7 @@ flowchart TB
     click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#implementation-status" "Implementation Status"
 ```
 
-The matrices are created using the `Dependency Matrix` diagram that is built into CAMEO Systems Modeler. These are pre-defined as part of the CEMT, and are copied across from the `Cyber Profile` as shown below:
+The matrices are created using the `Dependency Matrix` diagram that is built into CAMEO Systems Modeler. These are pre-defined as part of the CEMT template, but can be manually copied across from the `Cyber Profile` as shown below:
 
 https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9a62-4c394498e6b6.mp4
 
@@ -167,7 +173,7 @@ Matrices use the following CEMT stereotypes:
     - [`NoneAsset`](./stereotypes.md#noneasset)
  - [`Mitigates`](./stereotypes.md#mitigates)
  - [`Affects`](./stereotypes.md#affects)
- - [`SecurityProperty](./stereotypes.md#securityproperty)
+ - [`SecurityProperty`](./stereotypes.md#securityproperty)
 
 ### Link Assets
 
@@ -209,11 +215,21 @@ https://user-images.githubusercontent.com/7237737/187433301-1361e647-6aad-4aa5-a
 
 ### Implementation Status
 
-The final step in the threat mitigation phase involves the determination and documentation of the `Implementation` status of each `SecurityProperty`. Once the `Implementation` status has been set, the `Implementation Detail` field should be set. This should provide a summary of how the `SecurityProperty` was implemented to provide additional detail as to the level and method of implementation. This field can also be set for each property using the `Property List` Summary Diagram.
+The final step in the threat mitigation phase involves the determination and documentation of the `Implementation` status of each `SecurityProperty`. Once the `Implementation` status has been set, the `Implementation Detail` field should be set. These attributes cannot be directly modified, instead the following fields should be set:
+
+ - `Proposed Implementation` and `Implementation Detail - Proposed`: These fields should capture the intent to implement a `SecurityProperty`, when the assessment is being done during system definition;
+ - `Designed Implementation` and `Implementation Detail - Designed`: These fields should capture the state of the `SecurityProperty` as captured in the detailed system design; and
+ - `Verified Implementation` and `Implementation Detail - Verified`: These fields should capture the state of the `SecurityProperty` as determined via verification audits and/or tests.
+
+> **Note**: It is not intended for the modeller to populate all of these fields at the same time. Only the relevant fields for the phase of the system development during which the assessment is being done should be populated, and then the modeller should proceed to the [Risk Assessment](./risk.md) phase. Once the system development has progressed, the other implementation statuses can be populated and the risk assessments revisited.
+
+The implementation fields provide a summary of how the `SecurityProperty` was implemented at various phases of the system development, while the implementation detail fields provide additional detail as to the level and method of implementation. All of these fields can be set for each property using the `Property List` Summary Diagram, and the legend will colour code the `SecurityProperty` based on the selected `Assessment Phase` and the implementation state of the `SecurityProperty` for that particular phase.
+
+The summary `Implementation` and `Implementation Detail` attributes are automatically populated based on the `Assessment Phase` that has been selected on the [`System`](#system-of-interest) object.
 
 https://user-images.githubusercontent.com/7237737/187433326-a972a6c6-97af-4ebf-83e7-502b80430b9f.mp4
 
-> **Note**: When the `Property List` table becomes large due to a significant number of `SecurityProperty`s it can become more efficient to export the table to Microsoft Excel, enter the Implementation status and Implementation Detail in the spreadsheet and then import that data back into the model. This can help with bulk updates, and with getting system SMEs that do not have access to the CAMEO tool to assist with the determination of the Implementation status. This is a built-in feature of CAMEO System Modeler - instructions for how to conduct this export/import/sync can be found on the [NoMagic website](https://docs.nomagic.com/display/MD190/Sync+with+Excel+or+CSV+files).
+> **Note**: When the `Property List` table becomes large due to a significant number of `SecurityProperty`s it can become more efficient to export the table to Microsoft Excel, enter the relevant Implementation status and Implementation Detail in the spreadsheet and then import that data back into the model. This can help with bulk updates, and with getting system SMEs that do not have access to the CAMEO tool to assist with the determination of the Implementation status. This is a built-in feature of CAMEO System Modeler - instructions for how to conduct this export/import/sync can be found on the [NoMagic website](https://docs.nomagic.com/display/MD190/Sync+with+Excel+or+CSV+files).
 
 ![Populated Mal-Activity Diagram](/Documentation/Images/detmalact.png)
 

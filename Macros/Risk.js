@@ -740,7 +740,7 @@ with (CollectionsAndFiles) {
             StereotypesHelper.addStereotype(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath));
             StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionTarget", riskClass);
             StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "resultLocation", simInstance);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", 95);
+            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", 100);
             StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autoStart", true);
             StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autostartActiveObjects", true);
             StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "cloneReferences", false);
@@ -793,7 +793,7 @@ with (CollectionsAndFiles) {
             StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Detection Analysis - " + riskClass.getName());
             StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
             StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "plotColor", "#BC334E");
+            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "plotColor", "#0B5394");
             StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", 0);
             StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", 0);
             StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", 0);

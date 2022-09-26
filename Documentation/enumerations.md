@@ -77,3 +77,14 @@ The enumeration options are:
  - Nation State.
 
 These qualitative ratings impact the quantitative residual risk calculation in the simulation of a `SecurityRisk`. You can review and/or modify the transforms between the `Threat` enumeration and the quantitative risk calculations in the [`Difficulty`](./constraints.md#difficulty) constraint block.
+
+## Maturity
+
+The `Maturity` enumeration is used to identify the phase of the system development process during which the risk assessment is being conducted. 
+
+The enumeration options are:
+ - Proposed;
+ - Designed; and
+ - Verified.
+
+These ratings are used to determine which [Implementation Status](./threat-mitigation.md#implementation-status) is used during the risk assessment process and which risk results are displayed in the [Risk Summary Table](./risk.md#risk-assessment-tables).

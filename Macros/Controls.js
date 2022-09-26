@@ -84,7 +84,9 @@ with (CollectionsAndFiles) {
                             securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
                             securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
                             currentProperty = AutomatonMacroAPI.addStereotype(currentProperty, securityProperty);
-                            currentProperty.setImplementation(notAssessed);
+                            currentProperty.setVerified_Implementation(notAssessed);
+                            currentProperty.setDesigned_Implementation(notAssessed);
+                            currentProperty.setProposed_Implementation(notAssessed);
                             new_name = currentComponent.getName() + ' - ' + currentControl.getName();
                             currentProperty.setName(new_name);
                         }
@@ -103,7 +105,9 @@ with (CollectionsAndFiles) {
                                 securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
                                 securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
                                 noneProperty = AutomatonMacroAPI.addStereotype(noneProperty, securityProperty);
-                                noneProperty.setImplementation(notImplemented);
+                                noneProperty.setVerified_Implementation(notImplemented);
+                                noneProperty.setDesigned_Implementation(notImplemented);
+                                noneProperty.setProposed_Implementation(notImplemented);
                                 new_name = systemAsset.getName() + ' - ' + noneControl.getName();
                                 noneProperty.setName(new_name);
                             }
@@ -153,7 +157,9 @@ with (CollectionsAndFiles) {
                         securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
                         securityProperty = AutomatonMacroAPI.getOpaqueObject(securityProperty);
                         currentProperty = AutomatonMacroAPI.addStereotype(currentProperty, securityProperty);
-                        currentProperty.setImplementation(notAssessed);
+                        currentProperty.setVerified_Implementation(notAssessed);
+                        currentProperty.setDesigned_Implementation(notAssessed);
+                        currentProperty.setProposed_Implementation(notAssessed);
                         new_name = currentAsset.getName() + ' - ' + currentConstraint.getName();
                         currentProperty.setName(new_name);
                     }
