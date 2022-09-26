@@ -69,19 +69,19 @@ The first step in developing the Asset Definition Diagram is to insert a [`Syste
 
 Ideally, this would be set to `Proposed` when the CEMT is used during conceptual design phases to perform a preliminary risk assessment, then updated to `Designed` when the CEMT is repeated during the detailed design phase and then updated to `Verified` when the CEMT is repeated following system implementation.
 
-https://user-images.githubusercontent.com/7237737/180377207-68d1d84a-75a0-4ad4-802e-9b629b8ca3ab.mp4
+https://user-images.githubusercontent.com/7237737/192250754-0acee7f7-54ee-445b-990d-dff1abbfdeeb.mp4
 
 ### Assets
 
 The next step involves creating [`Asset`](./stereotypes.md#asset)s that represent the subsystems and components within the system of interest. This is done by selecting `Asset` from the drawing palette and placing them on the diagram.
 
-https://user-images.githubusercontent.com/7237737/180377237-56bf5555-aafc-4415-b91c-97b582edbe58.mp4
+https://user-images.githubusercontent.com/7237737/192250793-4a836e38-1326-43a0-8585-ce535cf224f7.mp4
 
 ### Contextual Assets
 
 The next step requires the modeller to define the contextual assets, which are those assets that are external to the system of interest but play a role in the security of the system because they might implement security mitigations on which the system of interest depends. This is done by selecting `Contextual Asset` from the drawing palette and placing them on the diagram.
 
-https://user-images.githubusercontent.com/7237737/180377260-030fb82e-873d-4c7a-92ef-69a2de420750.mp4
+https://user-images.githubusercontent.com/7237737/192250841-151d7e08-dbd3-488c-91c7-3a0cc9e0f691.mp4
 
 > **Note**: The `Contextual Asset` is not its own stereotype. The contextual assets are still given the [`Asset`](./stereotypes.md#asset) stereotype, but they also have the `isAbstract` property set to `true`. This is indicated on the `CEMT Asset Definition Diagram` by the name of the `Asset` being displayed in *italics*.
 
@@ -89,7 +89,7 @@ https://user-images.githubusercontent.com/7237737/180377260-030fb82e-873d-4c7a-9
 
 The final step in developing the Asset Definition Diagram is to link the system of interest, the assets and the contextual assets together into a hierarchy using [`DirectedAssociation`](./stereotypes.md#directedassociation)s. These are created by selecting `Directed Association` from the drawing palette and drawing them between the objects, starting from the parent and going down to the child.
 
-https://user-images.githubusercontent.com/7237737/180377285-0e9664b4-9b3a-4842-857e-d1b60d2a4aef.mp4
+https://user-images.githubusercontent.com/7237737/192250877-0915aeb9-545c-42d8-829e-3e081ca3bde2.mp4
 
 ### Additional Optional Steps
 
@@ -227,7 +227,7 @@ The implementation fields provide a summary of how the `SecurityProperty` was im
 
 The summary `Implementation` and `Implementation Detail` attributes are automatically populated based on the `Assessment Phase` that has been selected on the [`System`](#system-of-interest) object.
 
-https://user-images.githubusercontent.com/7237737/187433326-a972a6c6-97af-4ebf-83e7-502b80430b9f.mp4
+https://user-images.githubusercontent.com/7237737/192250962-5f11b729-e601-457e-8d52-427bfe8705a0.mp4
 
 > **Note**: When the `Property List` table becomes large due to a significant number of `SecurityProperty`s it can become more efficient to export the table to Microsoft Excel, enter the relevant Implementation status and Implementation Detail in the spreadsheet and then import that data back into the model. This can help with bulk updates, and with getting system SMEs that do not have access to the CAMEO tool to assist with the determination of the Implementation status. This is a built-in feature of CAMEO System Modeler - instructions for how to conduct this export/import/sync can be found on the [NoMagic website](https://docs.nomagic.com/display/MD190/Sync+with+Excel+or+CSV+files).
 
