@@ -183,7 +183,7 @@ The macro has two arguments, which you will be asked for when running the macro:
 
 `threatName` is the name that you want to give to the particular threat path you have selected. This will be used to name the risk. `assetSelectionPath` is an optional argument, where you can provide the `Qualified Name` of a particular `Asset` and the macro will only include that asset in the parametric diagram. If you leave the `assetSelectionPath` argument blank, all relevant `Asset`s will be included in the parametric risk diagram that hte macro generates.
 
-https://user-images.githubusercontent.com/7237737/187450973-33cd8e1b-dd81-4d9f-94bf-35ee0db8b66c.mp4
+https://user-images.githubusercontent.com/7237737/192251371-b3966b14-65e5-4e71-8216-9a8af071e8bc.mp4
 
 An example of the generated parametric risk diagram is shown below:
 
@@ -210,7 +210,7 @@ This setting determines how likely the threat actor is to be able to complete th
 
 While the lookup table above is hardcoded into the CEMT profile, the quantitative definition of each of those qualitative likelihoods can be modified by the modeller in the parametric risk diagram. By modifying the `min` and `max` vlaues of the `Certain`, `HighlyLikely`, `Likely`, `Possible`, `Unlikely` and `Rare` property values in the diagram the modeller can set the values that are used for each of these likelihood descriptors in the simulation. These values are set to a reasonable default by the [Risk Macro](../Macros/Risk.js) the generates the parametric risk diagram, but the flexibility for the modeller to modify these is available, if required.
 
-https://user-images.githubusercontent.com/7237737/187451027-026042b4-d49f-491c-8591-cebff0d18a89.mp4
+https://user-images.githubusercontent.com/7237737/192251448-5d66eae1-4956-49da-ac96-1ff59f439332.mp4
 
 > **Note**: The `min` and `max` values represent the minimum and maximum values of a uniform distribution to account for the uncertainty in the estimation of these likelihoods. The simulation will select a value within that uniform distribution for each simulation run when calculating the result. A sensitivity analysis of each value can be conducted by fixing every other variable and allowing just one to vary across the uniform distribution.
 
@@ -220,7 +220,7 @@ The next step is to set the [`InitialProbability`](./stereotypes.md#initialproba
 
 If you wanted to perform an operational assessment of risk, the likelihood that this particular attack will be attempted should be modelled by adjusting the initial probability to match the expected likelihood of the attack being attempted by an adversary on that particular operation.
 
-https://user-images.githubusercontent.com/7237737/187451063-502b3b3d-5c0e-48a4-b09e-d738735553aa.mp4
+https://user-images.githubusercontent.com/7237737/192251489-2e0640f9-5081-4208-ae98-1c431fdc0976.mp4
 
 ### Control Effectiveness
 
@@ -228,7 +228,7 @@ The next step involves selecting the [`MitigationControlEffectiveness`](./stereo
 
 Determining this value is not an exact science, and inevitably this will be a case of expert judgement to determine the value. While this is undesirable, the primary focus here is to eliminate opqaue expert judgement by requiring these estimations and judgements to be made at a specific level of detail which can be reviewed, interrogated and ultimately agreed. The ability to set a `min` and `max` value allows us to handle some of this uncertainty, and a sensitivity analysis can be performed on these effectiveness values by setting all other simulation variables to a constant and observing the impact on the output.
 
-https://user-images.githubusercontent.com/7237737/187451095-2a77208b-de6f-4ead-93d6-a8b8df733b31.mp4
+https://user-images.githubusercontent.com/7237737/192251582-bcdcbbc0-a873-4336-915e-2a429ac16198.mp4
 
 > **Note**: It is important to be clear about the limitations of this methodology in calculating an accurate residual risk. The simulation treats each of the control effectiveness values (and indeed, the ability of a particular threat actor to complete a task of particular difficulty) as independent events. While the attacker does need to do all of the actions in sequence, in many circumstances these events may not be truly independent - ie. if a particular controls was ineffective early in the threat path and was linked again later in the threat path, the simulation would treat these as independent even though if the contorl was bypassed earlier, it should actually have an effectiveness of 0 the second time. This is a known limitation of the calculation, and the purpose of this note is to say that the quantitative figures from these simulations should be used as a guide, rather than an answer. It is for this reason that the calculated likelihood values are converted back into a qualitative rating in the [Risk Assessment Table](#risk-assessment-table), so as not to give the incorrect impression of an accurate answer. For a detailed understanding of how the values are calculated in the simulation, please refer to the constraint definitions, particularly the [`Threat`](./constraints.md#threat) and [`Detect`](./constraints.md#detect) stereotypes.
 
@@ -236,7 +236,7 @@ https://user-images.githubusercontent.com/7237737/187451095-2a77208b-de6f-4ead-9
 
 The final step on the parametric risk diagram is to run the simulation. This will cause the model to randomly choose a value for each input variable within the ranges that were set and calculate the resultant [`ResidualProbability`](./stereotypes.md#residualprobability) and [`DetectionProbability`](./stereotypes.md#detectionprobability). This will be repeated 500 times, with the results plotted onto two histograms, along with a mean and standard deviation for the full dataset.
 
-https://user-images.githubusercontent.com/7237737/187451124-6fc77d92-0638-41f2-a74d-be9e1e2b5a9d.mp4
+https://user-images.githubusercontent.com/7237737/192251648-90032f4d-eb9e-4e59-b98c-f2f78d4a4db4.mp4
 
 The histograms will be automatically saved to the file system where the model is located, but it is a good idea to take your own copy, as the file could be overwritten if the simulation is run again. An example of the resulting histograms is shown below:
 
@@ -282,7 +282,7 @@ The first step is populating the risk list is to input a Risk Description. This 
 
 This field is common between the three Risk Lists, and only needs to be manually set in one of them.
 
-https://user-images.githubusercontent.com/7237737/187451206-df4cdfb9-11d8-4cfa-bbb1-31ea8acdabdc.mp4
+https://user-images.githubusercontent.com/7237737/192251718-ab941b15-a845-4c29-9922-9168cddcfbbd.mp4
 
 #### Simulated Probabilities
 
@@ -299,7 +299,7 @@ To attach the histogram and parametric diagram images, the saved images can be d
 
 Each Risk List has a different set of attributes to cover these Simulated Probabilities, allowing for later risk assessments to also be captured, without overwritting the historic results from earlier lifecycle phases.
 
-https://user-images.githubusercontent.com/7237737/187451227-bdbead4a-31de-4dfd-8546-1e491d3ef043.mp4
+https://user-images.githubusercontent.com/7237737/192251762-a4d0cc16-f2cf-461e-b297-892761df5295.mp4
 
 #### Risk Rating
 
@@ -387,7 +387,7 @@ Once the Likelihood and Consequence values are set, the Risk Rating will be auto
 
 Each Risk List has a different set of attributes to cover these Risk Ratings, allowing for later risk assessments to also be captured, without overwritting the historic results from earlier lifecycle phases.
 
-https://user-images.githubusercontent.com/7237737/187451275-5fcef7c8-818a-4169-b707-3fdebb94fcc2.mp4
+https://user-images.githubusercontent.com/7237737/192251847-7dfe99ef-b119-4155-adde-7e6188972936.mp4
 
 ![Risk List](./Images/list.png)
 
@@ -416,6 +416,8 @@ All of the fields in this table are auto-populated by the model. These automatic
  - Parametric - which contains an image of the parametric risk diagram, capturing the input variables for the simulation.
 
 The Risk Summary table will display the information from the relevant Risk List and `SecurityProperty` attributes, based on the `Assessment Phase` selected on the [`System`](./stereotypes.md#system) object. An example of a populated Risk Summary table is shown below. 
+
+https://user-images.githubusercontent.com/7237737/192251960-3b4a65c4-3e76-4e20-880c-73621f79ac90.mp4
 
 ![Risk Table](./Images/risk.png)
 
