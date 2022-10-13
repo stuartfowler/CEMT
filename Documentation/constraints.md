@@ -156,4 +156,44 @@ $OUT = {(1 - (1 - {IN1 \over 100})(1 - {IN2 \over 100})...(1 - {IN10 \over 100})
 
 The IN1 through IN10 values are summed together to give the overall likelihood of any one of those detections occuring. This is then divided by the `InitialProbability` value so that the OUT value is expressed as the likelihood of a detection *if* the attack is attempted. This value is then multiplied by 100 so that it is output as a percentage.
 
-> **Note**: The `DetectX` block only works for up to 10 detection probability inputs. This means that if an attack tree branch is longer than 10 nodes, the [Risk.js macro](../Macros/README.md#risk) will not be able to build the SysML Parametric Diagram because the CEMT profile does not have a `Detect11` or higher constraint block. If your attack tree has branches longer than 10 nodes, more `DetectX` constraint blocks will need to be added to the profile, and the Risk.js macro will need to be updated to modify the length check on the threat path.
+## CombineX
+
+The `CombineX` constraint block is used to combine multiple [`DetectX`](#detectx) constraint blocks into an overall detection probability when there are more than 10 detection nodes in the parametric diagram. The `CombineX` constraint block is actually a series of constraint blocks:
+ - Combine1;
+ - Combine2;
+ - Combine3;
+ - Combine4;
+ - Combine5;
+ - Combine6;
+ - Combine7;
+ - Combine8;
+ - Combine9; and
+ - Combine10.
+ 
+The number in the name of the constraint block aligns with the number of `DetectX` constraint blocks that are in the SysML Parametric Diagram, which determines how many inputs the constraint block needs to contain in order to combine them all.
+
+```mermaid
+flowchart LR
+  1("IN1")
+  2("IN2")
+  4("...")
+  6("IN10")
+  3("OUT") 
+  5{"DetectX"}
+  1 --> 5
+  2 --> 5
+  4 --> 5
+  6 --> 5
+  5 --> 3
+```
+
+The `CombineX` constraint block has multiple inputs:
+ - IN1 through IN10 - which contain the individual detection probabilities from the [`DetectX`](#detectx) constraint blocks.
+
+The `CombineX` constraint block has a single ouput, which is calculated with the following formula:
+
+$OUT = (1 - (1 - {IN1 \over 100})(1 - {IN2 \over 100})...(1 - {IN10 \over 100}))  $
+
+The IN1 through IN10 values are summed together to give the overall likelihood of any one of those detections occuring. There is moderation of this calculation by the `InitialProbability` value, like there was for the [`DetectX`](#detectx) constraint blocks, as all values have already been modified in this way by the `DetectX` constraint blocks.
+
+> **Note**: The `DetectX` block only works for up to 10 detection probability inputs, and the `CombineX` block only works for up to 10 `DetectX` blocks. This means that if an attack tree branch is longer than 100 nodes, the [Risk.js macro](../Macros/README.md#risk) will not be able to build the SysML Parametric Diagram because the CEMT profile does not have a `Combine11` or higher constraint block. While it is expected that 100 nodes is sufficient for most situations, if your attack tree has branches longer than 100 nodes, more `CombineX` constraint blocks will need to be added to the profile, and the Risk.js macro will need to be updated to modify the length check on the threat path.

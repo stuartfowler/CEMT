@@ -62,6 +62,7 @@ var legendPath = "Cyber::Legends::Implementation Status";
 var threatConstraintPath = "Cyber::Constraints::Threat";
 var threatConstraintStereotypePath = "Cyber::Stereotypes::ThreatConstraint";
 var detectConstraintPath = "Cyber::Constraints::Detect";
+var combineConstraintPath = "Cyber::Constraints::Combine";
 var detectConstraintStereotypePath = "Cyber::Stereotypes::DetectConstraint";
 var securityConstraintStereotypePath = "Cyber::Stereotypes::SecurityProperty";
 var threatRiskInputParameterPath = "Cyber::Constraints::Threat::RiskInput";
@@ -341,7 +342,7 @@ with (CollectionsAndFiles) {
             difficultyThreatShape = PresentationElementsManager.getInstance().createShapeElement(difficultyThreatParameter, difficultyConstraintShape);
             changeProperty(difficultyThreatShape, "SHOW_NAME", false);
             //changeProperty(difficultyConstraintShape, "SUPPRESS_STRUCTURE", true);       
-            PresentationElementsManager.getInstance().reshapeShapeElement(difficultyThreatShape, new java.awt.Rectangle(difficultyThreatParameter_x,difficulty_y,parameterWidth,parameterHeight));
+             PresentationElementsManager.getInstance().reshapeShapeElement(difficultyThreatShape, new java.awt.Rectangle(difficultyThreatParameter_x,difficulty_y,parameterWidth,parameterHeight));
             createBindingConnector(difficultyThreatParameter, difficultyThreatShape, difficultyConstraint, threatLevel, threatLevelShape, null);
 
             difficultyTrivialShape = PresentationElementsManager.getInstance().createShapeElement(difficultyTrivialParameter, difficultyConstraintShape);
@@ -656,7 +657,7 @@ with (CollectionsAndFiles) {
             return [threatRiskOutputParameter, threatRiskOutputParameterShape, threatConstraint, detectDetectProbParameter, detectDetectProbParameterShape, detectConstraint]
         }
 
-        function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, detectionCombinationHeight, detectCombinationOut_y, detectionProbability_y) {
+        function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, detectionCombinationHeight, detectCombinationOut_y, detectionProbability_y, finalParameters, fullBlocks, fullBlockHeight) {
 
             parametricDiagram = project.getDiagram(diagram);
 
@@ -665,61 +666,135 @@ with (CollectionsAndFiles) {
             PresentationElementsManager.getInstance().reshapeShapeElement(residualProbabilityShape, new java.awt.Rectangle(getThreatX(step),initialProbability_y,threatWidth,valueHeight));
             createBindingConnector(residualProbability, residualProbabilityShape, null, previousNode[0], previousNode[1], previousNode[2]);
 
-            writeLog("Number of Detections: " + allNodes.length, 4);
-            detectionCombinationPath = detectConstraintPath + (allNodes.length - 1);
-            detectionCombination = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
-            detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
-            PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y,threatWidth,detectionCombinationHeight));
-
             var detectionParameters = new ArrayList();
+            var outParameters = new ArrayList();
 
-            for(x = 0; x < allNodes.length - 1; x++) {
+            writeLog("Number of Detections: " + allNodes.length - 1, 3);
+
+            for(x = 0; x < fullBlocks; x++) {
+                detectionCombinationPath = detectConstraintPath + "10";
+                detectionCombination = createProperty(riskClass, "Detection Combination " + (x + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+                detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
+                PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * x),threatWidth,fullBlockHeight));
+                for(y = 0; y < 10; y++) {
+                    parameterPath = detectionCombinationPath + "::IN" + (y + 1);
+                    parameter = Finder.byQualifiedName().find(project, parameterPath)
+                    parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
+                    PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),getDetectionCombinationY(y) + (fullBlockHeight * x),parameterWidth,parameterHeight));
+                    parameterArray = [parameter, parameterShape];
+                    detectionParameters.add(parameterArray);
+                }
+                parameterPath = detectionCombinationPath + "::INIT";
+                parameter = Finder.byQualifiedName().find(project, parameterPath)
+                parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
+                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),getDetectionCombinationY(y) + (fullBlockHeight * x),parameterWidth,parameterHeight));
+                connector = createBindingConnector(allNodes.get(0)[3], allNodes.get(0)[4], allNodes.get(0)[5], parameter, parameterShape, null);
+                pathPoints = new ArrayList();
+                point1 = new java.awt.Point(getInitProbBendX(0), connector[1].getSupplier().getMiddlePoint().y);
+                point2 = new java.awt.Point(getInitProbBendX(0), connector[1].getClient().getMiddlePoint().y);
+                pathPoints.add(connector[1].getSupplier().getMiddlePoint());
+                pathPoints.add(point1);
+                pathPoints.add(point2);
+                pathPoints.add(connector[1].getClient().getMiddlePoint());
+                PresentationElementsManager.getInstance().changePathPoints(connector[1], pathPoints.get(0), pathPoints.get(3), pathPoints);
+
+                parameterPath = detectionCombinationPath + "::OUT";
+                parameter = Finder.byQualifiedName().find(project, parameterPath)
+                parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
+                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatRiskOutputParameterX(step), detectCombination_y  + (fullBlockHeight * x) + (fullBlockHeight / 2) - (parameterHeight / 2),parameterWidth,parameterHeight));
+                parameterArray = [parameter, parameterShape];
+                outParameters.add(parameterArray);
+            }
+
+            detectionCombinationPath = detectConstraintPath + finalParameters;
+            if(fullBlocks) {
+                detectionCombination = createProperty(riskClass, "Detection Combination " + (fullBlocks + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+            } else {
+                detectionCombination = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+            }
+            detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
+            PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * fullBlocks),threatWidth,detectionCombinationHeight));
+          
+            for(x = 0; x < finalParameters; x++) {
                 parameterPath = detectionCombinationPath + "::IN" + (x + 1);
                 parameter = Finder.byQualifiedName().find(project, parameterPath)
                 parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
-                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),getDetectionCombinationY(x),parameterWidth,parameterHeight));
+                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),getDetectionCombinationY(x) + (fullBlockHeight * fullBlocks),parameterWidth,parameterHeight));
                 parameterArray = [parameter, parameterShape];
                 detectionParameters.add(parameterArray);
             }
             parameterPath = detectionCombinationPath + "::INIT";
             parameter = Finder.byQualifiedName().find(project, parameterPath)
             parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
-            PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),getDetectionCombinationY(x),parameterWidth,parameterHeight));
+            PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),getDetectionCombinationY(x) + (fullBlockHeight * fullBlocks),parameterWidth,parameterHeight));
             parameterArray = [parameter, parameterShape];
-            detectionParameters.add(parameterArray);
+            connector = createBindingConnector(allNodes.get(0)[3], allNodes.get(0)[4], allNodes.get(0)[5], parameter, parameterShape, null);
+            pathPoints = new ArrayList();
+            point1 = new java.awt.Point(getInitProbBendX(0), connector[1].getSupplier().getMiddlePoint().y);
+            point2 = new java.awt.Point(getInitProbBendX(0), connector[1].getClient().getMiddlePoint().y);
+            pathPoints.add(connector[1].getSupplier().getMiddlePoint());
+            pathPoints.add(point1);
+            pathPoints.add(point2);
+            pathPoints.add(connector[1].getClient().getMiddlePoint());
+            PresentationElementsManager.getInstance().changePathPoints(connector[1], pathPoints.get(0), pathPoints.get(3), pathPoints);
             
-            parameterPath = detectionCombinationPath + "::OUT";
-            parameter = Finder.byQualifiedName().find(project, parameterPath)
-            parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
-            PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatControlParameterX(step), detectCombination_y ,parameterWidth,parameterHeight));
+            if(!fullBlocks) {
+                parameterPath = detectionCombinationPath + "::OUT";
+                parameter = Finder.byQualifiedName().find(project, parameterPath)
+                parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
+                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatControlParameterX(step), detectCombination_y ,parameterWidth,parameterHeight));
 
-            detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
-            detectionProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(detectionProbability, parametricDiagram); 
-            PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(getThreatX(step), detectionProbability_y, threatWidth, valueHeight));
-            createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, detectionCombination);
+                detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+                detectionProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(detectionProbability, parametricDiagram); 
+                PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(getThreatX(step), detectionProbability_y, threatWidth, valueHeight));
+                createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, detectionCombination);
+            } else {
+                parameterPath = detectionCombinationPath + "::OUT";
+                parameter = Finder.byQualifiedName().find(project, parameterPath)
+                parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
+                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatRiskOutputParameterX(step), detectCombination_y + (fullBlockHeight * fullBlocks) + (detectionCombinationHeight / 2) - (parameterHeight / 2),parameterWidth,parameterHeight));
+                parameterArray = [parameter, parameterShape];
+                outParameters.add(parameterArray);
 
+                step++;
+
+                combination = fullBlocks + 1;
+                combinationPath = combineConstraintPath + combination;
+                combine = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, combinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+                combineShape = PresentationElementsManager.getInstance().createShapeElement(combine, parametricDiagram);
+                PresentationElementsManager.getInstance().reshapeShapeElement(combineShape, new java.awt.Rectangle(getThreatX(step), detectCombination_y,threatWidth, (fullBlockHeight * fullBlocks) + detectionCombinationHeight));
+                for (x = 0; x < combination; x++) {
+                    parameterPath = combinationPath + "::IN" + (x + 1);
+                    parameter = Finder.byQualifiedName().find(project, parameterPath)
+                    parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, combineShape);
+                    if(x == combination - 1) {
+                        PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * fullBlocks) + (detectionCombinationHeight / 2) - (parameterHeight / 2),parameterWidth,parameterHeight));
+                    } else {
+                        PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y  + (fullBlockHeight * x) + (fullBlockHeight / 2) - (parameterHeight / 2),parameterWidth,parameterHeight));
+                    }
+                    createBindingConnector(outParameters.get(x)[0], outParameters.get(x)[1], null, parameter, parameterShape, combine);
+                }
+
+                parameterPath = combinationPath + "::OUT";
+                parameter = Finder.byQualifiedName().find(project, parameterPath)
+                parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, combineShape);
+                PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatControlParameterX(step), detectCombination_y,parameterWidth,parameterHeight));
+                
+                detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+                detectionProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(detectionProbability, parametricDiagram); 
+                PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(getThreatX(step), detectionProbability_y, threatWidth, valueHeight));
+                createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, combine);
+            }
             for(y = 0; y < detectionParameters.length; y++) {
-                connector = createBindingConnector(allNodes.get(allNodes.length - 1 - y)[3], allNodes.get(allNodes.length - 1 - y)[4], allNodes.get(allNodes.length - 1 - y)[5], detectionParameters.get(y)[0], detectionParameters.get(y)[1], detectionCombination);
-                if(StereotypesHelper.hasStereotype(allNodes.get(allNodes.length - 1 - y)[3], Finder.byQualifiedName().find(project, initialProbabilityPath))) {
-                    pathPoints = new ArrayList();
-                    point1 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y), connector[1].getSupplier().getMiddlePoint().y);
-                    point2 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y), connector[1].getClient().getMiddlePoint().y);
-                    pathPoints.add(connector[1].getSupplier().getMiddlePoint());
-                    pathPoints.add(point1);
-                    pathPoints.add(point2);
-                    pathPoints.add(connector[1].getClient().getMiddlePoint());
-                    PresentationElementsManager.getInstance().changePathPoints(connector[1], pathPoints.get(0), pathPoints.get(3), pathPoints);
-                }
-                else {
-                    pathPoints = new ArrayList();
-                    point1 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y) - (threatHorizontalGap / 4), connector[1].getSupplier().getMiddlePoint().y);
-                    point2 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y) - (threatHorizontalGap / 4), connector[1].getClient().getMiddlePoint().y);
-                    pathPoints.add(connector[1].getSupplier().getMiddlePoint());
-                    pathPoints.add(point1);
-                    pathPoints.add(point2);
-                    pathPoints.add(connector[1].getClient().getMiddlePoint());
-                    PresentationElementsManager.getInstance().changePathPoints(connector[1], pathPoints.get(0), pathPoints.get(3), pathPoints); 
-                }
+                connector = createBindingConnector(allNodes.get(allNodes.length - 1 - y)[3], allNodes.get(allNodes.length - 1 - y)[4], allNodes.get(allNodes.length - 1 - y)[5], detectionParameters.get(y)[0], detectionParameters.get(y)[1], null);
+                pathPoints = new ArrayList();
+                point1 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y) - (threatHorizontalGap / 4), connector[1].getSupplier().getMiddlePoint().y);
+                point2 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y) - (threatHorizontalGap / 4), connector[1].getClient().getMiddlePoint().y);
+                pathPoints.add(connector[1].getSupplier().getMiddlePoint());
+                pathPoints.add(point1);
+                pathPoints.add(point2);
+                pathPoints.add(connector[1].getClient().getMiddlePoint());
+                PresentationElementsManager.getInstance().changePathPoints(connector[1], pathPoints.get(0), pathPoints.get(3), pathPoints); 
             }
         }
 
@@ -851,13 +926,26 @@ with (CollectionsAndFiles) {
                 }
             }
             
-            var detectionCombinationsParameters = selectedObjects.length - 1;
-            var totalDifficultyCombinationVerticalGap = (detectionCombinationsParameters * parameterHeight) + (difficultyCombinationVerticalGap * (detectionCombinationsParameters - 1));
-            var detectionCombinationHeight = totalDifficultyCombinationVerticalGap + (2 * parameterHeight);
+            var numberOfActions = selectedObjects.length - 2;
+            var detectionCombinationsParameters = numberOfActions % 10;
+            var numberOf10CombinationBlocks = ((numberOfActions - detectionCombinationsParameters) / 10);
+            if (detectionCombinationsParameters == 0) {
+                detectionCombinationsParameters = 10;
+                numberOf10CombinationBlocks--;
+            }
+            if(numberOfActions > 100){
+                writeLog("ERROR: There are " + numberOfActions + " ThreatActions selected. Maximum supported is 100.", 1);
+                return;
+            }
+
+            var fullDifficultyCombinationHeight = (10 * parameterHeight) + (difficultyCombinationVerticalGap * 10) + (4 * parameterHeight);
+            var finalDifficultyCombinationHeight = (detectionCombinationsParameters * parameterHeight) + (difficultyCombinationVerticalGap * (detectionCombinationsParameters)) + (4 * parameterHeight);
+            var totalDifficultyCombinationHeight = (fullDifficultyCombinationHeight * numberOf10CombinationBlocks) + finalDifficultyCombinationHeight;
+            var detectionCombinationHeight = finalDifficultyCombinationHeight;
             var detectCombinationOut_y = detectCombination_y;// + (detectionCombinationHeight / 2) - (parameterHeight / 2);
             var detectionProbability_y = detectConstraint_y - (valueHeight / 2) + (threatHeight / 2);
-            if(detectionCombinationHeight > threatVeriticalGap) {
-                detectControlEffectiveness_y = detectControlEffectiveness_y - threatVeriticalGap + detectionCombinationHeight;
+            if(totalDifficultyCombinationHeight > threatVeriticalGap) {
+                detectControlEffectiveness_y = detectControlEffectiveness_y - threatVeriticalGap + totalDifficultyCombinationHeight;
                 detectComponent_y = detectControlEffectiveness_y + controlEffectivenessHeight + threatVeriticalGap;
             }
 
@@ -923,7 +1011,7 @@ with (CollectionsAndFiles) {
                 nodeHistory.add(drawnNode);
             }
 
-            buildFinalShapes(diagram, drawnNode, nextNode, z, nodeHistory, detectionCombinationHeight, detectCombinationOut_y, detectionProbability_y);
+            buildFinalShapes(diagram, drawnNode, nextNode, z, nodeHistory, detectionCombinationHeight, detectCombinationOut_y, detectionProbability_y, detectionCombinationsParameters, numberOf10CombinationBlocks, fullDifficultyCombinationHeight);
 
             newSession(project, "Simulation Creation");
             createSimulation();
