@@ -4,27 +4,22 @@ When a full branch of the attack tree is selected in the containment tree, a par
 diagram will be generated, along with a simulation for that parametric diagram. 
 
 Author: Stuart Fowler
-Date: 20 April 2020
+Date: 20 December 2022
 */
 
-var CollectionsAndFiles = new JavaImporter(
-    java.util,
-    java.io,
-    com.nomagic.magicdraw.automaton,
-    com.nomagic.magicdraw.core,
-    com.nomagic.magicdraw.core.Application,
-    com.nomagic.magicdraw.core.project,
-    com.nomagic.magicdraw.openapi,
-    com.nomagic.magicdraw.openapi.uml.SessionManager,
-    com.nomagic.magicdraw.openapi.uml.ModelElementsManager,
-    com.nomagic.magicdraw.openapi.uml.PresentationElementsManager,
-    com.nomagic.magicdraw.properties.PropertyManager,
-    com.nomagic.uml2.ext.jmi.helpers.ValueSpecificationHelper,
-    com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper,
-    com.nomagic.uml2.ext.jmi.helpers.CoreHelper,
-    com.nomagic.magicdraw.uml.Finder,
-    java.lang,
-    java.lang.Math);
+importClass(com.nomagic.magicdraw.core.Application);
+importClass(com.nomagic.magicdraw.core.Project);
+importClass(com.nomagic.magicdraw.openapi.uml.SessionManager);
+importClass(com.nomagic.magicdraw.openapi.uml.ModelElementsManager);
+importClass(com.nomagic.magicdraw.properties.PropertyManager);
+importClass(com.nomagic.magicdraw.openapi.uml.PresentationElementsManager);
+importClass(com.nomagic.uml2.ext.jmi.helpers.ValueSpecificationHelper);
+importClass(com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper);
+importClass(com.nomagic.uml2.ext.jmi.helpers.TagsHelper);
+importClass(com.nomagic.uml2.ext.jmi.helpers.CoreHelper);
+importClass(com.nomagic.magicdraw.uml.Finder);
+importClass(java.util.ArrayList);
+importClass(java.util.HashSet);
 
 var debug = 1;
 var threatImpactSignalPath = "Cyber::Stereotypes::ThreatImpactSignal";
@@ -160,8 +155,7 @@ var detectCombination_y = detectConstraint_y + threatHeight;
 
 
 
-with (CollectionsAndFiles) {
-    try {
+
         function calculateComponent_x(componentNumber, totalComponents, step) {
             return (getThreatX(step) - ((totalComponents - 1) * (threatWidth / 2)) - ((totalComponents - 1) * (componentGap / 2)) + (componentNumber * (threatWidth + componentGap)));
         }
@@ -232,6 +226,22 @@ with (CollectionsAndFiles) {
             StereotypesHelper.addStereotype(riskClass, Finder.byQualifiedName().find(project, securityRiskPath));
             writeLog("Created SecurityRisk: " + riskClass.getName(), 2);
 
+            resultPackage = ef.createPackageInstance();
+            resultPackage.setOwner(threatPackage);
+            resultPackage.setName("Results");
+
+            proposedPackage = ef.createPackageInstance();
+            proposedPackage.setOwner(resultPackage);
+            proposedPackage.setName("Proposed");
+
+            designedPackage = ef.createPackageInstance();
+            designedPackage.setOwner(resultPackage);
+            designedPackage.setName("Designed");
+
+            verifiedPackage = ef.createPackageInstance();
+            verifiedPackage.setOwner(resultPackage);
+            verifiedPackage.setName("Verified");
+
             return riskClass;
         }
 
@@ -285,11 +295,11 @@ with (CollectionsAndFiles) {
             }
             if((min || min == 0) && max) {
                 StereotypesHelper.addStereotype(newProperty, Finder.byQualifiedName().find(project, uniformPath));
-                StereotypesHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, uniformPath), "min", min);
-                StereotypesHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, uniformPath), "max", max);
+                TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, uniformPath), "min", min);
+                TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, uniformPath), "max", max);
             }
             if (defaultValue) {
-                tempValue = ValueSpecificationHelper.createValueSpecification(project, newProperty.getType(), defaultValue, None);
+                tempValue = ValueSpecificationHelper.createValueSpecification(project, newProperty.getType(), defaultValue, null);
                 newProperty.setDefaultValue(tempValue);
             }
             writeLog("Created new property: " + newProperty.getName(), 4);
@@ -437,12 +447,12 @@ with (CollectionsAndFiles) {
             return [initialProbability, initialProbabilityShape, null, initialProbability, initialProbabilityShape, null]
         }
 
-        function getCommonNode(array1, array2) {
-            for(i=0; i < array1.length; i++) {
-                for(j=0; j < array2.length; j++)
+        function getCommonNode(array, arraylist) {
+            for(i=0; i < array.length; i++) {
+                for(j=0; j < arraylist.size(); j++)
                 {
-                    if(array1[i] == array2[j]) {
-                        return array1[i];
+                    if(array[i] == arraylist.get(j)) {
+                        return array[i];
                     }
                 }
             }
@@ -493,26 +503,20 @@ with (CollectionsAndFiles) {
             threatDifficultyParameterShape = PresentationElementsManager.getInstance().createShapeElement(threatDifficultyParameter, threatConstraintShape);
             PresentationElementsManager.getInstance().reshapeShapeElement(threatDifficultyParameterShape, new java.awt.Rectangle(getThreatControlParameterX(step),threatDifficultyParameter_y,parameterWidth,parameterHeight));
             
-            currentDifficulty = StereotypesHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatActionStereotypePath), Finder.byQualifiedName().find(project, threatActionStereotypeDifficultyPath));
+            currentDifficulty = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatActionStereotypePath), "Difficulty");
             writeLog("currentNode Difficulty: " + currentDifficulty.get(0).getName(), 4);
 
-            switch(currentDifficulty.get(0).getName()) {
-                case "Trivial":
-                    createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, trivialValue, trivialShape, null);
-                    break;
-                case "Low":
-                    createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, lowValue, lowShape, null);
-                    break;
-                case "Medium":
-                    createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, mediumValue, mediumShape, null);
-                    break;
-                case "High":
-                    createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, highValue, highShape, null);
-                    break;
-                case "Extreme":
-                    createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, extremeValue, extremeShape, null);
-                    break;
-            } 
+            if(currentDifficulty.get(0).getName() == "Trivial") {
+                createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, trivialValue, trivialShape, null);
+            }else if(currentDifficulty.get(0).getName() == "Low") {
+                createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, lowValue, lowShape, null); 
+            }else if(currentDifficulty.get(0).getName() == "Medium") {
+                createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, mediumValue, mediumShape, null); 
+            }else if(currentDifficulty.get(0).getName() == "High") {
+                createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, highValue, highShape, null);
+            }else if(currentDifficulty.get(0).getName() == "Extreme") {
+                createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, extremeValue, extremeShape, null);
+            }
 
             threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), defaultMinEffectiveness, defaultMaxEffectiveness);
             threatControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(threatControlEffectiveness, parametricDiagram);
@@ -525,7 +529,7 @@ with (CollectionsAndFiles) {
             linkedAssets = currentNode.refGetValue("affects");
             writeLog("allocatedComponents: " + linkedAssets, 5);
             if(assetSelection) {
-                for(h = 0; h < linkedAssets.length; h++) {
+                for(h = 0; h < linkedAssets.size(); h++) {
                     if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
                         linkedAssets.remove(h);
                     }
@@ -541,26 +545,26 @@ with (CollectionsAndFiles) {
                 currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
                 createDependency(threatControlEffectiveness, threatControlEffectivenessShape, noneConstraint, currentConstraintShape);
                 PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), topGap, threatWidth, componentHeight));
-                StereotypesHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
-                StereotypesHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
+                TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", "0");
+                TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", "0");
             }
             else {
-                for(i = 0; i < linkedAssets.length; i++) {
+                for(i = 0; i < linkedAssets.size(); i++) {
                     currentAsset = linkedAssets.get(i);
                     currentPart = createProperty(riskClass, null, currentAsset, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
                     currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
                     ownedConstraints = currentAsset.getOwnedElement();
                     for(j = 0; j < ownedConstraints.size(); j++) {
-                        if(StereotypesHelper.hasStereotype(ownedConstraints[j], Finder.byQualifiedName().find(project, securityConstraintStereotypePath))) {
-                            writeLog("SecurityConstraint Found: " + ownedConstraints[j].getName(), 5);
-                            if(linkedControls.contains(ownedConstraints[j].getType())) {
-                                writeLog("ApplicableControl Found: " + ownedConstraints[j].getType().getName(), 4);
-                                currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(ownedConstraints[j], currentPartShape);
-                                createDependency(threatControlEffectiveness, threatControlEffectivenessShape, ownedConstraints[j], currentConstraintShape);
+                        if(StereotypesHelper.hasStereotype(ownedConstraints.get(j), Finder.byQualifiedName().find(project, securityConstraintStereotypePath))) {
+                            writeLog("SecurityConstraint Found: " + ownedConstraints.get(j).getName(), 5);
+                            if(linkedControls.contains(ownedConstraints.get(j).getType())) {
+                                writeLog("ApplicableControl Found: " + ownedConstraints.get(j).getType().getName(), 4);
+                                currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(ownedConstraints.get(j), currentPartShape);
+                                createDependency(threatControlEffectiveness, threatControlEffectivenessShape, ownedConstraints.get(j), currentConstraintShape);
                             }
                         }                    
                     }
-                    PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(calculateComponent_x(i, linkedAssets.length, step), topGap, threatWidth, componentHeight));
+                    PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(calculateComponent_x(i, linkedAssets.size(), step), topGap, threatWidth, componentHeight));
                 }
             }
 
@@ -615,7 +619,7 @@ with (CollectionsAndFiles) {
             linkedAssets = currentDetectNode.refGetValue("affects");
             writeLog("allocatedComponents: " + linkedAssets, 5);
             if(assetSelection) {
-                for(h = 0; h < linkedAssets.length; h++) {
+                for(h = 0; h < linkedAssets.size(); h++) {
                     if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
                         linkedAssets.remove(h);
                     }
@@ -631,26 +635,26 @@ with (CollectionsAndFiles) {
                 currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
                 createDependency(detectControlEffectiveness, detectControlEffectivenessShape, noneConstraint, currentConstraintShape);
                 PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), detectComponent_y, threatWidth, componentHeight));
-                StereotypesHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
-                StereotypesHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
+                TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
+                TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
             }
             else {
-                for(i = 0; i < linkedAssets.length; i++) {
+                for(i = 0; i < linkedAssets.size(); i++) {
                     currentAsset = linkedAssets.get(i);
                     currentPart = createProperty(riskClass, null, currentAsset, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
                     currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
                     ownedConstraints = currentAsset.getOwnedElement();
                     for(j = 0; j < ownedConstraints.size(); j++) {
-                        if(StereotypesHelper.hasStereotype(ownedConstraints[j], Finder.byQualifiedName().find(project, securityConstraintStereotypePath))) {
-                            writeLog("SecurityConstraint Found: " + ownedConstraints[j].getName(), 5);
-                            if(linkedControls.contains(ownedConstraints[j].getType())) {
-                                writeLog("ApplicableControl Found: " + ownedConstraints[j].getType().getName(), 4);
-                                currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(ownedConstraints[j], currentPartShape);
-                                createDependency(detectControlEffectiveness, detectControlEffectivenessShape, ownedConstraints[j], currentConstraintShape);
+                        if(StereotypesHelper.hasStereotype(ownedConstraints.get(j), Finder.byQualifiedName().find(project, securityConstraintStereotypePath))) {
+                            writeLog("SecurityConstraint Found: " + ownedConstraints.get(j).getName(), 5);
+                            if(linkedControls.contains(ownedConstraints.get(j).getType())) {
+                                writeLog("ApplicableControl Found: " + ownedConstraints.get(j).getType().getName(), 4);
+                                currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(ownedConstraints.get(j), currentPartShape);
+                                createDependency(detectControlEffectiveness, detectControlEffectivenessShape, ownedConstraints.get(j), currentConstraintShape);
                             }
                         }                    
                     }
-                    PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(calculateComponent_x(i, linkedAssets.length, step), detectComponent_y, threatWidth, componentHeight));
+                    PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(calculateComponent_x(i, linkedAssets.size(), step), detectComponent_y, threatWidth, componentHeight));
                 }
             }
 
@@ -669,7 +673,7 @@ with (CollectionsAndFiles) {
             var detectionParameters = new ArrayList();
             var outParameters = new ArrayList();
 
-            writeLog("Number of Detections: " + allNodes.length - 1, 3);
+            writeLog("Number of Detections: " + allNodes.size() - 1, 3);
 
             for(x = 0; x < fullBlocks; x++) {
                 detectionCombinationPath = detectConstraintPath + "10";
@@ -785,11 +789,11 @@ with (CollectionsAndFiles) {
                 PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(getThreatX(step), detectionProbability_y, threatWidth, valueHeight));
                 createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, combine);
             }
-            for(y = 0; y < detectionParameters.length; y++) {
-                connector = createBindingConnector(allNodes.get(allNodes.length - 1 - y)[3], allNodes.get(allNodes.length - 1 - y)[4], allNodes.get(allNodes.length - 1 - y)[5], detectionParameters.get(y)[0], detectionParameters.get(y)[1], null);
+            for(y = 0; y < detectionParameters.size(); y++) {
+                connector = createBindingConnector(allNodes.get(allNodes.size() - 1 - y)[3], allNodes.get(allNodes.size() - 1 - y)[4], allNodes.get(allNodes.size() - 1 - y)[5], detectionParameters.get(y)[0], detectionParameters.get(y)[1], null);
                 pathPoints = new ArrayList();
-                point1 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y) - (threatHorizontalGap / 4), connector[1].getSupplier().getMiddlePoint().y);
-                point2 = new java.awt.Point(getInitProbBendX(allNodes.length - 1 - y) - (threatHorizontalGap / 4), connector[1].getClient().getMiddlePoint().y);
+                point1 = new java.awt.Point(getInitProbBendX(allNodes.size() - 1 - y) - (threatHorizontalGap / 4), connector[1].getSupplier().getMiddlePoint().y);
+                point2 = new java.awt.Point(getInitProbBendX(allNodes.size() - 1 - y) - (threatHorizontalGap / 4), connector[1].getClient().getMiddlePoint().y);
                 pathPoints.add(connector[1].getSupplier().getMiddlePoint());
                 pathPoints.add(point1);
                 pathPoints.add(point2);
@@ -813,75 +817,75 @@ with (CollectionsAndFiles) {
 
             var simulationConfigStereotypePath = "SimulationProfile::config::SimulationConfig";
             StereotypesHelper.addStereotype(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath));
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionTarget", riskClass);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "resultLocation", simInstance);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", 100);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autoStart", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autostartActiveObjects", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "cloneReferences", false);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "decimalPlaces", 1);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "fireValueChangeEvent", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "initializeReferences", false);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "numberOfRuns", 500);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "recordTimestamp", false);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "rememberFailureStatus", false);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "runForksInParallel", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "silent", false);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "solveAfterInitialization", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "startWebServer", false);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "addControlPanel", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "timeVariableName", "simtime");
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "treatAllClassifiersAsActive", true);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "constraintFailureAsBreakpoint", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionTarget", riskClass);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "resultLocation", simInstance);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", "100");
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autoStart", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autostartActiveObjects", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "cloneReferences", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "decimalPlaces", "1");
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "fireValueChangeEvent", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "initializeReferences", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "numberOfRuns", "500");
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "recordTimestamp", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "rememberFailureStatus", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "runForksInParallel", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "silent", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "solveAfterInitialization", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "startWebServer", false);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "addControlPanel", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "timeVariableName", "simtime");
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "treatAllClassifiersAsActive", true);
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "constraintFailureAsBreakpoint", false);
 
             threatHistogram = ef.createClassInstance();
             threatHistogram.setName("Threat Analysis - " + riskClass.getName());
             threatHistogram.setOwner(simPackage);
             StereotypesHelper.addStereotype(threatHistogram, Finder.byQualifiedName().find(project, histogramPath));
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", riskClass);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", residualProbability);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", residualProbability.getID());
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Threat Analysis - " + riskClass.getName());
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "plotColor", "#BC334E");
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", 0);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", 0);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", 0);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true);
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
-            StereotypesHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Threat Analysis - " + riskClass.getName() + ".png");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", riskClass);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", residualProbability);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", residualProbability.getID());
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Threat Analysis - " + riskClass.getName());
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "plotColor", "#BC334E");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", "0");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", "0");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", "0");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true);
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
+            TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Threat Analysis - " + riskClass.getName() + ".png");
 
             detectHistogram = ef.createClassInstance();
             detectHistogram.setName("Detection Analysis - " + riskClass.getName());
             detectHistogram.setOwner(simPackage);
             StereotypesHelper.addStereotype(detectHistogram, Finder.byQualifiedName().find(project, histogramPath));
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", riskClass);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", detectionProbability);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", detectionProbability.getID());
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Detection Analysis - " + riskClass.getName());
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "plotColor", "#0B5394");
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", 0);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", 0);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", 0);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true); 
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
-            StereotypesHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Detection Analysis - " + riskClass.getName() + ".png");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", riskClass);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", detectionProbability);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", detectionProbability.getID());
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Detection Analysis - " + riskClass.getName());
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "plotColor", "#0B5394");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", "0");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", "0");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", "0");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true); 
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
+            TagsHelper.setStereotypePropertyValue(detectHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Detection Analysis - " + riskClass.getName() + ".png");
             
             uiList = new HashSet();
             uiList.add(threatHistogram);
             uiList.add(detectHistogram);
-            StereotypesHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", uiList); 
+            TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", uiList); 
             
         }
 
@@ -908,10 +912,12 @@ with (CollectionsAndFiles) {
             for(z = 0; z < selectedObjects.length; z++) {
                 next = nextNode.refGetValue("NextThreatAction");
                 nextNode = getCommonNode(selectedObjects, next);
-                if(StereotypesHelper.hasStereotype(nextNode, threatImpactSignal)) {
+
+                if(StereotypesHelper.hasStereotype(nextNode,threatImpactSignal)) {
                     break;
                 }
-                difficultyTest = StereotypesHelper.getStereotypePropertyValue(nextNode, Finder.byQualifiedName().find(project, threatActionStereotypePath), Finder.byQualifiedName().find(project, threatActionStereotypeDifficultyPath));
+                
+                difficultyTest = TagsHelper.getStereotypePropertyValue(nextNode, Finder.byQualifiedName().find(project, threatActionStereotypePath), "Difficulty");
                 if(difficultyTest.length == 0) {
                     writeLog("ERROR: " + nextNode.getName() + " does not have a Difficulty set. Please set a difficulty for this action and try again.", 1);
                     return;
@@ -955,7 +961,7 @@ with (CollectionsAndFiles) {
                     
             var secControl = Finder.byQualifiedName().find(project, securityControlPath);
             var noneControlStereo = Finder.byQualifiedName().find(project, noneControlStereoPath);
-            var noneControls = StereotypesHelper.getExtendedElements(noneControlStereo);
+            var noneControls = StereotypesHelper.getStereotypedElements(noneControlStereo);
             if(noneControls.size() > 1)
             {
                 writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
@@ -967,7 +973,7 @@ with (CollectionsAndFiles) {
             var noneControlPath = noneControl.getQualifiedName();
 
             var secConstraint = Finder.byQualifiedName().find(project, securityConstraintStereotypePath);
-            var secConstraints = StereotypesHelper.getExtendedElements(secConstraint);
+            var secConstraints = StereotypesHelper.getStereotypedElements(secConstraint);
             for(i = 0; i < secConstraints.size(); i++) {
                 if(secConstraints.get(i).getType() == noneControl) {
                     var noneConstraint = secConstraints.get(i);
@@ -979,7 +985,7 @@ with (CollectionsAndFiles) {
             var noneConstraintPath = noneConstraint.getQualifiedName();
 
             var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
-            var systemAssets = StereotypesHelper.getExtendedElements(systemAssetStereo);
+            var systemAssets = StereotypesHelper.getStereotypedElements(systemAssetStereo);
             if(systemAssets.size() > 1)
             {
                 writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
@@ -1025,10 +1031,8 @@ with (CollectionsAndFiles) {
         writeLog("Got elementsFactory: " + ef, 5);
         newSession(project, "Parametric Creation");
         main(project, ef);
-        
-    }
-    finally
-    {
+         
         SessionManager.getInstance().closeSession();
-    }
-}
+
+       
+

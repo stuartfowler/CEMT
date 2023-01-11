@@ -32,6 +32,8 @@ The CEMT is distributed as an importable profile for [CAMEO Systems Modeler](htt
 
 The simulated risk assessment portion of the CEMT also requires the [CAMEO Simulation Toolkit](https://www.3ds.com/products-services/catia/products/no-magic/cameo-simulation-toolkit/) which is a feature of CAMEO System Modeler that is included as part of the *Enterprise Edition* of CAMEO Systems Modeler - it is not included in the entry level *Architect Edition*. Without this feature installed, there may be unexpected errors in some of the CEMT functionality.
 
+> The latest releases of the CEMT are now supported for CATIA Magic Cyber Systems Engineer from version 2022x as the product is being rebranded from CAMEO Systems Modeler.
+
 ### Install as Plugin Package
 
 The [releases](https://github.com/stuartfowler/CEMT/releases) page hosts the self-contained plugins which can be imported into the Resource Manager of CAMEO Systems Modeler.
