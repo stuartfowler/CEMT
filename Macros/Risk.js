@@ -538,13 +538,17 @@ var detectCombination_y = detectConstraint_y + threatHeight;
             linkedControls = currentNode.refGetValue("mitigatedBy");
             writeLog("potentialControls: " + linkedControls, 5);
 
-            if(linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
-                noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
-                currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, null, null, null, null);
-                currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
-                currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
-                createDependency(threatControlEffectiveness, threatControlEffectivenessShape, noneConstraint, currentConstraintShape);
-                PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), topGap, threatWidth, componentHeight));
+            if(noneControlPath && linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
+                if(noneConstraintPath && systemBlockPath){
+                    noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
+                    currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, null, null, null, null);
+                    currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
+                    currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
+                    createDependency(threatControlEffectiveness, threatControlEffectivenessShape, noneConstraint, currentConstraintShape);
+                    PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), topGap, threatWidth, componentHeight));
+                } else {
+                    writeLog("ERROR: NoneControl is linked to " + currentNode.getName() + " but there is no associated SecurityProperty on the System Block.")
+                }
                 TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", "0");
                 TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", "0");
             }
@@ -628,13 +632,17 @@ var detectCombination_y = detectConstraint_y + threatHeight;
             linkedControls = currentDetectNode.refGetValue("mitigatedBy");
             writeLog("potentialControls: " + linkedControls, 5);
 
-            if(linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
-                noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
-                currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, null, null, null, null);
-                currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
-                currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
-                createDependency(detectControlEffectiveness, detectControlEffectivenessShape, noneConstraint, currentConstraintShape);
-                PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), detectComponent_y, threatWidth, componentHeight));
+            if(noneControlPath && linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
+                if(noneConstraintPath && systemBlockPath){
+                    noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
+                    currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, null, null, null, null);
+                    currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
+                    currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
+                    createDependency(detectControlEffectiveness, detectControlEffectivenessShape, noneConstraint, currentConstraintShape);
+                    PresentationElementsManager.getInstance().reshapeShapeElement(currentPartShape, new java.awt.Rectangle(getThreatX(step), detectComponent_y, threatWidth, componentHeight));
+                } else {
+                    writeLog("ERROR: NoneControl is linked to " + currentDetectNode.getName() + " but there is no associated SecurityProperty on the System Block.")
+                }
                 TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
                 TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
             }
@@ -966,23 +974,34 @@ var detectCombination_y = detectConstraint_y + threatHeight;
             {
                 writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
             }
-            var noneControl = noneControls.get(0);
-            writeLog("Found None: " + noneControl.getName(), 5);
-            writeLog("Found None: " + noneControl.getQualifiedName(), 5);
+            if(noneControls.size() != 0)
+            {
+                var noneControl = noneControls.get(0);
+                writeLog("Found None: " + noneControl.getName(), 5);
+                writeLog("Found None: " + noneControl.getQualifiedName(), 5);
 
-            var noneControlPath = noneControl.getQualifiedName();
+                var noneControlPath = noneControl.getQualifiedName();
 
-            var secConstraint = Finder.byQualifiedName().find(project, securityConstraintStereotypePath);
-            var secConstraints = StereotypesHelper.getStereotypedElements(secConstraint);
-            for(i = 0; i < secConstraints.size(); i++) {
-                if(secConstraints.get(i).getType() == noneControl) {
-                    var noneConstraint = secConstraints.get(i);
+                var secConstraint = Finder.byQualifiedName().find(project, securityConstraintStereotypePath);
+                var secConstraints = StereotypesHelper.getStereotypedElements(secConstraint);
+                for(i = 0; i < secConstraints.size(); i++) {
+                    if(secConstraints.get(i).getType() == noneControl) {
+                        var noneConstraint = secConstraints.get(i);
+                    }
                 }
+                if(noneConstraint)
+                {
+                    writeLog("Found None: " + noneConstraint.getName(), 5);
+                    writeLog("Found None: " + noneConstraint.getQualifiedName(), 5);
+                    var noneConstraintPath = noneConstraint.getQualifiedName();
+                } else
+                {
+                    var noneConstraintPath = null;
+                }
+            } else
+            {
+                var noneControlPath = null;                
             }
-            writeLog("Found None: " + noneConstraint.getName(), 5);
-            writeLog("Found None: " + noneConstraint.getQualifiedName(), 5);
-
-            var noneConstraintPath = noneConstraint.getQualifiedName();
 
             var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
             var systemAssets = StereotypesHelper.getStereotypedElements(systemAssetStereo);
@@ -990,12 +1009,18 @@ var detectCombination_y = detectConstraint_y + threatHeight;
             {
                 writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
             }
-            var systemAsset = systemAssets.get(0);
+            if(systemAssets.size() != 0)
+            {
+                var systemAsset = systemAssets.get(0);
 
-            writeLog("Found System: " + systemAsset.getName(), 5);
-            writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
+                writeLog("Found System: " + systemAsset.getName(), 5);
+                writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
 
-            var systemBlockPath = systemAsset.getQualifiedName();
+                var systemBlockPath = systemAsset.getQualifiedName();
+            } else
+            {
+                var systemBlockPath = null;
+            }
 
             risk = createRisk(project, initialNode.getName(), signal.getName(), assetSelection);
             diagram = ModelElementsManager.getInstance().createDiagram("SysML Parametric Diagram", risk);

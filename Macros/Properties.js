@@ -1,7 +1,7 @@
 /* 
-This macro updates Security Properties to ensure they fit the "<Asset Name> - <Control Name>" format.
-This macro should be run when the modeller changes the name of a Security Control.
-When a particular property is selected in the containment tree, only that constraint is processed.
+This macro updates Security Properties to ensure they fit the "<Asset Name> - <Control Name>" format and removes untyped Security Properties.
+This macro should be run when the modeller changes the name of a Security Control or deletes a Security Control.
+When a particular property is selected in the containment tree, only that property is processed.
 When nothing is selected in the containment tree, all Security Properties are processed. 
 
 Author: Stuart Fowler
@@ -45,6 +45,11 @@ function newSession(project, sessionName) {
 //Checks Property name and updates as required
 function processProperty(object) {
     writeLog("Processing securityProperty: " + object.getName(), 2);
+    if(!object.getType()) {
+        writeLog(object.getName() + " did not have a type, and has been deleted. If this is undesired, you can reinstate the SecurityProperty using the 'Undo' command.", 1);
+        ModelElementsManager.getInstance().removeElement(object);
+        return;
+    }
     type = object.getType().getName();
     objname = object.getName();
     owner = object.getOwner().getName();
