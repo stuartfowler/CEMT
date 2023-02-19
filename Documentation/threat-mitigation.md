@@ -41,10 +41,6 @@ flowchart TB
         4b("Assets") --> 4d
         4c("Contextual Assets") --> 4d
     end
-    click 4a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#system-of-interest" "System of Interest"
-    click 4b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#assets" "Assets"
-    click 4c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#contextual-assets" "Contextual Assets"
-    click 4d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#directed-associations" "Directed Associations"
 ```
 
 Asset Definition Diagrams are drawn using a `CEMT Asset Definition Diagram`, which can be created by right clicking on a `Package` in the containment tree, selecting `Create Diagram` from the context menu and then selecting `CEMT Asset Definition Diagram`.
@@ -107,9 +103,6 @@ flowchart TB
       6a("Security Controls")
       6c("Security Constraints")
     end
-
-  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-controls" "Security Controls"
-  click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-constraints" "Security Constraints"
 ```
 
 ### Security Controls
@@ -145,12 +138,6 @@ flowchart TB
       5b("Link Controls") --> 5c
       5f("Link Constraints") --> 5c
     end
-
-    click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#link-controls" "Link Controls"
-    click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-properties" "Security Properties"
-    click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#link-assets" "Link Assets"
-    click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#link-constraints" "Link Constraints"
-    click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#implementation-status" "Implementation Status"
 ```
 
 The matrices are created using the `Dependency Matrix` diagram that is built into CAMEO Systems Modeler. These are pre-defined as part of the CEMT template, but can be manually copied across from the `Cyber Profile` as shown below:

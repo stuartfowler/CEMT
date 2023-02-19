@@ -32,7 +32,7 @@ The CEMT is distributed as an importable profile for [CAMEO Systems Modeler](htt
 
 The simulated risk assessment portion of the CEMT also requires the [CAMEO Simulation Toolkit](https://www.3ds.com/products-services/catia/products/no-magic/cameo-simulation-toolkit/) which is a feature of CAMEO System Modeler that is included as part of the *Enterprise Edition* of CAMEO Systems Modeler - it is not included in the entry level *Architect Edition*. Without this feature installed, there may be unexpected errors in some of the CEMT functionality.
 
-> The latest releases of the CEMT are now supported for CATIA Magic Cyber Systems Engineer from version 2022x as the product is being rebranded from CAMEO Systems Modeler.
+> The latest releases of the CEMT are now supported for CATIA Magic Cyber Systems Engineer from version 2022x as the product is being rebranded from CAMEO Systems Modeler. The CATIA Magic Cyber Systems Engineer includes all of the necssary modules to use the CEMT.
 
 ### Install as Plugin Package
 
@@ -41,12 +41,14 @@ The [releases](https://github.com/stuartfowler/CEMT/releases) page hosts the sel
 These plugin packages can be installed by downloading the .zip file contained in a particular release, selecting `Help -> Resource/Plugin Manager` menu in CAMEO System Modeler, clicking `Import` and then selecting the .zip file you downloaded from the relase page.
 
 This will automatically install the following resources:
- - `Cyber_Profile.mdzip` and the latest ISM profile will be installed into your local `profiles` directory;
+ - `Cyber_Profile.mdzip`, the latest ISM profile and the profile for Australian Government Data Markings will be installed into your local `profiles` directory;
  - `CEMT_sample.mdzip` will be installed into your local `samples` directory;
  - the [Custom CEMT Diagrams](#custom-diagrams) will be installed into your local CAMEO environment; and
  - a CEMT_template will be installed into your local `template` directory.
 
 You will need to restart your CAMEO application, as prompted, to complete the install.
+
+> The `Data Markings and Classification` plugin is a pre-requisite for the CEMT. This is a standard plugin that is distributed with CATIA Magic Cyber Systems Engineer, but it is not enabled by default. This plugin must be enabled is the Plugin Manager.
 
 https://user-images.githubusercontent.com/7237737/188266915-c1b44035-d83e-4245-95e4-c5560ff38c44.mp4
 
@@ -122,7 +124,11 @@ The focus on providing assurance of the likelihood value is a deliberate choice.
 
 ### [Threat Modelling](./Documentation/threat-modelling.md)
 
-The threat modelling stage involves the use of Misuse Case Diagrams and Mal-Activity Diagrams to model the way threat actors interact with the attack surface to achieve their malicious intent. The purpose of this activity is to enumerate the paths that an attacker must take to compromise the system. Click on the steps in the flowchart below to see additional detail and instructions.
+The threat modelling stage involves the use of Misuse Case Diagrams and Mal-Activity Diagrams to model the way threat actors interact with the attack surface to achieve their malicious intent. The purpose of this activity is to enumerate the paths that an attacker must take to compromise the system. Click on the links below to see additional detail and instructions:
+
+ - [Misuse Case Diagrams](./Documentation/threat-modelling.md#misuse-case-diagrams)
+ - [Intermediate Mal-Activity Diagrams](./Documentation/threat-modelling.md#intermediate-mal-activity-diagrams)
+ - [Detailed Mal-Activity Diagrams](./Documentation/threat-modelling.md#detailed-mal-activity-diagrams)
 
 ```mermaid
 flowchart TB
@@ -146,29 +152,15 @@ flowchart TB
     end
     1 --> 2 --> 3
   end
-
-  click 1a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 1b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
-  click 1c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#misuse-case-diagrams" "Misuse Case Diagrams"
-
-  click 2a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-  click 2f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#intermediate-mal-activity-diagrams" "Intermediate Mal-Activity Diagrams"
-
-  click 3a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
-  click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detailed-mal-activity-diagrams" "Detailed Mal-Activity Diagrams"
 ```
 
 ### [Threat Mitigation](./Documentation/threat-mitigation.md)
 
-The threat mitigation stage involves the use of Asset Definition Diagrams and Dependency Matrices to tie the threat paths generated during the threat modelling stage to the Assets within the system and potential security mitigations. The purpose of this activity is to provide traceability between system components, security controls and malicious actions. Click on the steps in the flowchart below to see additional detail and instructions.
+The threat mitigation stage involves the use of Asset Definition Diagrams and Dependency Matrices to tie the threat paths generated during the threat modelling stage to the Assets within the system and potential security mitigations. The purpose of this activity is to provide traceability between system components, security controls and malicious actions. Click on the links below to see additional detail and instructions.
+
+ - [Asset Definition Diagrams](./Documentation/threat-mitigation.md#asset-definition-diagrams)
+ - [Security Mitigations](./Documentation/threat-mitigation.md#security-mitigations)
+ - [Dependency Matrices](./Documentation/threat-mitigation.md#dependency-matrices)
 
 ```mermaid
 flowchart TB
@@ -191,33 +183,24 @@ flowchart TB
     end
     4 --> 6 --> 5
   end
-  
-  click 4a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
-  click 4b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
-  click 4c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
-  click 4d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#asset-definition-diagrams" "Asset Definition Diagrams"
-
-  click 5b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
-  click 5c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
-  click 5d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
-  click 5f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
-  click 5g "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#dependency-matrices" "Matrices"
-
-  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
-  click 6c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-mitigation.md#security-mitigations" "Security Mitigations"
 ```
 
 ### [Risk Assessment](./Documentation/risk.md)
 
-The risk assessment stage involves the use of Relationship Maps and Parametric Diagrams to assess the likelihood of a particular threat succeeding. The purpose of this activity is to provide determine a risk rating for key threat paths identified in the earlier stages. Click on the steps in the flowchart below to see additional detail and instructions.
+The risk assessment stage involves the use of Relationship Maps and Parametric Diagrams to assess the likelihood of a particular threat succeeding. The purpose of this activity is to provide determine a risk rating for key threat paths identified in the earlier stages. Click on the links below to see additional detail and instructions.
+
+ - [Summary Diagrams](./Documentation/risk.md#summary-diagrams)
+ - [Parametric Risk Diagrams](./Documentation/risk.md#parametric-risk-diagrams)
+ - [Risk Assessment Tables](./Documentation/risk.md#risk-assessment-tables)
 
 ```mermaid
 flowchart TB
   subgraph RA["Risk Assessment"]
     direction TB
     subgraph 6["Summary Diagrams"]
-      6a("Bowties")
+      6c("Mitigation Trees")
       6b("Attack Trees")
+      6a("Bowties")
     end
     subgraph 7["Parametric Risk Diagrams"]
       7a("Threat Path") --> 7b("Threat Level") --> 7e("Simulate")
@@ -230,18 +213,6 @@ flowchart TB
     end
     6 --> 7 --> 8
   end
-  
-  click 6a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
-  click 6b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#summary-diagrams" "Summary Diagrams"
-
-  click 7a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
-  click 7b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
-  click 7c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
-  click 7d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
-  click 7e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#parametric-risk-diagrams" "Parametric Diagrams"
-
-  click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-tables" "Risk Table"
-  click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-assessment-tables" "Risk Table"
 ```
 
 ## Samples

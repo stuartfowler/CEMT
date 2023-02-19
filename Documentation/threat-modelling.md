@@ -43,9 +43,6 @@ flowchart TB
       1a("Misuse Cases") --> 1c("Associations")
       1b("Actors") --> 1c
     end
-    click 1a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md##misuse-cases-actors-and-associations" "Misuse Cases"
-    click 1b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md##misuse-cases-actors-and-associations" "Actors"
-    click 1c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md##misuse-cases-actors-and-associations" "Associations"
 ```
 
 Misuse Case Diagrams are drawn using a `CEMT Misuse Case Diagram`, which can be created by right clicking on a `Package` in the containment tree, selecting `Create Diagram` from the context menu and then selecting `CEMT Misuse Case Diagram`.
@@ -87,11 +84,6 @@ flowchart TB
       2c("Threat Start") --> 2d("Signals") --> 2e("Flows")
       2a("Aggregated Actions") --> 2b("Pins") --> 2e      
     end
-    click 2a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#aggregated-actions" "Aggregated Actions"
-    click 2b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#pins" "Pins"
-    click 2c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-start" "Threat Start"
-    click 2d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#signals" "Signals"
-    click 2e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#flows" "Flows"
 ```
 Intermediate Mal-Activity Diagrams are drawn using a `CEMT Mal-Activity Diagram`, which can be created by right clicking on a `MisuseCase`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`MisuseCase`](./stereotypes.md#misusecase) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can either manually apply the stereotype - by right-clicking on the Activity object that was created and selecting `MalActivity` from the context menu - or by running the included [Misuse macro](../Macros/README.md#misuse), as shown in the video below.
 
@@ -185,12 +177,6 @@ flowchart TB
       3b("Detection Actions") --> 3d
       3e("Threat Ends") --> 3d
     end
-    click 3a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-actions" "Threat Actions"
-    click 3b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#detection-actions" "Detection Actions"
-    click 3c "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-difficulty" "Threat Difficulty"
-    click 3d "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#flows-1" "Flows"
-    click 3e "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#threat-ends" "Threat Ends"
-    click 3f "https://github.com/stuartfowler/CEMT/blob/main/Documentation/threat-modelling.md#labels" "Labels"
 ```
 
 Detailed Mal-Activity Diagrams are drawn using a `CEMT Mal-Activity Diagram`, which can be created by right clicking on an `AggregatedAction`, selecting `Create Diagram` from the context menu and then selecting `CEMT Mal-Activity Diagram`. They can also be created by selecting the `AggregatedAction` and selecting the `CEMT Mal-Activity Diagram` icon form the context manu. Creating a `CEMT Mal-Activity Diagram` does not automatically apply the [`MalActivity`](./stereotypes.md#malactivity) stereotype to the Activity object that is created. A constraint on the [`AggregatedAction`](./stereotypes.md#aggregationaction) stereotype checks for this in real-time if CAMEO active validation is turned on, and indicates that you can resolve this issue by running the included [Activities macro](../Macros/README.md#activities), as shown in the video below.
