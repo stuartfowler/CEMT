@@ -67,11 +67,11 @@ https://user-images.githubusercontent.com/7237737/177487459-e7660d65-c24c-4d7c-a
 
 Additional `MaliciousActor`s, `NonMaliciousActor`s and `MisuseCase`s can be drawn on the same misuse case diagram until a full picture of the top level threats to the system has been created.
 
-![Misuse Case Diagram](/Documentation/Images/misuse.png)
+![Misuse Case Diagram](./Images/misuse.png)
 
 The purpose of these diagrams is to provide a high level view of the scope of the assessment, in terms of the actors and the threats that they pose to the system. Modellers should ensure that a misuse case has been created for each of the top level threats to the sys
 
- > [Return to Modelling Process Flowchart](/README.md#threat-modelling)
+ > [Return to Modelling Process Flowchart](../README.md#threat-modelling)
 
 ## Intermediate Mal-Activity Diagrams
 
@@ -161,9 +161,9 @@ The CEMT also provides the ability to link together different mal-activity diagr
 
 The process for creating and drawing these objects is similar to that shown in the [Signals](#signals) section. The completed Intermediate Mal-Activity Diagram shown below includes the 'System Access' object at the top, which is a `ThreatAcceptEvent` which is accepting a `ThreatSignal` named 'System Access' from one or more `ThreatSendSignal` objects elsewhere in the model. 
 
-![Intermediate Mal-Activity Diagram](/Documentation/Images/intmalact.png)
+![Intermediate Mal-Activity Diagram](./Images/intmalact.png)
 
- > [Return to Modelling Process Flowchart](/README.md#threat-modelling)
+ > [Return to Modelling Process Flowchart](../README.md#threat-modelling)
 
 ## Detailed Mal-Activity Diagrams
 
@@ -253,6 +253,6 @@ In some cases, you may want to have multiple `ThreatEnd`s on a single `CEMT Mal-
 
 This technique can also be used to duplicate the representation of any other object in the `CEMT Mal-Activity Diagram` if doing so would make your diagram more understandable.
 
-![Detailed Mal-Activity Diagram](/Documentation/Images/detmalact-clean.png)
+![Detailed Mal-Activity Diagram](./Documentation/Images/detmalact-clean.png)
 
- > [Return to Modelling Process Flowchart](/README.md#threat-modelling)
+ > [Return to Modelling Process Flowchart](../README.md#threat-modelling)

@@ -91,7 +91,7 @@ https://user-images.githubusercontent.com/7237737/192250877-0915aeb9-545c-42d8-8
 
 The `CEMT Asset Definition Diagram` also shows the controls that are applicable to the `Asset` and their implementation state, once the Threat Mitigation process has been completed. While this information will not be populated onto the model until the steps outlined in the [Matrices](#matrices) section have been completed, it provides a view that can be useful for reviewers once the model has been fully populated. An example of this is shown in the sample diagram below.
 
-![Asset Definition Diagram](/Documentation/Images/add.png)
+![Asset Definition Diagram](./Images/add.png)
 
 ## Security Mitigations
 
@@ -218,6 +218,6 @@ https://user-images.githubusercontent.com/7237737/192250962-5f11b729-e601-457e-8
 
 > **Note**: When the `Property List` table becomes large due to a significant number of `SecurityProperty`s it can become more efficient to export the table to Microsoft Excel, enter the relevant Implementation status and Implementation Detail in the spreadsheet and then import that data back into the model. This can help with bulk updates, and with getting system SMEs that do not have access to the CAMEO tool to assist with the determination of the Implementation status. This is a built-in feature of CAMEO System Modeler - instructions for how to conduct this export/import/sync can be found on the [NoMagic website](https://docs.nomagic.com/display/MD190/Sync+with+Excel+or+CSV+files).
 
-![Populated Mal-Activity Diagram](/Documentation/Images/detmalact.png)
+![Populated Mal-Activity Diagram](./Images/detmalact.png)
 
- > [Return to Modelling Process Flowchart](/README.md#threat-mitigation)
+ > [Return to Modelling Process Flowchart](../README.md#threat-mitigation)
