@@ -87,7 +87,7 @@ with (CollectionsAndFiles) {
             }
 
             //Set ISM ID to match name property
-            control.setISM_ID(control.Name);
+            control.setControl_ID(control.Name);
         }
 
         //Initialises by selecting the project and element factory

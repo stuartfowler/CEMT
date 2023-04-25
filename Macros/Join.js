@@ -1,9 +1,10 @@
 /* 
-This macro ensures that activities under MisuseCases are appropriate stereotyped.
-When a particular misuse case is selected in the containment tree, only that misuse case is processed.
-When nothing is selected in the containment tree, all MisuseCases are processed. 
+This macro ensures that ThreatJoins are named the same as the ThreatPostureSignals that are connected to them.
+When a particular ThreatJoin is selected in the containment tree, only that ThreatJoin is processed.
+When nothing is selected in the containment tree, all ThreatJoins are processed. 
+
 Author: Stuart Fowler
-Date: 20 December 2022
+Date: 9 April 2023
 */
 
 importClass(com.nomagic.magicdraw.core.Application);
@@ -21,10 +22,9 @@ importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
 importClass(com.nomagic.uml2.MagicDrawProfile);
 
-var debug = 1;
-var misuseCasePath = "Cyber::Stereotypes::MisuseCase";
-var malActivityPath = "Cyber::Stereotypes::MalActivity";
-
+var debug = 2;
+var threatJoinPath = "Cyber::Stereotypes::ThreatJoin";
+var postureSignalPath = "Cyber::Stereotypes::PostureImpactSignal";
 //Helper function to write logs
 function writeLog(text,level) {
     if(debug >= level) {
@@ -40,35 +40,20 @@ function newSession(project, sessionName) {
     SessionManager.getInstance().createSession(project, sessionName);
 }
 
-//Checks misusecase name and updates as required
-function processMisuseCase(object) {
-    writeLog("Processing misuseCase: " + object.getName(), 2);
-    behaviour = object.getClassifierBehavior();
-    if(behaviour) {
-        malActivity = Finder.byQualifiedName().find(project, malActivityPath);
-        if(StereotypesHelper.hasStereotype(behaviour,malActivity)) {
-            writeLog("Selected Item already contains a MalActivity", 4);
+//Checks threatjoin name and updates as required
+function processThreatJoin(object) {
+    writeLog("Processing threatJoin: " + object.getName(), 2);
+    postureSignal = Finder.byQualifiedName().find(project, postureSignalPath);
+    signal = object.refGetValue("PostureImpactSignal");
+    if(signal) {
+        if(StereotypesHelper.hasStereotype(signal.get(0), postureSignal)) {
+            writeLog("ThreatJoin: " + object.getName() + " has been renamed to " + signal.get(0).getName(), 2);
+            object.setName(signal.get(0).getName());
+        } else {
+            writeLog("ThreatJoin: " + object.getName() + " does not have a ThreatAcceptEvent with a ThreatImpactSignal immediately connected to it. Please add this before running this macro again.", 1);
         }
-        else {
-            StereotypesHelper.addStereotype(behaviour,malActivity);
-        }
-
-        if(behaviour.getName() == object.getName()) {
-            writeLog("Selected MalActivity is already correctly named", 4);
-        }
-        else {
-            behaviour.setName(object.getName());
-        }
-
-        if(behaviour.getOwner() == object) {
-            writeLog("Selected MalActivity is already correctly placed", 4);
-        }
-        else {
-            behaviour.setOwner(object);
-        }
-    }
-    else {
-        writeLog("No behaviour exists for this misuse case. Please create a behaviour before processing.", 2);
+    } else {
+        writeLog("ThreatJoin: " + object.getName() + " does not have a ThreatAcceptEvent with a ThreatImpactSignal immediately connected to it. Please add this before running this macro again.", 1);
     }
 }
 
@@ -80,9 +65,9 @@ writeLog("Got elementsFactory: " + ef, 5);
 newSession(project, "Misuse Activity Creation");
 
 try {
-    //Grabs the misuseCase stereotypes
-    misuseCase = Finder.byQualifiedName().find(project, misuseCasePath);
-    writeLog("Got misuseCase stereotype: " + misuseCase, 5);
+    //Grabs the threatJoin stereotypes
+    threatJoin = Finder.byQualifiedName().find(project, threatJoinPath);
+    writeLog("Got threatJoin stereotype: " + threatJoin, 5);
 
     //Get selected object from containment tree
     var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
@@ -94,21 +79,21 @@ try {
             currentObject = selectedObjects[x].getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
             //Process object if it is a misuseCase, otherwise do nothing
-            if(StereotypesHelper.hasStereotype(currentObject,misuseCase)) {
-                processMisuseCase(currentObject);
+            if(StereotypesHelper.hasStereotype(currentObject,threatJoin)) {
+                processThreatJoin(currentObject);
             }
             else {
-                writeLog("Selected Item is not a Misuse Case", 1)
+                writeLog("Selected Item is not a Threat Join", 1)
             }
         }
     } else {
         //If nothing is selected, find all misuseCase and process them
-        misuseCases = StereotypesHelper.getStereotypedElements(misuseCase);
-        writeLog("Got list of misuseCases: " + misuseCases, 4);
-        writeLog("Misuse Case List Size: " + misuseCases.size(), 3);
-            for (x = 0; x < misuseCases.size(); x++) {
-            currentObject = misuseCases.get(x);
-            processMisuseCase(currentObject);
+        threatJoins = StereotypesHelper.getStereotypedElements(threatJoin);
+        writeLog("Got list of threatJoins: " + threatJoins, 4);
+        writeLog("Threat Join List Size: " + threatJoins.size(), 3);
+            for (x = 0; x < threatJoins.size(); x++) {
+            currentObject = threatJoins.get(x);
+            processThreatJoin(currentObject);
         }
     }
 } finally {

@@ -102,11 +102,13 @@ Intermediate Mal-Activity Diagrams use the following CEMT stereotypes:
    - [`DetectionFlow`](./stereotypes.md#detectionflow)
  - [`ThreatSignal`](./stereotypes.md#threatsignal)
    - [`ThreatImpactSignal`](./stereotypes.md#threatimpactsignal)
+     - [`PostureImpactSignal`](./stereotypes.md#postureimpactsignal)
    - [`ThreatDetectionSignal`](./stereotypes.md#threatdetectionsignal)
  - [`ThreatSendSignal`](./stereotypes.md#threatsendsignal)
    - [`ThreatImpact`](./stereotypes.md#threatimpact)
    - [`ThreatDetection`](./stereotypes.md#threatdetection)
  - [`ThreatAcceptEvent`](./stereotypes.md#threatacceptevent)
+ - [`ThreatJoin`](./stereotypes.md#threatjoin)
 
 ### Threat Start
 
@@ -116,7 +118,7 @@ https://user-images.githubusercontent.com/7237737/179894577-9b2b8317-d76f-4272-b
 
 ### Signals
 
-Signals should be created next that capture the expected outcomes of the misuse case. The [`ThreatImpactSignal`](./stereotypes.md#threatimpactsignal) stereotype should be used for the undesirable outcomes which the threat actor is trying to achieve. While these can be expressed using the Confidentiality, Integrity and Availability triad, they do not have to be expressed like this. The [`ThreatDetectionSignal`](./stereotypes.md#threatdetectionsignal) stereotype should be used to create the detection outcomes which represent the system detecting the threat actor.
+Signals should be created next that capture the expected outcomes of the misuse case. The [`ThreatImpactSignal`](./stereotypes.md#threatimpactsignal) stereotype should be used for the undesirable outcomes which the threat actor is trying to achieve. While these can be expressed using the Confidentiality, Integrity and Availability triad, they do not have to be expressed like this and can be specific outcomes against specific functions or information assets. The [`ThreatDetectionSignal`](./stereotypes.md#threatdetectionsignal) stereotype should be used to create the detection outcomes which represent the system detecting the threat actor. The [`PostureImpactSignal`](./stereotypes.md#postureimpactsignal) stereotype should be used when the outcome is a reduction in security posture, rather than an impact in its own right - examples might be a loss of redundant functionality and/or the introduction of a design flaw.
 
 https://user-images.githubusercontent.com/7237737/179894602-a06bb366-dccd-4b64-b699-6d282032b7d4.mp4
 
@@ -160,6 +162,10 @@ The CEMT does not limit modellers to a single Intermediate Mal-Activity diagram.
 The CEMT also provides the ability to link together different mal-activity diagrams which may reside under different misuse cases to avoid duplication of mal-activity diagrams. This is achieved using the [`ThreatSendSignal`](./stereotypes.md#threatsendsignal), [`ThreatAcceptEvent`](./stereotypes.md#threatacceptevent) and [`ThreatSignal`](./stereotypes.md#threatsignal) stereotypes. The `ThreatSendSignal` would be drawn on the mal-activity diagram that is the source of the `ThreatFlow` being passed between the two mal-activity diagrams and the `ThreatAcceptEvent` would be drawn on the mal-activity diagram that is the destination of the `ThreatFlow` being passed between the two mal-activity diagrams. A `ThreatSignal` would be created and assigned to both the `ThreatAcceptEvent` and `ThreatSendSignal`, linking them together. 
 
 The process for creating and drawing these objects is similar to that shown in the [Signals](#signals) section. The completed Intermediate Mal-Activity Diagram shown below includes the 'System Access' object at the top, which is a `ThreatAcceptEvent` which is accepting a `ThreatSignal` named 'System Access' from one or more `ThreatSendSignal` objects elsewhere in the model. 
+
+The CEMT also supports situations where the modeller would like to represent an attack path that is reliant on a co-requisite [`PostureImpactSignal`](./stereotypes.md#postureimpactsignal) having already been realised by a separate attack. To achieve this, a [ThreatJoin](./stereotypes.md#threatjoin) is inserted on the mal-activity diagram in the path of the co-requisite threat so that it has `ThreatFlow`s coming into and out of it. A `ThreatSendSignal` with the `PostureImpactSignal` as the signal must also be connected as an input to the `ThreatJoin`. The `ThreatJoin` should be renamed to the same name as the incoming `PostureImpactSignal`.
+
+`ThreatJoin`s should only be used when trying to represent co-requisite threat paths, such as coordinated attacks on redundant systems or an attack which could only commence if a design flaw and/or misconfiguration had occurred. Attacks that are pre-requisite (rather than co-requisite) should be modelled in the standard way, using sequential `ThreatAction`s.
 
 ![Intermediate Mal-Activity Diagram](./Images/intmalact.png)
 

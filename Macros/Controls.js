@@ -160,97 +160,99 @@ var ef = project.getElementsFactory();
 writeLog("Got elementsFactory: " + ef, 5);
 newSession(project, "Constraint Creation");
 
-//Grabs the threatAction and detectionAction stereotypes
-var threatAction = Finder.byQualifiedName().find(project, threatActionPath);
-writeLog("Got threatAction stereotype: " + threatAction, 5);
-var detectionAction = Finder.byQualifiedName().find(project, detectionActionPath);
-writeLog("Got detectionAction stereotype: " + detectionAction, 5);
-var securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
-writeLog("Got securityConstraint stereotype: " + securityConstraint, 5)
-var ISMControl = Finder.byQualifiedName().find(project, ISMControlPath);
-writeLog("Got ISMControl stereotype: " + ISMControl, 5)
+try {
+    //Grabs the threatAction and detectionAction stereotypes
+    var threatAction = Finder.byQualifiedName().find(project, threatActionPath);
+    writeLog("Got threatAction stereotype: " + threatAction, 5);
+    var detectionAction = Finder.byQualifiedName().find(project, detectionActionPath);
+    writeLog("Got detectionAction stereotype: " + detectionAction, 5);
+    var securityConstraint = Finder.byQualifiedName().find(project, securityConstraintPath);
+    writeLog("Got securityConstraint stereotype: " + securityConstraint, 5)
+    var ISMControl = Finder.byQualifiedName().find(project, ISMControlPath);
+    writeLog("Got ISMControl stereotype: " + ISMControl, 5)
 
-var secControl = Finder.byQualifiedName().find(project, securityControlPath);
-var noneControlStereo = Finder.byQualifiedName().find(project, noneControlPath);
-var noneControls = StereotypesHelper.getStereotypedElements(noneControlStereo);
-if(noneControls.size() > 1)
-{
-    writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
-}
-if(noneControls.size() != 0) {
-    var noneControl = noneControls.get(0);
-    writeLog("Found None Control: " + noneControl.getName(), 5);
-    writeLog("Found None Control: " + noneControl.getQualifiedName(), 5);
-}
-else {
-    writeLog("ERROR: No Controls are typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
-}
+    var secControl = Finder.byQualifiedName().find(project, securityControlPath);
+    var noneControlStereo = Finder.byQualifiedName().find(project, noneControlPath);
+    var noneControls = StereotypesHelper.getStereotypedElements(noneControlStereo);
+    if(noneControls.size() > 1)
+    {
+        writeLog("ERROR: More than 1 SecurityControl is typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
+    }
+    if(noneControls.size() != 0) {
+        var noneControl = noneControls.get(0);
+        writeLog("Found None Control: " + noneControl.getName(), 5);
+        writeLog("Found None Control: " + noneControl.getQualifiedName(), 5);
+    }
+    else {
+        writeLog("ERROR: No Controls are typed as a noneControl. This is not a breaking error, but may lead to unexpected results.", 1);
+    }
 
 
-var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
-var systemAssets = StereotypesHelper.getStereotypedElements(systemAssetStereo);
-if(systemAssets.size() > 1)
-{
-    writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
-}
-if(systemAssets) {
-    var systemAsset = systemAssets.get(0);
-    writeLog("Found System: " + systemAsset.getName(), 5);
-    writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
-}
-else {
-    writeLog("ERROR: No Assets are typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
-}
+    var systemAssetStereo = Finder.byQualifiedName().find(project, systemPath);
+    var systemAssets = StereotypesHelper.getStereotypedElements(systemAssetStereo);
+    if(systemAssets.size() > 1)
+    {
+        writeLog("ERROR: More than 1 Asset is typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
+    }
+    if(systemAssets) {
+        var systemAsset = systemAssets.get(0);
+        writeLog("Found System: " + systemAsset.getName(), 5);
+        writeLog("Found System: " + systemAsset.getQualifiedName(), 5);
+    }
+    else {
+        writeLog("ERROR: No Assets are typed as a System. This is not a breaking error, but may lead to unexpected results.", 1);
+    }
 
-var noneAssetStereo = Finder.byQualifiedName().find(project, noneAssetPath);
+    var noneAssetStereo = Finder.byQualifiedName().find(project, noneAssetPath);
 
-//Get selected object from containment tree
-var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+    //Get selected object from containment tree
+    var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
 
-//If something is selected in containment tree
-if(selectedObjects.length > 0) {
-    writeLog("Length: " + selectedObjects.length, 5);
-    for (x = 0; x < selectedObjects.length; x++) {
-        currentObject = selectedObjects[x].getUserObject();
-        writeLog("Got object name: " + currentObject.getName(), 5);
-        //Process object if it is a threatAction or detectionAction, otherwise do nothing
-        if(StereotypesHelper.hasStereotype(currentObject, threatAction) || StereotypesHelper.hasStereotype(currentObject, detectionAction)) {
+    //If something is selected in containment tree
+    if(selectedObjects.length > 0) {
+        writeLog("Length: " + selectedObjects.length, 5);
+        for (x = 0; x < selectedObjects.length; x++) {
+            currentObject = selectedObjects[x].getUserObject();
+            writeLog("Got object name: " + currentObject.getName(), 5);
+            //Process object if it is a threatAction or detectionAction, otherwise do nothing
+            if(StereotypesHelper.hasStereotype(currentObject, threatAction) || StereotypesHelper.hasStereotype(currentObject, detectionAction)) {
+                processAction(currentObject, noneControl, systemAsset);
+            }
+            else {
+                if(StereotypesHelper.hasStereotypeOrDerived(currentObject, securityConstraint)) {
+                    processConstraint(currentObject, noneAssetStereo);
+                }
+                else{
+                    writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
+                }
+            }
+        }   
+    } else {
+        //If nothing is selected, find all threatActions and process them
+        threatActions = StereotypesHelper.getStereotypedElements(threatAction);
+        writeLog("Got list of threatActions: " + threatActions, 4);
+        writeLog("ThreatAction List Size: " + threatActions.size(), 3);
+            for (x = 0; x < threatActions.size(); x++) {
+            currentObject = threatActions.get(x);
             processAction(currentObject, noneControl, systemAsset);
         }
-        else {
-            if(StereotypesHelper.hasStereotypeOrDerived(currentObject, securityConstraint)) {
-                processConstraint(currentObject, noneAssetStereo);
-            }
-            else{
-                writeLog("Selected Item is not a ThreatAction or DetectionAction or SecurityConstraint or ISMControl", 1)
-            }
+        //Also process all detectionActions
+        detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
+        writeLog("Got list of detectionActions: " + detectionActions, 4);
+        writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
+        for (x = 0; x < detectionActions.size(); x++) {
+            currentObject = detectionActions.get(x);
+            processAction(currentObject, noneControl, systemAsset);
         }
-    }   
-} else {
-    //If nothing is selected, find all threatActions and process them
-    threatActions = StereotypesHelper.getStereotypedElements(threatAction);
-    writeLog("Got list of threatActions: " + threatActions, 4);
-    writeLog("ThreatAction List Size: " + threatActions.size(), 3);
-        for (x = 0; x < threatActions.size(); x++) {
-        currentObject = threatActions.get(x);
-        processAction(currentObject, noneControl, systemAsset);
-    }
-    //Also process all detectionActions
-    detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
-    writeLog("Got list of detectionActions: " + detectionActions, 4);
-    writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
-    for (x = 0; x < detectionActions.size(); x++) {
-        currentObject = detectionActions.get(x);
-        processAction(currentObject, noneControl, systemAsset);
-    }
 
-    //Process SecurityConstraints
-    securityConstraints = StereotypesHelper.getStereotypedElementsIncludingDerived(securityConstraint);
-    writeLog("Got list of securityConstraints: " + securityConstraints, 2);
-    writeLog("SecurityConstraints List Size: " + securityConstraints.size(), 2);     
-    for (x = 0; x < securityConstraints.size(); x++) {
-        processConstraint(securityConstraints.get(x), noneAssetStereo);
+        //Process SecurityConstraints
+        securityConstraints = StereotypesHelper.getStereotypedElementsIncludingDerived(securityConstraint);
+        writeLog("Got list of securityConstraints: " + securityConstraints, 2);
+        writeLog("SecurityConstraints List Size: " + securityConstraints.size(), 2);     
+        for (x = 0; x < securityConstraints.size(); x++) {
+            processConstraint(securityConstraints.get(x), noneAssetStereo);
+        }
     }
+} finally {
+    SessionManager.getInstance().closeSession();
 }
-
-SessionManager.getInstance().closeSession();

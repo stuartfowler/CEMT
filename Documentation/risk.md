@@ -161,7 +161,7 @@ flowchart TB
   end
 ```
 
-The Parametric Risk Diagrams are created using the `SysML Parametric Diagram` that is built into CAMEO Systems Modeler. However, these diagrams do not need to be manually created by the modeller, the modeller can leverage the [Risk Macro](../Macros/Risk.js) to generate the majority of the diagram from the existing relationships within the model.
+The Parametric Risk Diagrams are created using the `CEMT Parametric Risk Diagram`. However, these diagrams do not need to be manually created by the modeller as the modeller can leverage the [Risk Macro](../Macros/Risk.js) to generate the majority of the diagram from the existing relationships within the model.
 
 Parametric Risk Diagrams use the following CEMT stereotypes:
 
@@ -252,6 +252,12 @@ The histograms will be automatically saved to the file system where the model is
 
 ![Threat Histogram](./Images/threathistogram.png)
 ![Detection Histogram](./Images/detecthistogram.png)
+
+### Additional Optional Steps
+
+It is possible to combine two parametric risk diagrams together into an aggregated risk. This is useful when combining a [Threat Path](#threat-path) which could represent the loss of a redundant function, with another threat path that represents the loss of the same primary function. This can be achieved by selecting two [`SecurityRisk`s](./stereotypes.md#securityrisk) in the containment tree and running the [CombineRisks Macro](../Macros/CombineRisks.js). This would normally be used when two co-requisite threat paths have been modelled using `ThreatJoin`s and `PostureImpactSignal`s, as described in the [Threat Modelling](./threat-modelling.md#additional-optional-steps-1) section.
+
+However, any two risks could be combined in this way, including a risk that is already made of two other risks that have been combined through the [CombineRisks Macro](../Macros/CombineRisks.js). This can be used to combine more than two risks together, if desired.
 
 ## Risk Assessment Tables
 

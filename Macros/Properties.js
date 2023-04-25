@@ -68,36 +68,38 @@ var project = Application.getInstance().getProject();
 writeLog("Got project: " + project, 5);
 newSession(project, "Property Update");
 
-//Grabs the securityProperty stereotypes
-securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
-writeLog("Got securityProperty stereotype: " + securityProperty, 5);
+try {
+    //Grabs the securityProperty stereotypes
+    securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
+    writeLog("Got securityProperty stereotype: " + securityProperty, 5);
 
-//Get selected object from containment tree
-var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+    //Get selected object from containment tree
+    var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
 
-//If something is selected in containment tree
-if(selectedObjects.length > 0) {
-    writeLog("Length: " + selectedObjects.length, 5);
-    for (x = 0; x < selectedObjects.length; x++) {
-        currentObject = selectedObjects[x].getUserObject();
-        writeLog("Got object name: " + currentObject.getName(), 5);
-        //Process object if it is a securityProperty, otherwise do nothing
-        if(StereotypesHelper.hasStereotype(currentObject,securityProperty)) {
+    //If something is selected in containment tree
+    if(selectedObjects.length > 0) {
+        writeLog("Length: " + selectedObjects.length, 5);
+        for (x = 0; x < selectedObjects.length; x++) {
+            currentObject = selectedObjects[x].getUserObject();
+            writeLog("Got object name: " + currentObject.getName(), 5);
+            //Process object if it is a securityProperty, otherwise do nothing
+            if(StereotypesHelper.hasStereotype(currentObject,securityProperty)) {
+                processProperty(currentObject);
+            }
+            else {
+                writeLog("Selected Item is not a SecurityProperty", 1)
+            }
+        }
+    } else {
+        //If nothing is selected, find all securityProperties and process them
+        securityProperties = StereotypesHelper.getStereotypedElements(securityProperty);
+        writeLog("Got list of securityProperties: " + securityProperties, 4);
+        writeLog("Secuirty Constraint List Size: " + securityProperties.size(), 3);
+            for (x = 0; x < securityProperties.size(); x++) {
+            currentObject = securityProperties.get(x);
             processProperty(currentObject);
         }
-        else {
-            writeLog("Selected Item is not a SecurityProperty", 1)
-        }
     }
-} else {
-    //If nothing is selected, find all securityProperties and process them
-    securityProperties = StereotypesHelper.getStereotypedElements(securityProperty);
-    writeLog("Got list of securityProperties: " + securityProperties, 4);
-    writeLog("Secuirty Constraint List Size: " + securityProperties.size(), 3);
-        for (x = 0; x < securityProperties.size(); x++) {
-        currentObject = securityProperties.get(x);
-        processProperty(currentObject);
-    }
+} finally {
+    SessionManager.getInstance().closeSession();
 }
-
-SessionManager.getInstance().closeSession();

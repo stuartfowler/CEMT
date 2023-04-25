@@ -24,6 +24,8 @@ importClass(java.util.HashSet);
 var debug = 1;
 var aggregatedActionPath = "Cyber::Stereotypes::AggregatedAction";
 var malActivityPath = "Cyber::Stereotypes::MalActivity";
+var threatActionPath = "Cyber::Stereotypes::ThreatAction";
+var detectionActionPath = "Cyber::Stereotypes::DetectionAction";
 var nodePath = "UML Standard Profile::UML2 Metamodel::ActivityParameterNode";
 var inputPinPath = "Cyber::Stereotypes::ThreatInput";
 var outputPinPath = "Cyber::Stereotypes::ThreatOutput";
@@ -43,7 +45,6 @@ function newSession(project, sessionName) {
     SessionManager.getInstance().createSession(project, sessionName);
 }
 
-//Checks Constraint name and updates as required
 function processAggregatedAction(object) {
     writeLog("Processing aggregatedAction: " + object.getName(), 2);
     if(object.getBehavior()) {
@@ -70,6 +71,60 @@ function processAggregatedAction(object) {
                     object.getBehavior().getOwnedElement().get(i).setControlType(true);
                 }
             }
+        }
+    } else {
+        writeLog("This action does not have an activity attached: " + object.getName() + ". Create a CEMT Mal-Activity diagram below this action to progress.", 2);
+    }
+}
+
+function processThreatAction(object) {
+    writeLog("Processing aggregatedAction: " + object.getName(), 2);
+    if(object.getBehavior()) {
+        writeLog("Activity already exists: " + object.getName(), 3);
+        malActivityStereo = Finder.byQualifiedName().find(project, malActivityPath);
+        if(!(StereotypesHelper.hasStereotype(object.getBehavior(), malActivityStereo))) {
+            StereotypesHelper.addStereotype(object.getBehavior(), malActivityStereo);
+            writeLog("Adding MalActivity Stereotype: " + object.getName(), 2);
+        }
+        if(!(object.getContext() == object.getBehavior().getOwner())) {
+            object.getBehavior().setOwner(object.getContext());
+            writeLog("Activity in Wrong Location, moving to: " + object.getContext(), 2);
+        }
+        if(!(object.getBehavior().getName() == object.getName())) {
+            object.getBehavior().setName(object.getName());
+            writeLog("Incorrect Activity Name, renaming to: " + object.getName(), 2);
+        }
+        for(i = 0; i < object.getBehavior().getOwnedElement().size(); i++) {
+            writeLog("Found Owned Element: " + object.getBehavior().getOwnedElement().get(i).getName(), 5);
+            if(object.getBehavior().getOwnedElement().get(i).getClass() == "class com.nomagic.uml2.ext.magicdraw.activities.mdbasicactivities.impl.ActivityParameterNodeImpl") {
+                writeLog("Found ActivtyParameterNode: " + object.getBehavior().getOwnedElement().get(i).getName(), 5);
+                if(!(object.getBehavior().getOwnedElement().get(i).isControlType())) {
+                    writeLog("Changing ActivtyParameterNode to Control Type: " + object.getBehavior().getOwnedElement().get(i).getName(), 2)
+                    object.getBehavior().getOwnedElement().get(i).setControlType(true);
+                }
+            }
+        }
+    } else {
+        writeLog("This action does not have an activity attached: " + object.getName() + ". Create a CEMT Mal-Activity diagram below this action to progress.", 2);
+    }
+}
+
+function processTMAction(object) {
+    writeLog("Processing threatModelAction: " + object.getName(), 2);
+    if(object.getBehavior()) {
+        writeLog("Activity already exists: " + object.getName(), 3);
+        malActivityStereo = Finder.byQualifiedName().find(project, malActivityPath);
+        if(!(StereotypesHelper.hasStereotype(object.getBehavior(), malActivityStereo))) {
+            StereotypesHelper.addStereotype(object.getBehavior(), malActivityStereo);
+            writeLog("Adding MalActivity Stereotype: " + object.getName(), 2);
+        }
+        if(!(object.getContext() == object.getBehavior().getOwner())) {
+            object.getBehavior().setOwner(object.getContext());
+            writeLog("Activity in Wrong Location, moving to: " + object.getContext(), 2);
+        }
+        if(!(object.getBehavior().getName() == object.getName())) {
+            object.getBehavior().setName(object.getName());
+            writeLog("Incorrect Activity Name, renaming to: " + object.getName(), 2);
         }
     } else {
         writeLog("This action does not have an activity attached: " + object.getName() + ". Create a CEMT Mal-Activity diagram below this action to progress.", 2);
@@ -104,53 +159,84 @@ var ef = project.getElementsFactory();
 writeLog("Got elementsFactory: " + ef, 5);
 newSession(project, "Activity Creation");
 
-//Grabs the aggregatedAction stereotypes
-aggregatedAction = Finder.byQualifiedName().find(project, aggregatedActionPath);
-writeLog("Got aggregatedAction stereotype: " + aggregatedAction, 5);
+try{
+    //Grabs the aggregatedAction stereotypes
+    aggregatedAction = Finder.byQualifiedName().find(project, aggregatedActionPath);
+    writeLog("Got aggregatedAction stereotype: " + aggregatedAction, 5);
 
-//Get selected object from containment tree
-var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
-//If something is selected in containment tree
-if(selectedObjects.length > 0) {            
-    writeLog("Length: " + selectedObjects.length, 5);
-    for (x = 0; x < selectedObjects.length; x++) {
-        currentObject = selectedObjects[x].getUserObject();
-        writeLog("Got object name: " + currentObject.getName(), 5);
-        //Process object if it is a aggregatedAction, otherwise do nothing
-        if(StereotypesHelper.hasStereotype(currentObject,aggregatedAction)) {
+    //Grabs the threatAction stereotypes
+    threatAction = Finder.byQualifiedName().find(project, threatActionPath);
+    writeLog("Got threatAction stereotype: " + threatAction, 5);
+
+    //Grabs the aggregatedAction stereotypes
+    detectionAction = Finder.byQualifiedName().find(project, detectionActionPath);
+    writeLog("Got detectionAction stereotype: " + detectionAction, 5);
+
+    //Get selected object from containment tree
+    var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+    //If something is selected in containment tree
+    if(selectedObjects.length > 0) {            
+        writeLog("Length: " + selectedObjects.length, 5);
+        for (x = 0; x < selectedObjects.length; x++) {
+            currentObject = selectedObjects[x].getUserObject();
+            writeLog("Got object name: " + currentObject.getName(), 5);
+            //Process object if it is a aggregatedAction, otherwise do nothing
+            if(StereotypesHelper.hasStereotype(currentObject,aggregatedAction)) {
+                processAggregatedAction(currentObject);
+            }
+            else {
+                if(StereotypesHelper.hasStereotype(currentObject,threatAction) || StereotypesHelper.hasStereotype(currentObject,detectionAction)) {
+                    processTMAction(currentObject);
+                }
+                else {
+                    writeLog("Selected Item is not an AggregatedAction or ThreatModelAction", 1)
+                }
+            }
+        }
+    } else {
+        //If nothing is selected, find all aggregatedAction and process them
+        aggregatedActions = StereotypesHelper.getStereotypedElements(aggregatedAction);
+        writeLog("Got list of aggregatedActions: " + aggregatedActions, 4);
+        writeLog("Aggregated Action List Size: " + aggregatedActions.size(), 3);
+            for (x = 0; x < aggregatedActions.size(); x++) {
+            currentObject = aggregatedActions.get(x);
             processAggregatedAction(currentObject);
-        }
-        else {
-            writeLog("Selected Item is not an AggregatedAction", 1)
-        }
+        } 
+
+        threatActions = StereotypesHelper.getStereotypedElements(threatAction);
+        writeLog("Got list of threatActions: " + threatActions, 4);
+        writeLog("Threat Action List Size: " + threatActions.size(), 3);
+            for (x = 0; x < threatActions.size(); x++) {
+            currentObject = threatActions.get(x);
+            processTMAction(currentObject);
+        } 
+
+        detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
+        writeLog("Got list of detectionActions: " + detectionActions, 4);
+        writeLog("Threat Action List Size: " + detectionActions.size(), 3);
+            for (x = 0; x < detectionActions.size(); x++) {
+            currentObject = detectionActions.get(x);
+            processTMAction(currentObject);
+        } 
     }
-} else {
-    //If nothing is selected, find all aggregatedAction and process them
-    aggregatedActions = StereotypesHelper.getStereotypedElements(aggregatedAction);
-    writeLog("Got list of aggregatedActions: " + aggregatedActions, 4);
-    writeLog("Aggregated Action List Size: " + aggregatedActions.size(), 3);
-        for (x = 0; x < aggregatedActions.size(); x++) {
-        currentObject = aggregatedActions.get(x);
-        processAggregatedAction(currentObject);
+
+    var inputPinStereo = Finder.byQualifiedName().find(project, inputPinPath);
+    var inputPins = StereotypesHelper.getStereotypedElements(inputPinStereo);
+    writeLog("Got list of inputPins: " + inputPins, 4);
+    writeLog("Input Pins List Size: " + inputPins.size(), 3);
+    for (x = 0; x < inputPins.size(); x++) {
+        currentObject = inputPins.get(x);
+        processPin(currentObject);
     }
-}
 
-var inputPinStereo = Finder.byQualifiedName().find(project, inputPinPath);
-var inputPins = StereotypesHelper.getStereotypedElements(inputPinStereo);
-writeLog("Got list of inputPins: " + inputPins, 4);
-writeLog("Input Pins List Size: " + inputPins.size(), 3);
-for (x = 0; x < inputPins.size(); x++) {
-    currentObject = inputPins.get(x);
-    processPin(currentObject);
+    var outputPinStereo = Finder.byQualifiedName().find(project, outputPinPath);
+    var outputPins = StereotypesHelper.getStereotypedElements(outputPinStereo);
+    writeLog("Got list of outputPins: " + outputPins, 4);
+    writeLog("Output Pins List Size: " + outputPins.size(), 3);
+    for (x = 0; x < outputPins.size(); x++) {
+        currentObject = outputPins.get(x);
+        processPin(currentObject);
+    }
+} finally {
+    SessionManager.getInstance().closeSession();
 }
-
-var outputPinStereo = Finder.byQualifiedName().find(project, outputPinPath);
-var outputPins = StereotypesHelper.getStereotypedElements(outputPinStereo);
-writeLog("Got list of outputPins: " + outputPins, 4);
-writeLog("Output Pins List Size: " + outputPins.size(), 3);
-for (x = 0; x < outputPins.size(); x++) {
-    currentObject = outputPins.get(x);
-    processPin(currentObject);
-}
-
-SessionManager.getInstance().closeSession();

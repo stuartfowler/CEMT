@@ -172,13 +172,6 @@ This derived property traverses the relationships created in the CEMT Mal-Activi
 `PreviousThreatAction` contains one expression using metachain navigation:
  - Direct - which identifies the `DetectionFlow` leaving the current node and the `Target` of that `DetectionFlow`.
 
-## LinkedDiagram
-
-This derived property traverses the relationships created in the CEMT Mal-Activity Diagrams to identify the diagrams where a particular `ThreatSendSignal` or `ThreatAcceptEvent` are sending their signal or receiving a signal from, respectively.
-
-`LinkedDiagram` contains one expression using metachain navigation:
- - LinkedDiagram - which identifies the diagrams that contain the `ThreatSendSignals` associated with a particular `ThreatAcceptEvent` and vice-versa.
-
 ## PreviousDetectionAction
 
 This derived property traverses the relationships created in the CEMT Mal-Activity Diagrams to identify the previous `DetectionAction` linked to a `ThreatDetectionSignal`.

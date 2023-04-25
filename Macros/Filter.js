@@ -166,60 +166,62 @@ var project = Application.getInstance().getProject();
 writeLog("Got project: " + project, 5);
 newSession(project, "Filter Update");
 
-//Grabs the Asset stereotype
-assetStereo = Finder.byQualifiedName().find(project, assetPath);
-writeLog("Got Asset stereotype: " + assetStereo, 5);
+try {
+    //Grabs the Asset stereotype
+    assetStereo = Finder.byQualifiedName().find(project, assetPath);
+    writeLog("Got Asset stereotype: " + assetStereo, 5);
 
-//Grabs the System stereotype
-systemStereo = Finder.byQualifiedName().find(project, systemPath);
-writeLog("Got System stereotype: " + systemStereo, 5);
+    //Grabs the System stereotype
+    systemStereo = Finder.byQualifiedName().find(project, systemPath);
+    writeLog("Got System stereotype: " + systemStereo, 5);
 
-//Grabs the threatAction stereotype
-threatActionStereo = Finder.byQualifiedName().find(project, threatActionPath);
-writeLog("Got threatAction stereotype: " + threatActionStereo, 5);        
+    //Grabs the threatAction stereotype
+    threatActionStereo = Finder.byQualifiedName().find(project, threatActionPath);
+    writeLog("Got threatAction stereotype: " + threatActionStereo, 5);        
 
-//Grabs the threatImpactSignal stereotype
-threatImpactSignalStereo = Finder.byQualifiedName().find(project, threatImpactSignalPath);
-writeLog("Got threatImpactSignal stereotype: " + threatImpactSignalStereo, 5);        
+    //Grabs the threatImpactSignal stereotype
+    threatImpactSignalStereo = Finder.byQualifiedName().find(project, threatImpactSignalPath);
+    writeLog("Got threatImpactSignal stereotype: " + threatImpactSignalStereo, 5);        
 
-//Grabs the misuseCase stereotype
-misuseCaseStereo = Finder.byQualifiedName().find(project, misuseCasePath);
-writeLog("Got misuseCase stereotype: " + misuseCaseStereo, 5);
+    //Grabs the misuseCase stereotype
+    misuseCaseStereo = Finder.byQualifiedName().find(project, misuseCasePath);
+    writeLog("Got misuseCase stereotype: " + misuseCaseStereo, 5);
 
-//Get selected object from containment tree
-var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
+    //Get selected object from containment tree
+    var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
 
-//If something is selected in containment tree
-if(selectedObjects.length > 0) {
-    writeLog("Length: " + selectedObjects.length, 5);
-    for (x = 0; x < selectedObjects.length; x++) {
-        currentObject = selectedObjects[x].getUserObject();
-        writeLog("Got object name: " + currentObject.getName(), 5);
-        //Process object if it is a securityProperty, otherwise do nothing
-        if(StereotypesHelper.hasStereotype(currentObject,assetStereo) || StereotypesHelper.hasStereotype(currentObject,systemStereo)) {
-            processAsset(currentObject);
-        }
-        else {
-            if(StereotypesHelper.hasStereotype(currentObject, threatActionStereo)) {
-                processThreat(currentObject);
+    //If something is selected in containment tree
+    if(selectedObjects.length > 0) {
+        writeLog("Length: " + selectedObjects.length, 5);
+        for (x = 0; x < selectedObjects.length; x++) {
+            currentObject = selectedObjects[x].getUserObject();
+            writeLog("Got object name: " + currentObject.getName(), 5);
+            //Process object if it is a securityProperty, otherwise do nothing
+            if(StereotypesHelper.hasStereotype(currentObject,assetStereo) || StereotypesHelper.hasStereotype(currentObject,systemStereo)) {
+                processAsset(currentObject);
             }
             else {
-                if(StereotypesHelper.hasStereotype(currentObject, threatImpactSignalStereo)) {
-                    processImpact(currentObject);
+                if(StereotypesHelper.hasStereotype(currentObject, threatActionStereo)) {
+                    processThreat(currentObject);
                 }
                 else {
-                    if(StereotypesHelper.hasStereotype(currentObject, misuseCaseStereo)) {
-                        processMisuse(currentObject);
+                    if(StereotypesHelper.hasStereotype(currentObject, threatImpactSignalStereo)) {
+                        processImpact(currentObject);
                     }
                     else {
-                        writeLog(currentObject.getName() + "is not an Asset, ThreatAction, ThreatImpactSignal or Misuse Case", 1)
+                        if(StereotypesHelper.hasStereotype(currentObject, misuseCaseStereo)) {
+                            processMisuse(currentObject);
+                        }
+                        else {
+                            writeLog(currentObject.getName() + "is not an Asset, ThreatAction, ThreatImpactSignal or Misuse Case", 1)
+                        }
                     }
                 }
             }
         }
+    } else {
+        writeLog("Nothing is selected in the containment tree. No action taken.", 1)
     }
-} else {
-    writeLog("Nothing is selected in the containment tree. No action taken.", 1)
+} finally {
+    SessionManager.getInstance().closeSession();
 }
-
-SessionManager.getInstance().closeSession();

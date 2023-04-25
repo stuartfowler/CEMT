@@ -89,12 +89,16 @@ https://user-images.githubusercontent.com/7237737/177059450-a97e0c5d-5020-4f10-9
 
 #### Custom Diagrams
 
-While the CEMT supports models being created with the the standard SysML Use Case Diagrams, Activity Diagrams and Block Definition Diagrams, custom variants of these diagrams have been created with modified drawing pallettes to simplify the process of developing a cyberworthiness model. 
+While the CEMT supports models being created with the the standard SysML Use Case Diagrams, Activity Diagrams, Block Definition Diagrams, Parametric Diagrams and Relation Maps, custom variants of these diagrams have been created with modified drawing pallettes to simplify the process of developing a cyberworthiness model. 
 
 These diagrams can be found at these locations:
  - [CEMT Asset Definition Diagram](./Diagrams/CEMT%20Asset%20Definition%20Diagram%20descriptor.xml) - Can be used to define Asset hierarchies instead of using the standard SysML Block Definition Diagrams.
  - [CEMT Mal-Activity Diagram](./Diagrams/CEMT%20Mal-Activity%20Diagram%20descriptor.xml) - Can be used to model threat and detection flows instead of using the standard SysML Activity Diagrams.
  - [CEMT Misuse Case Diagram](./Diagrams/CEMT%20Misuse%20Case%20Diagram%20descriptor.xml) - Can be used to model misuse cases instead of using the standard SysML Use Case Diagrams.
+ - [CEMT Parametric Risk Diagram](./Diagrams/CEMT%20Parametric%20Risk%20Diagram%20descriptor.xml) - Can be used to model security risks instead of using the standard SysML Parametric Risk Diagrams.
+ - [CEMT Attack Tree - Forward](./Diagrams/CEMT%20Attack%20Tree%20-%20Forward%20Diagram%20descriptor.xml) - Can be used to create custom attack trees instead of using the built-in attack tree using SmartPackages.
+ - [CEMT Attack Tree - Reverse](./Diagrams/CEMT%20Attack%20Tree%20-%20Reverse%20Diagram%20descriptor.xml) - Can be used to create custom attack trees instead of using the built-in attack tree using SmartPackages.
+ - [CEMT Mitigation Tree](./Diagrams/CEMT%20Mitigation%20Tree%20Diagram%20descriptor.xml) - Can be used to create custom mitigation trees instead of using the built-in mitigation tree using SmartPackages.
 
 The diagrams can be imported into your model in the following manner:
 

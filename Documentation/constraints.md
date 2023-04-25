@@ -159,7 +159,6 @@ The IN1 through IN10 values are summed together to give the overall likelihood o
 ## CombineX
 
 The `CombineX` constraint block is used to combine multiple [`DetectX`](#detectx) constraint blocks into an overall detection probability when there are more than 10 detection nodes in the parametric diagram. The `CombineX` constraint block is actually a series of constraint blocks:
- - Combine1;
  - Combine2;
  - Combine3;
  - Combine4;
@@ -179,7 +178,7 @@ flowchart LR
   4("...")
   6("IN10")
   3("OUT") 
-  5{"DetectX"}
+  5{"CombineX"}
   1 --> 5
   2 --> 5
   4 --> 5
@@ -194,6 +193,33 @@ The `CombineX` constraint block has a single ouput, which is calculated with the
 
 $OUT = (1 - (1 - {IN1 \over 100})(1 - {IN2 \over 100})...(1 - {IN10 \over 100}))  $
 
-The IN1 through IN10 values are summed together to give the overall likelihood of any one of those detections occuring. There is moderation of this calculation by the `InitialProbability` value, like there was for the [`DetectX`](#detectx) constraint blocks, as all values have already been modified in this way by the `DetectX` constraint blocks.
+The IN1 through IN10 values are summed together to give the overall likelihood of any one of those detections occuring. There is no moderation of this calculation by the `InitialProbability` value, like there was for the [`DetectX`](#detectx) constraint blocks, as all values have already been modified in this way by the `DetectX` constraint blocks.
 
 > **Note**: The `DetectX` block only works for up to 10 detection probability inputs, and the `CombineX` block only works for up to 10 `DetectX` blocks. This means that if an attack tree branch is longer than 100 nodes, the [Risk.js macro](../Macros/README.md#risk) will not be able to build the SysML Parametric Diagram because the CEMT profile does not have a `Combine11` or higher constraint block. While it is expected that 100 nodes is sufficient for most situations, if your attack tree has branches longer than 100 nodes, more `CombineX` constraint blocks will need to be added to the profile, and the Risk.js macro will need to be updated to modify the length check on the threat path.
+
+> **Note**: The `Combine2` block is also used to combine detection probabilities when the [CombineRisks Macro](../Macros/CombineRisks.js) is used to join two `SecurityRisk`s together into a combined parametric diagram.
+
+## Combine
+
+The `Combine` constraint block is used to combine residual probabilities when the [CombineRisks Macro](../Macros/CombineRisks.js) is used to join two `SecurityRisk`s together into a combined parametric diagram.
+
+```mermaid
+flowchart LR
+  1("IN1")
+  2("IN2")
+  3("OUT") 
+  5{"Combine"}
+  1 --> 5
+  2 --> 5
+  5 --> 3
+```
+
+The `Combine` constraint block has two inputs:
+ - IN1 - which is connected to the residual probability of the first `SecurityRisk` that is being combined; and
+ - IN2 - which is connected to the residual probability of the second `SecurityRisk` that is being combined.
+
+The `Combine` constraint block has a single ouput, which is calculated with the following formula:
+
+$OUT = {IN1 \over 100} * {IN2 \over 100} * 100  $
+
+The IN1 and IN2 values are multiplied together to give the overall likelihood of both of those outcomes occuring. 

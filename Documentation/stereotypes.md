@@ -191,6 +191,7 @@ The `ThreatImpactSignal` stereotype uses the `Signal` class as a metaclass, and 
             -[derived] PreviousThreatAction~RedefinableElement~[0..*]
         }
         ThreatSignal~Signal~ <|-- ThreatImpactSignal~Signal~
+        ThreatImpactSignal~Signal~ <|-- PostureImpactSignal~Signal~
 ```
 
 `ThreatImpactSignal` contains a single derived property:
@@ -199,6 +200,22 @@ The `ThreatImpactSignal` stereotype uses the `Signal` class as a metaclass, and 
 `ThreatImpactSignal` inherits from the `ThreatSignal` stereotype.
 
 `ThreatImpactSignal` also has a related stereotype `Customization` which sets the `Package` metaclass as a `Possible Owner` and both the `Signal` metaclass and the `ThreatSignal` stereotype as `Quick Applying For` properties, which allows the `ThreatImpactSignal` stereotype to appear when creating elements under a `Package` and in the context menu for both a `Signal` and `ThreatSignal`.
+
+##### PostureImpactSignal
+
+The `PostureImpactSignal` stereotype uses the `Signal` class as a metaclass, and provides a stereotype for all `Signal`s used within the CEMT Mal-Activity Diagrams that relate to a reduction in security posture of the system. This aids with the formation of structured expressions and queries in the model, by differentiating the intermediate posture reductions from the final impacts on the system.
+
+```mermaid
+    classDiagram
+        class ThreatImpactSignal~Signal~ {      
+            -[derived] PreviousThreatAction~RedefinableElement~[0..*]
+        }
+        ThreatImpactSignal~Signal~ <|-- PostureImpactSignal~Signal~
+```
+
+`PostureImpactSignal` has no derived properties.
+
+`PostureImpactSignal` inherits from the `ThreatImpactSignal` stereotype.
 
 #### ThreatDetectionSignal
 
@@ -225,15 +242,12 @@ The `ThreatSendSignal` stereotype uses the `SendSignalAction` class as a metacla
 
 ```mermaid
     classDiagram
-        class ThreatSendSignal~SendSignalAction~ {      
-            -[derived] LinkedDiagram~Diagram~[0..*]
-        }
+        class ThreatSendSignal~SendSignalAction~
         ThreatSendSignal~SendSignalAction~ <|-- ThreatImpact~SendSignalAction~
         ThreatSendSignal <|-- ThreatDetection~SendSignalAction~
 ```
 
-`ThreatSendSignal` contains a single derived property:
- - [LinkedDiagram](./expressions.md#linkeddiagram) - which lists the `Diagram`s which contains the `ThreatAcceptEvent`s that are linked to this `ThreatSendSignal` by the `ThreatSignal` that they share.
+`ThreatSendSignal` no attributes or constraints.
 
 `ThreatSendSignal`acts as a generalised stereotype for both the `ThreatImpact` and `ThreatDetection` stereotypes.
 
@@ -245,9 +259,7 @@ The `ThreatImpact` stereotype uses the `SendSignalAction` class as a metaclass, 
 
 ```mermaid
     classDiagram
-        class ThreatSendSignal~SendSignalAction~ {      
-            -[derived] LinkedDiagram~Diagram~[0..*]
-        }
+        class ThreatSendSignal~SendSignalAction~
         ThreatSendSignal~SendSignalAction~ <|-- ThreatImpact~SendSignalAction~
 ```
 
@@ -261,9 +273,7 @@ The `ThreatDetection` stereotype uses the `SendSignalAction` class as a metaclas
 
 ```mermaid
     classDiagram
-        class ThreatSendSignal~SendSignalAction~ {      
-            -[derived] [LinkedDiagram](./expressions.md#linkeddiagram)~Diagram~[0..*]
-        }
+        class ThreatSendSignal~SendSignalAction~
         ThreatSendSignal~SendSignalAction~ <|-- ThreatDetection~SendSignalAction~
 ```
 
@@ -277,13 +287,10 @@ The `ThreatAcceptEvent` stereotype uses the `AcceptEventAction` class as a metac
 
 ```mermaid
     classDiagram
-        class ThreatAcceptEvent~AcceptEventAction~ {      
-            -[derived] LinkedDiagram~Diagram~[0..*]
-        }
+        class ThreatAcceptEvent~AcceptEventAction~
 ```
 
-`ThreatAcceptEvent` contains a single derived property:
- - [LinkedDiagram](./expressions.md#linkeddiagram) - which lists the `Diagram`s which contains the `ThreatSendSignal`s that are linked to this `ThreatAcceptEvent` by the `ThreatSignal` that they share.
+`ThreatAcceptEvent` contains no attributes or constraints.
 
 `ThreatAcceptEvent` also has a related stereotype `Customization` which sets the `AcceptEventAction` metaclass as a `Quick Applying For` property, which allows the `ThreatAcceptEvent` stereotype to appear in the context menu for a `AcceptEventAction`.
 
@@ -377,7 +384,7 @@ The `ThreatAction` stereotype uses the `CallBehaviorAction` class as a metaclass
 
 `ThreatAction` inherits from the `ThreatModelAction` stereotype.
 
-`ThreatAction`has seven active validation constraints:
+`ThreatAction` has seven active validation constraints:
  - Assets() - which checks whether there are any `Asset`s linked to this `ThreatAction` and flags if there are no linked `Asset`s;
  - Controls() - which checks whether there are any `SecurityControl`s linked to this `ThreatAction` and flags if there are no linked `SecurityControl`s;
  - Difficulty() - which checks whether the Difficulty property has been set for the `ThreatAction`;
@@ -418,6 +425,36 @@ The `DetectionAction` stereotype uses the `CallBehaviorAction` class as a metacl
  - Incoming() - which checks whether there is a `DetectionFlow` coming into this `DetectionAction`;
  - OutgoingDet() - which checks whether there is a `DetectionFlow` leaving this `DetectionAction`; and
  - Properties() - which checks whether all of the `SecurityProperty`s implied by the linked `Asset`s and `SecurityControl`s have been created in the model.
+
+### ThreatJoin
+
+The `ThreatJoin` stereotype uses the `JoinNode` class as a metaclass, and provides a stereotype for all `JoinNode`s used within the CEMT Mal-Activity Diagrams. This aids with the formation of structured expressions and queries in the model, and provides an ability to join two threat paths together in the CEMT Mal-Activity Diagrams. A `ThreatJoin` is intended to be used to connect a security posture reduction - represented by a `PostureImpactSignal` - to another branch on the attack tree, which can only be completed if the `PostureImpactSignal` has been realised. It should not be used to join multiple `ThreatAction`s together in the CEMT Mal-Activity Diagram.
+
+```mermaid
+    classDiagram
+        class ThreatJoin~JoinNode~ { 
+            +Difficulty~Difficulty~     
+            -[derived] NextThreatAction~RedefinableElement~[0..*]
+            -[derived] PreviousThreatAction~RedefinableElement~[0..*]
+            -[derived] PostureImpactSignal~Signal~[0..*]
+            -[constraint] Assets()
+            -[constraint] Controls()
+            -[constraint] Difficulty()
+            -[constraint] Incoming()
+            -[constraint] OutgoingDet()
+            -[constraint] OutgoingThreat()
+            -[constraint] Properties()
+        }
+```
+
+`ThreatJoin` contains three derived properties:
+ - [NextThreatAction](./expressions.md#nextthreataction) - which traverses the `ThreatFlow`s to determine which other `ThreatAction`s are connected to this `ThreatJoin`;
+ - [PreviousThreatAction](./expressions.md#previousthreataction) - which traverses the `ThreatFlow`s in reverse to determine which other `ThreatAction`s are connected to this `ThreatJoin`; and
+ - `PostureImpactSignal` - which traverses the `ThreatFlow`s in reverse to determine which `PostureImpactSignal`s is connected to this `ThreatJoin`.
+
+`ThreatJoin` has two active validation constraints:
+ - Name() - which checks whether name of the `ThreatJoin` matches the linked `PostureImpactSignal`; and
+ - Signal() - which checks whether there is a `PostureImpactSignal` linked to this `ThreatJoin`.
 
 ### MalActivity
 
@@ -818,49 +855,106 @@ The `SecurityRisk` stereotype uses the `Class` class as a metaclass, and provide
             +Likelihood Justification - Proposed~String~ [1]
             +Consequence - Proposed~Consequence~
             +Consequence Justification - Proposed~String~ [1]
-            +Simulation Initial Probability - Proposed~Real~ [1]
-            +Simulation Residual Probability - Proposed~Real~ [1]
-            +Simulation Detection Probabilit - Proposedy~Real~ [1]
             +Simulation Threat Level - Proposed~Threat~
-            +Threat Histogram - Proposed~AttachedFile~ [1]
-            +Detection Histogram - Proposed~AttachedFile~ [1]
-            +Parametric - Proposed~AttachedFile~ [1]
+            +Simulation Initial Probability - Proposed - Novice~Real~ [1]
+            +Simulation Residual Probability - Proposed - Novice~Real~ [1]
+            +Simulation Detection Probability - Proposed - Novicey~Real~ [1]
+            +Histogram - Proposed - Novice~AttachedFile~ [1]
+            +Parametric - Proposed - Novice~AttachedFile~ [1]
+            +Simulation Initial Probability - Proposed - Intermediate~Real~ [1]
+            +Simulation Residual Probability - Proposed - Intermediate~Real~ [1]
+            +Simulation Detection Probability - Proposed - Intermediate~Real~ [1]
+            +Histogram - Proposed - Intermediate~AttachedFile~ [1]
+            +Parametric - Proposed - Intermediate~AttachedFile~ [1]
+            +Simulation Initial Probability - Proposed - Professional~Real~ [1]
+            +Simulation Residual Probability - Proposed - Professional~Real~ [1]
+            +Simulation Detection Probability - Proposed - Professional~Real~ [1]
+            +Histogram - Proposed - Professional~AttachedFile~ [1]
+            +Parametric - Proposed - Professional~AttachedFile~ [1]
+            +Simulation Initial Probability - Proposed - Nation State~Real~ [1]
+            +Simulation Residual Probability - Proposed - Nation State~Real~ [1]
+            +Simulation Detection Probability - Proposed - Nation State~Real~ [1]
+            +Histogram - Proposed - Nation State~AttachedFile~ [1]
+            +Parametric - Proposed - Nation State~AttachedFile~ [1]
 
             ++Likelihood - Designed~Likelihood~
             +Likelihood Justification - Designed~String~ [1]
             +Consequence - Designed~Consequence~
             +Consequence Justification - Designed~String~ [1]
-            +Simulation Initial Probability - Designed~Real~ [1]
-            +Simulation Residual Probability - Designed~Real~ [1]
-            +Simulation Detection Probabilit - Designed~Real~ [1]
             +Simulation Threat Level - Designed~Threat~
-            +Threat Histogram - Designed~AttachedFile~ [1]
-            +Detection Histogram - Designed~AttachedFile~ [1]
-            +Parametric - Designed~AttachedFile~ [1]
+            +Simulation Initial Probability - Designed - Novice~Real~ [1]
+            +Simulation Residual Probability - Designed - Novice~Real~ [1]
+            +Simulation Detection Probability - Designed - Novice~Real~ [1]
+            +Histogram - Designed - Novice~AttachedFile~ [1]
+            +Parametric - Designed - Novice~AttachedFile~ [1]
+            +Simulation Initial Probability - Designed - Intermediate~Real~ [1]
+            +Simulation Residual Probability - Designed - Intermediate~Real~ [1]
+            +Simulation Detection Probability - Designed - Intermediate~Real~ [1]
+            +Histogram - Designed - Intermediate~AttachedFile~ [1]
+            +Parametric - Designed - Intermediate~AttachedFile~ [1]
+            +Simulation Initial Probability - Designed - Professional~Real~ [1]
+            +Simulation Residual Probability - Designed - Professional~Real~ [1]
+            +Simulation Detection Probability - Designed - Professional~Real~ [1]
+            +Histogram - Designed - Professional~AttachedFile~ [1]
+            +Parametric - Designed - Professional~AttachedFile~ [1]
+            +Simulation Initial Probability - Designed - Nation State~Real~ [1]
+            +Simulation Residual Probability - Designed - Nation State~Real~ [1]
+            +Simulation Detection Probability - Designed - Nation State~Real~ [1]
+            +Histogram - Designed - Nation State~AttachedFile~ [1]
+            +Parametric - Designed - Nation State~AttachedFile~ [1]
+
 
             +Likelihood - Verified~Likelihood~
             +Likelihood Justification - Verified~String~ [1]
             +Consequence - Verified~Consequence~
             +Consequence Justification - Verified~String~ [1]
-            +Simulation Initial Probability - Verified~Real~ [1]
-            +Simulation Residual Probability - Verified~Real~ [1]
-            +Simulation Detection Probabilit - Verified~Real~ [1]
             +Simulation Threat Level - Verified~Threat~
-            +Threat Histogram - Verified~AttachedFile~ [1]
-            +Detection Histogram - Verified~AttachedFile~ [1]
-            +Parametric - Verified~AttachedFile~ [1]
+            +Simulation Initial Probability - Verified - Novice~Real~ [1]
+            +Simulation Residual Probability - Verified - Novice~Real~ [1]
+            +Simulation Detection Probability - Verified - Novice~Real~ [1]
+            +Histogram - Verified - Novice~AttachedFile~ [1]
+            +Parametric - Verified~AttachedFile - Novice~ [1]
+            +Simulation Initial Probability - Verified - Intermediate~Real~ [1]
+            +Simulation Residual Probability - Verified - Intermediate~Real~ [1]
+            +Simulation Detection Probability - Verified - Intermediate~Real~ [1]
+            +Histogram - Verified - Intermediate~AttachedFile~ [1]
+            +Parametric - Verified - Intermediate~AttachedFile~ [1]
+            +Simulation Initial Probability - Verified - Professional~Real~ [1]
+            +Simulation Residual Probability - Verified - Professional~Real~ [1]
+            +Simulation Detection Probability - Verified - Professional~Real~ [1]
+            +Histogram - Verified - Professional~AttachedFile~ [1]
+            +Parametric - Verified - Professional~AttachedFile~ [1]
+            +Simulation Initial Probability - Verified - Nation State~Real~ [1]
+            +Simulation Residual Probability - Verified - Nation State~Real~ [1]
+            +Simulation Detection Probability - Verified - Nation State~Real~ [1]
+            +Histogram - Verified - Nation State~AttachedFile~ [1]
+            +Parametric - Verified - Nation State~AttachedFile~ [1]
 
             +[derived] Likelihood~Likelihood~
             +[derived] Likelihood Justification~String~ [1]
             +[derived] Consequence~Consequence~
             +[derived] Consequence Justification~String~ [1]
-            +[derived] Simulation Initial Probability~Real~ [1]
-            +[derived] Simulation Residual Probability~Real~ [1]
-            +[derived] Simulation Detection Probability~Real~ [1]
             +[derived] Simulation Threat Level~Threat~
-            +[derived] Threat Histogram~AttachedFile~ [1]
-            +[derived] Detection Histogram~AttachedFile~ [1]
+            +[derived] Simulation Initial Probability~Real~ [1]
+            +[derived] Simulation Initial Probability - Proposed~Real~ [1]
+            +[derived] Simulation Initial Probability - Designed~Real~ [1]
+            +[derived] Simulation Initial Probability - Verified~Real~ [1]
+            +[derived] Simulation Residual Probability~Real~ [1]
+            +[derived] Simulation Residual Probability - Proposed~Real~ [1]
+            +[derived] Simulation Residual Probability - Designed~Real~ [1]
+            +[derived] Simulation Residual Probability - Verified~Real~ [1]
+            +[derived] Simulation Detection Probability~Real~ [1]
+            +[derived] Simulation Detection Probability - Proposed~Real~ [1]
+            +[derived] Simulation Detection Probability - Designed~Real~ [1]
+            +[derived] Simulation Detection Probability - Verified~Real~ [1]
+            +[derived] Histogram~AttachedFile~ [1]
+            +[derived] Histogram - Proposed~AttachedFile~ [1]
+            +[derived] Histogram - Designed~AttachedFile~ [1]
+            +[derived] Histogram - Verified~AttachedFile~ [1]
             +[derived] Parametric~AttachedFile~ [1]
+            +[derived] Parametric - Proposed~AttachedFile~ [1]
+            +[derived] Parametric - Designed~AttachedFile~ [1]
+            +[derived] Parametric - Verified~AttachedFile~ [1]
             +[derived] Risk Rating - Proposed~Risk~ [0..1]
             +[derived] Risk Rating - Designed~Risk~ [0..1]
             +[derived] Risk Rating - Verified~Risk~ [0..1]
@@ -878,20 +972,24 @@ The `SecurityRisk` stereotype uses the `Class` class as a metaclass, and provide
         Block~Class~ <|-- SecurityRisk~Class~
 ```
 
-`SecurityRisk` contains thirty-three attributes, which are the eleven following attributes instantiated for the three [`Assessment Phase`s](./enumerations.md#maturity):
+`SecurityRisk` contains seventy-six attributes, fifteen of which are the five following attributes instantiated for the three [`Assessment Phase`s](./enumerations.md#maturity):
  - Likelihood - which tracks the qualitative likelihood of the `SecurityRisk`, using the [`Likelihood`](./enumerations.md#likelihood) enumeration as a type;
  - Likelihood Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative likelihood rating;
  - Consequence - which tracks the qualitative consequence of the `SecurityRisk`, using the [`Consequence`](./enumerations.md#consequence) enumeration as a type;
- - Consequence Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative consequence rating;
+ - Consequence Justification - which provides a free-text field to capture the reasoning behind the allocation of the qualitative consequence rating; and 
+ - Simulation Threat Level - captures the threat level used in the simulation of the `SecurityRisk`, using the [`Threat`](./enumerations.md#threat) enumeration as a type.
+
+... sixty of which are the five following attributes instantiated for each combination of the three [`Assessment Phase`s](./enumerations.md#maturity) and the four [`Threat Level`s](./enumerations.md#threat):
  - Simulation Initial Probability - captures the quantitiate initial probability used in the simulation of the `SecurityRisk`;
  - Simulation Residual Probability - captures the quantitative residual risk probability resulting from the simulation of the `SecurityRisk`;
  - Simulation Detection Probability - captures the quantitative detection probability resulting from the simulation of the `SecurityRisk`;
- - Simulation Threat Level - captures the threat level used in the simulation of the `SecurityRisk`, using the [`Threat`](./enumerations.md#threat) enumeration as a type;
- - Threat Histogram - captures an image of the threat histogram generated from simulating the parametric diagram associated with the `SecurityRisk`;
- - Detection Histogram - captures an image of the detection histogram generated from simulating the parametric diagram associated with the `SecurityRisk`; and
+ - Histogram - captures an image of the threat/detection histogram generated from simulating the parametric diagram associated with the `SecurityRisk`; and
  - Parametric - captures an image of the parametric diagram associated with the `SecurityRisk` at the time of simulation.
 
-`SecurityRisk` contains twenty-one derived properties. Eleven of these derived properties are aligned with teh eleven attributes listed above, with the derived property reflecting the appropriate value based on the currently selected [`Assessment Phase`](./enumerations.md#maturity). The remaining ten derived properties are:
+... and the final one:
+ - Risk ID - provides a unique identifier for each `SecurityRisk`.
+
+`SecurityRisk` contains thirty-five derived properties. Twenty-five of these derived properties are aligned with the ten attributes listed above, with the derived property reflecting the appropriate value based on the currently selected [`Assessment Phase`](./enumerations.md#maturity) and [`Threat Level`](./enumerations.md#threat). The remaining ten derived properties are:
  - Participating Asset - which lists the `Asset`s that are associated with this `SecurityRisk`;
  - Threat Path - which lists the `ThreatAction`s that are associated with this `SecurityRisk`;
  - Mitigating Controls - which lists the mitigating `SecurityControl`s associated with this `SecurityRisk`;
