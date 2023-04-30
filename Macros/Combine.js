@@ -19,6 +19,8 @@ importClass(com.nomagic.uml2.ext.jmi.helpers.ValueSpecificationHelper);
 importClass(com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper);
 importClass(com.nomagic.uml2.ext.jmi.helpers.TagsHelper);
 importClass(com.nomagic.uml2.ext.jmi.helpers.CoreHelper);
+importClass(com.nomagic.uml2.ext.magicdraw.classes.mdkernel.AggregationKindEnum);
+importClass(com.nomagic.magicdraw.sysml.util.SysMLProfile);
 importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(com.nomagic.magicdraw.uml.Refactoring);
 importClass(java.util.ArrayList);
@@ -43,6 +45,10 @@ var timeSeriesChartPath = "SimulationProfile::ui::TimeSeriesChart";
 var threatConstraintStereotypePath = "Cyber::Stereotypes::ThreatConstraint";
 var detectConstraintStereotypePath = "Cyber::Stereotypes::DetectConstraint";
 var constraintPropertyPath = "MD Customization for SysML::additional_stereotypes::deprecated elements::ConstraintProperty";
+var nestedConnectorEndPath = "SysML::Blocks::NestedConnectorEnd";
+var threatLevelPath = "Cyber::Stereotypes::ThreatLevel";
+var threatPath = "Cyber::Enumerations::Threat";
+var securityAnalysisPath = "Cyber::Stereotypes::SecurityAnalysis";
 
 
 var x_pad = 50;
@@ -199,24 +205,10 @@ function createRisk(project, riskName) {
     return [threatPackage, riskClass];
 }
 
-function createSimulation(firstSim, secondSim, existingHistograms, riskClass, residualProbability, detectionProbability) {
+function createSimulation(riskClass, residualProbability, detectionProbability) {
     simPackage = ef.createPackageInstance();
     simPackage.setOwner(riskClass.getOwner());
     simPackage.setName("Simulation");
-
-    writeLog("First Size:" + firstSim.size(),3);
-    writeLog("Second Size:" + secondSim.size(),3);
-
-    for(i = 0; i < firstSim.size(); i++) {
-        writeLog(i,3);
-        writeLog(firstSim.get(i).getName() + " Moved", 3);
-        firstSim.get(i).setOwner(simPackage);
-    }
-    for(i = 0; i < secondSim.size(); i++) {
-        writeLog(i,3);
-        writeLog(secondSim.get(i).getName() + " Moved", 3);
-        secondSim.get(i).setOwner(simPackage);
-    }
 
     simConfig = ef.createClassInstance();
     simConfig.setName(riskClass.getName());
@@ -236,7 +228,7 @@ function createSimulation(firstSim, secondSim, existingHistograms, riskClass, re
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "cloneReferences", false);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "decimalPlaces", "1");
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "fireValueChangeEvent", true);
-    TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "initializeReferences", false);
+    TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "initializeReferences", true);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "numberOfRuns", "500");
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "recordTimestamp", false);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "rememberFailureStatus", false);
@@ -246,7 +238,7 @@ function createSimulation(firstSim, secondSim, existingHistograms, riskClass, re
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "startWebServer", false);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "addControlPanel", true);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "timeVariableName", "simtime");
-    TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "treatAllClassifiersAsActive", true);
+    TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "treatAllClassifiersAsActive", false);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "constraintFailureAsBreakpoint", false);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "openSimulationPane", false);
 
@@ -280,8 +272,373 @@ function createSimulation(firstSim, secondSim, existingHistograms, riskClass, re
     TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
     TagsHelper.setStereotypePropertyValue(threatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + ".png");
 
-    existingHistograms.add(threatHistogram);
-    TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", existingHistograms); 
+    uiList = new HashSet();
+    uiList.add(threatHistogram);
+    TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", uiList); 
+}
+
+function createAnalysis() {
+    anPackage = ef.createPackageInstance();
+    anPackage.setOwner(riskClass.getOwner());
+    anPackage.setName("Analysis");
+
+    anConfig = ef.createClassInstance();
+    anConfig.setName("Analysis - " + riskClass.getName());
+    anConfig.setOwner(anPackage);
+
+    anInstance = ef.createInstanceSpecificationInstance();
+    anInstance.setName("Analysis - " + riskClass.getName());
+    anInstance.setOwner(anPackage);
+
+    analysis = ef.createClassInstance();
+    StereotypesHelper.addStereotype(analysis, Finder.byQualifiedName().find(project, securityAnalysisPath));
+    analysis.setName("Analysis");
+    analysis.setOwner(anPackage);
+
+    nestedConnectorEnd = Finder.byQualifiedName().find(project, nestedConnectorEndPath);
+    
+    //Nation State Shapes
+    threatLevel = createProperty(analysis, "Threat Level - Nation State", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    riskPartNation = createProperty(analysis, "Nation State", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartNation.setAggregation(AggregationKindEnum.COMPOSITE);
+    elements = riskClass.getOwnedElement();
+
+    nationResidualProbability = createProperty(analysis, "Nation State - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    nationResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    nationDetectionProbability = createProperty(analysis, "Nation State - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    nationDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    for(j = 0; j < elements.size(); j++) {
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, threatLevelPath))) {
+            writeLog("ThreatLevel Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(threatLevel);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartNation);
+        }
+
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, residualProbabilityPath))) {
+            writeLog("ResidualProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(nationResidualProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartNation);
+
+        }    
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, detectionProbabilityPath))) {
+            writeLog("DetectionProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(nationDetectionProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartNation);
+
+        }                         
+    }
+
+    nationValueList = new ArrayList();
+    nationValueList.add(nationResidualProbability);
+    nationValueList.add(nationDetectionProbability);
+        
+    nationIDList = new ArrayList();
+    nationIDList.add(nationResidualProbability.getID());
+    nationIDList.add(nationDetectionProbability.getID());
+        
+    nationThreatHistogram = ef.createClassInstance();
+    nationThreatHistogram.setName("Histogram - " + riskClass.getName() + " - Nation State");
+    nationThreatHistogram.setOwner(anPackage);
+    StereotypesHelper.addStereotype(nationThreatHistogram, Finder.byQualifiedName().find(project, histogramPath));
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", analysis);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", nationValueList);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", nationIDList);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Histogram - " + riskClass.getName() + " - Nation State");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "plotColor", "#BC334E");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", "0");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", "0");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", "0");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true);
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
+    TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Nation State.png");
+
+    //Professional Shapes
+    threatLevel = createProperty(analysis, "Threat Level - Professional", Finder.byQualifiedName().find(project, threatPath), "Professional", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    proResidualProbability = createProperty(analysis, "Professional - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    proResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    proDetectionProbability = createProperty(analysis, "Professional - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    proDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    riskPartPro = createProperty(analysis, "Professional", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartPro.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    elements = riskClass.getOwnedElement();
+    for(j = 0; j < elements.size(); j++) {
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, threatLevelPath))) {
+            writeLog("ThreatLevel Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(threatLevel);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartPro);
+        }
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, residualProbabilityPath))) {
+            writeLog("ResidualProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(proResidualProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartPro);
+        }    
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, detectionProbabilityPath))) {
+            writeLog("DetectionProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(proDetectionProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartPro);
+        }                         
+    }
+
+    proValueList = new ArrayList();
+    proValueList.add(proResidualProbability);
+    proValueList.add(proDetectionProbability);
+        
+    proIDList = new ArrayList();
+    proIDList.add(proResidualProbability.getID());
+    proIDList.add(proDetectionProbability.getID());
+        
+    proThreatHistogram = ef.createClassInstance();
+    proThreatHistogram.setName("Histogram - " + riskClass.getName() + " - Professional");
+    proThreatHistogram.setOwner(anPackage);
+    StereotypesHelper.addStereotype(proThreatHistogram, Finder.byQualifiedName().find(project, histogramPath));
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", analysis);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", proValueList);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", proIDList);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Histogram - " + riskClass.getName() + " - Professional");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "plotColor", "#BC334E");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", "0");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", "0");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", "0");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true);
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
+    TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Professional.png");
+
+    //Intermediate Shapes
+    threatLevel = createProperty(analysis, "Threat Level - Intermediate", Finder.byQualifiedName().find(project, threatPath), "Intermediate", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    intResidualProbability = createProperty(analysis, "Intermediate - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    intResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    intDetectionProbability = createProperty(analysis, "Intermediate - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    intDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    riskPartInt = createProperty(analysis, "Intermediate", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartInt.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    elements = riskClass.getOwnedElement();
+    for(j = 0; j < elements.size(); j++) {
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, threatLevelPath))) {
+            writeLog("ThreatLevel Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(threatLevel);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartInt);
+        }
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, residualProbabilityPath))) {
+            writeLog("ResidualProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(intResidualProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartInt);
+        }    
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, detectionProbabilityPath))) {
+            writeLog("DetectionProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(intDetectionProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartInt);
+        }                         
+    }
+
+    intValueList = new ArrayList();
+    intValueList.add(intResidualProbability);
+    intValueList.add(intDetectionProbability);
+        
+    intIDList = new ArrayList();
+    intIDList.add(intResidualProbability.getID());
+    intIDList.add(intDetectionProbability.getID());
+        
+    intThreatHistogram = ef.createClassInstance();
+    intThreatHistogram.setName("Histogram - " + riskClass.getName() + " - Intermediate");
+    intThreatHistogram.setOwner(anPackage);
+    StereotypesHelper.addStereotype(intThreatHistogram, Finder.byQualifiedName().find(project, histogramPath));
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", analysis);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", intValueList);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", intIDList);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Histogram - " + riskClass.getName() + " - Intermediate");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "plotColor", "#BC334E");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", "0");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", "0");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", "0");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true);
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
+    TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Intermediate.png");
+
+    //Novice Shapes
+    threatLevel = createProperty(analysis, "Threat Level - Novice", Finder.byQualifiedName().find(project, threatPath), "Novice", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
+    
+    novResidualProbability = createProperty(analysis, "Novice - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    novResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    novDetectionProbability = createProperty(analysis, "Novice - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    novDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    riskPartNov = createProperty(analysis, "Novice", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartNov.setAggregation(AggregationKindEnum.COMPOSITE);
+
+    elements = riskClass.getOwnedElement();
+    for(j = 0; j < elements.size(); j++) {
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, threatLevelPath))) {
+            writeLog("ThreatLevel Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(threatLevel);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartNov);
+        }
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, residualProbabilityPath))) {
+            writeLog("ResidualProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(novResidualProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartNov);
+        }    
+        if(StereotypesHelper.hasStereotype(elements.get(j), Finder.byQualifiedName().find(project, detectionProbabilityPath))) {
+            writeLog("DetectionProbability Found: " + elements.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(analysis);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(elements.get(j));  
+            newConnectorEnds.get(1).setRole(novDetectionProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, riskPartNov);
+        }                         
+    }
+
+    novValueList = new ArrayList();
+    novValueList.add(novResidualProbability);
+    novValueList.add(novDetectionProbability);
+        
+    novIDList = new ArrayList();
+    novIDList.add(novResidualProbability.getID());
+    novIDList.add(novDetectionProbability.getID());
+        
+    novThreatHistogram = ef.createClassInstance();
+    novThreatHistogram.setName("Histogram - " + riskClass.getName() + " - Novice");
+    novThreatHistogram.setOwner(anPackage);
+    StereotypesHelper.addStereotype(novThreatHistogram, Finder.byQualifiedName().find(project, histogramPath));
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", analysis);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", novValueList);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", novIDList);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, selectPropertiesPath), "source", "com.nomagic.magicdraw.simulation.uiprototype.HistogramPlotter");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "dynamic", true);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "title", "Histogram - " + riskClass.getName() + " - Novice");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridX", true);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "gridY", true);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "plotColor", "#BC334E");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLocation", "0");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "fixedTimeLength", "0");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, histogramPath), "refreshRate", "0");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "annotateFailures", false);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "linearInterpolation", true);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "keepOpenAfterTermination", true);
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
+    TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Novice.png");
+
+    var simulationConfigStereotypePath = "SimulationProfile::config::SimulationConfig";
+    StereotypesHelper.addStereotype(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath));
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionTarget", analysis);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "resultLocation", anInstance);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", "100");
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autoStart", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autostartActiveObjects", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "cloneReferences", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "decimalPlaces", "1");
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "fireValueChangeEvent", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "initializeReferences", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "numberOfRuns", "500");
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "recordTimestamp", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "rememberFailureStatus", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "runForksInParallel", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "silent", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "solveAfterInitialization", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "startWebServer", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "addControlPanel", true);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "timeVariableName", "simtime");
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "treatAllClassifiersAsActive", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "constraintFailureAsBreakpoint", false);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "openSimulationPane", false);
+
+    anuiList = new HashSet();
+    anuiList.add(nationThreatHistogram);
+    anuiList.add(proThreatHistogram);
+    anuiList.add(intThreatHistogram);
+    anuiList.add(novThreatHistogram);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", anuiList); 
+    
 }
 
 function createProperty(owner, name, type, defaultValue, stereotype1, stereotype2, min, max) {
@@ -310,6 +667,7 @@ function createProperty(owner, name, type, defaultValue, stereotype1, stereotype
         tempValue = ValueSpecificationHelper.createValueSpecification(project, newProperty.getType(), defaultValue, null);
         newProperty.setDefaultValue(tempValue);
     }
+    newProperty.setAggregation(AggregationKindEnum.COMPOSITE);
     writeLog("Created new property: " + newProperty.getName(), 4);
     return newProperty;
 }
@@ -369,13 +727,21 @@ function main(project, ef) {
     var newRisk = createRisk(project, riskName);
     var riskClass = newRisk[1];
     var riskPackage = newRisk[0];
-    var diagram = ModelElementsManager.getInstance().createDiagram("SysML Parametric Diagram", riskClass);
+    var diagram = ModelElementsManager.getInstance().createDiagram("CEMT Parametric Risk Diagram", riskClass);
     var parametricDiagram = project.getDiagram(diagram);
 
     // Draw the first subrisk on the parametric diagram, and display the residual and detection probabilities
     var firstRisk = selectedObjects[0];
     var firstRiskPart = createProperty(riskClass, null, firstRisk, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    firstRiskPart.setName("firstRisk");
+    firstRiskPart.setAggregation(AggregationKindEnum.COMPOSITE);
     var firstRiskShape = PresentationElementsManager.getInstance().createShapeElement(firstRiskPart, parametricDiagram);
+
+    var combinedThreatLevel = createProperty(riskClass, "Threat Level", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    combinedThreatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
+    var combinedThreatLevelShape = PresentationElementsManager.getInstance().createShapeElement(combinedThreatLevel, parametricDiagram);
+    var nestedConnectorEnd = Finder.byQualifiedName().find(project, nestedConnectorEndPath);
+
     var ownedValues = firstRisk.getOwnedElement();
     for(j = 0; j < ownedValues.size(); j++) {
         if(StereotypesHelper.hasStereotype(ownedValues.get(j), Finder.byQualifiedName().find(project, residualProbabilityPath))) {
@@ -386,14 +752,27 @@ function main(project, ef) {
             var firstDetection = ownedValues.get(j);
             writeLog("DetectionProbability Found: " + firstDetection.getName(), 5);
         }
+        if(StereotypesHelper.hasStereotype(ownedValues.get(j), Finder.byQualifiedName().find(project, threatLevelPath))) {
+            writeLog("ThreatLevel Found: " + ownedValues.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(riskClass);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(ownedValues.get(j));  
+            newConnectorEnds.get(1).setRole(combinedThreatLevel);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, firstRiskPart);
+        }
     }                    
     var firstDetectionShape = PresentationElementsManager.getInstance().createShapeElement(firstDetection, firstRiskShape);
     var firstResidualShape = PresentationElementsManager.getInstance().createShapeElement(firstResidual, firstRiskShape);
     PresentationElementsManager.getInstance().reshapeShapeElement(firstRiskShape, new java.awt.Rectangle(subrisk_x, topsubrisk_y, subriskWidth, subriskHeight));
+    PresentationElementsManager.getInstance().reshapeShapeElement(combinedThreatLevelShape, new java.awt.Rectangle(subrisk_x, botsubrisk_y - numHeight, numWidth, numHeight));
 
     // Draw the second subrisk on the parametric diagram, and display the residual and detection probabilities
     var secondRisk = selectedObjects[1];
     var secondRiskPart = createProperty(riskClass, null, secondRisk, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    secondRiskPart.setName("secondRisk");
+    secondRiskPart.setAggregation(AggregationKindEnum.COMPOSITE);
     var secondRiskShape = PresentationElementsManager.getInstance().createShapeElement(secondRiskPart, parametricDiagram);
     ownedValues = secondRisk.getOwnedElement();
     for(j = 0; j < ownedValues.size(); j++) {
@@ -404,6 +783,16 @@ function main(project, ef) {
         if(StereotypesHelper.hasStereotype(ownedValues.get(j), Finder.byQualifiedName().find(project, detectionProbabilityPath))) {
             var secondDetection = ownedValues.get(j);
             writeLog("DetectionProbability Found: " + secondDetection.getName(), 5);
+        }
+        if(StereotypesHelper.hasStereotype(ownedValues.get(j), Finder.byQualifiedName().find(project, threatLevelPath))) {
+            writeLog("ThreatLevel Found: " + ownedValues.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(riskClass);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(ownedValues.get(j));  
+            newConnectorEnds.get(1).setRole(combinedThreatLevel);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, secondRiskPart);
         }
     }         
     var secondResidualShape = PresentationElementsManager.getInstance().createShapeElement(secondResidual, secondRiskShape);    
@@ -449,6 +838,7 @@ function main(project, ef) {
     PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(detoutPara_x, detoutPara_y, paraWidth, paraHeight));
 
     var detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    detectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
     var detectionProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(detectionProbability, parametricDiagram); 
     PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(detection_x,detection_y,numWidth,numHeight));
     createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, detConstraint);
@@ -493,182 +883,36 @@ function main(project, ef) {
     PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(resoutPara_x, resoutPara_y, paraWidth, paraHeight));
 
     var residualProbability = createProperty(riskClass, "Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    residualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
     var residualProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(residualProbability, parametricDiagram); 
     PresentationElementsManager.getInstance().reshapeShapeElement(residualProbabilityShape, new java.awt.Rectangle(residual_x,residual_y,numWidth,numHeight));
     createBindingConnector(residualProbability, residualProbabilityShape, null, parameter, parameterShape, resConstraint);
 
-    // Move the 'Results' packages from the subrisks to the new risk
     var firstPackage = firstRisk.getOwner();
     var firstSimPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Simulation");
-    var firstProposedNSPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Proposed::Nation State");
-    var firstProposedPPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Proposed::Professional");
-    var firstProposedIPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Proposed::Intermediate");
-    var firstProposedNPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Proposed::Novice");
-    var firstDesignedNSPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Designed::Nation State");
-    var firstDesignedPPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Designed::Professional");
-    var firstDesignedIPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Designed::Intermediate");
-    var firstDesignedNPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Designed::Novice");
-    var firstVerifiedNSPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Verified::Nation State");
-    var firstVerifiedPPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Verified::Professional");
-    var firstVerifiedIPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Verified::Intermediate");
-    var firstVerifiedNPackage = Finder.byQualifiedName().find(project, firstPackage.getQualifiedName() + "::Results::Verified::Novice");
+
     var secondPackage = secondRisk.getOwner();
     var secondSimPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Simulation");
-    var secondProposedNSPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Proposed::Nation State");
-    var secondProposedPPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Proposed::Professional");
-    var secondProposedIPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Proposed::Intermediate");
-    var secondProposedNPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Proposed::Novice");
-    var secondDesignedNSPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Designed::Nation State");
-    var secondDesignedPPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Designed::Professional");
-    var secondDesignedIPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Designed::Intermediate");
-    var secondDesignedNPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Designed::Novice");
-    var secondVerifiedNSPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Verified::Nation State");
-    var secondVerifiedPPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Verified::Professional");
-    var secondVerifiedIPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Verified::Intermediate");
-    var secondVerifiedNPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Results::Verified::Novice");
-
-    var firstProposedNS = firstProposedNSPackage.getOwnedElement();
-    var firstProposedP = firstProposedPPackage.getOwnedElement();
-    var firstProposedI = firstProposedIPackage.getOwnedElement();
-    var firstProposedN = firstProposedNPackage.getOwnedElement();
-    var secondProposedNS = secondProposedNSPackage.getOwnedElement();
-    var secondProposedP = secondProposedPPackage.getOwnedElement();
-    var secondProposedI = secondProposedIPackage.getOwnedElement();
-    var secondProposedN = secondProposedNPackage.getOwnedElement();
-
-    var firstDesignedNS = firstDesignedNSPackage.getOwnedElement();
-    var firstDesignedP = firstDesignedPPackage.getOwnedElement();
-    var firstDesignedI = firstDesignedIPackage.getOwnedElement();
-    var firstDesignedN = firstDesignedNPackage.getOwnedElement();
-    var secondDesignedNS = secondDesignedNSPackage.getOwnedElement();
-    var secondDesignedP = secondDesignedPPackage.getOwnedElement();
-    var secondDesignedI = secondDesignedIPackage.getOwnedElement();
-    var secondDesignedN = secondDesignedNPackage.getOwnedElement();
-    
-    var firstVerifiedNS = firstVerifiedNSPackage.getOwnedElement();
-    var firstVerifiedP = firstVerifiedPPackage.getOwnedElement();
-    var firstVerifiedI = firstVerifiedIPackage.getOwnedElement();
-    var firstVerifiedN = firstVerifiedNPackage.getOwnedElement();
-    var secondVerifiedNS = secondVerifiedNSPackage.getOwnedElement();
-    var secondVerifiedP = secondVerifiedPPackage.getOwnedElement();
-    var secondVerifiedI = secondVerifiedIPackage.getOwnedElement();
-    var secondVerifiedN = secondVerifiedNPackage.getOwnedElement();
-
-    for(i = 0; i < firstProposedNS.size(); i++) {
-        firstProposedNS.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Nation State"));
-    }
-    for(i = 0; i < firstProposedP.size(); i++) {
-        firstProposedP.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Professional"));
-    }
-    for(i = 0; i < firstProposedI.size(); i++) {
-        firstProposedI.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Intermediate"));
-    }
-    for(i = 0; i < firstProposedN.size(); i++) {
-        firstProposedN.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Novice"));
-    }
-    for(i = 0; i < secondProposedNS.size(); i++) {
-        secondProposedNS.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Nation State"));
-    }
-    for(i = 0; i < secondProposedP.size(); i++) {
-        secondProposedP.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Professional"));
-    }
-    for(i = 0; i < secondProposedI.size(); i++) {
-        secondProposedI.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Intermediate"));
-    }
-    for(i = 0; i < secondProposedN.size(); i++) {
-        secondProposedN.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Proposed::Novice"));
-    }
-
-    for(i = 0; i < firstDesignedNS.size(); i++) {
-        firstDesignedNS.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Nation State"));
-    }
-    for(i = 0; i < firstDesignedP.size(); i++) {
-        firstDesignedP.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Professional"));
-    }
-    for(i = 0; i < firstDesignedI.size(); i++) {
-        firstDesignedI.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Intermediate"));
-    }
-    for(i = 0; i < firstDesignedN.size(); i++) {
-        firstDesignedN.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Novice"));
-    }
-    for(i = 0; i < secondDesignedNS.size(); i++) {
-        secondDesignedNS.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Nation State"));
-    }
-    for(i = 0; i < secondDesignedP.size(); i++) {
-        secondDesignedP.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Professional"));
-    }
-    for(i = 0; i < secondDesignedI.size(); i++) {
-        secondDesignedI.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Intermediate"));
-    }
-    for(i = 0; i < secondDesignedN.size(); i++) {
-        secondDesignedN.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Designed::Novice"));
-    }
-
-    for(i = 0; i < firstVerifiedNS.size(); i++) {
-        firstVerifiedNS.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Nation State"));
-    }
-    for(i = 0; i < firstVerifiedP.size(); i++) {
-        firstVerifiedP.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Professional"));
-    }
-    for(i = 0; i < firstVerifiedI.size(); i++) {
-        firstVerifiedI.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Intermediate"));
-    }
-    for(i = 0; i < firstVerifiedN.size(); i++) {
-        firstVerifiedN.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Novice"));
-    }
-    for(i = 0; i < secondVerifiedNS.size(); i++) {
-        secondVerifiedNS.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Nation State"));
-    }
-    for(i = 0; i < secondVerifiedP.size(); i++) {
-        secondVerifiedP.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Professional"));
-    }
-    for(i = 0; i < secondVerifiedI.size(); i++) {
-        secondVerifiedI.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Intermediate"));
-    }
-    for(i = 0; i < secondVerifiedN.size(); i++) {
-        secondVerifiedN.get(i).setOwner(Finder.byQualifiedName().find(project, riskPackage.getQualifiedName() + "::Results::Verified::Novice"));
-    }
 
     // Create the new simulation. Pass in the histograms from the subrisks so they can be added to the new simulation.
     newSession(project, "Simulation");
-    var histograms = new HashSet();
-    const firstSim = new ArrayList();
-    for(i = 0; i < firstSimPackage.getOwnedElement().size(); i++){
-        firstSim.add(firstSimPackage.getOwnedElement().get(i));
-    }
-    writeLog("Got " + firstSim.size() + " owned simulation elements: " + firstSim, 5);
-    for(i = 0; i < firstSim.size(); i++) {
-        writeLog("Found Owned Element: " + firstSim.get(i).getName(), 5);
-        if(firstSim.get(i).getHumanType() == "Histogram"){
-            histograms.add(firstSim.get(i));
-            writeLog("Found histogram: " + firstSim.get(i).getName(), 5);
-        }
-    }
-    const secondSim = new ArrayList();
-    for(i = 0; i < secondSimPackage.getOwnedElement().size(); i++){
-        secondSim.add(secondSimPackage.getOwnedElement().get(i));
-    }
-    writeLog("Got " + secondSim.size() + " owned simulation elements: " + secondSim, 5);
-    for(i = 0; i < secondSim.size(); i++) {
-        writeLog("Found Owned Element: " + secondSim.get(i).getName(), 5);
-        if(secondSim.get(i).getHumanType() == "Histogram"){
-            histograms.add(secondSim.get(i));
-            writeLog("Found histogram: " + secondSim.get(i).getName(), 5);
-        }
-    }
-    writeLog("Got " + histograms.size() + " existing histograms: " + histograms, 5);
-    createSimulation(firstSim, secondSim, histograms, riskClass, residualProbability, detectionProbability);
+    createSimulation(riskClass, residualProbability, detectionProbability);
+    createAnalysis();
 
-    // Finally, move the subrisks themselves under the new risk and delete the old subrisk packages.
-    newSession(project, "Movement");
+    // Finally, move the subrisks themselves under the new risk.
+    newSession(project, "Risk Movement");
     var risks = new ArrayList();
     risks.add(firstRisk);
     risks.add(secondRisk);
     Refactoring.Moving.moveElementsWithRelations(risks, riskClass);
 
-    firstPackage.dispose();
-    secondPackage.dispose();
-    project.getDiagram(diagram).open();
+    newSession(project, "Remaining Movement");
+    var subriskPackage = ef.createPackageInstance();
+    subriskPackage.setOwner(riskPackage);
+    subriskPackage.setName("Sub-risk Data");
+    
+    firstPackage.setOwner(subriskPackage);
+    secondPackage.setOwner(subriskPackage);
 }
 
 var project = Application.getInstance().getProject();

@@ -810,6 +810,7 @@ The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and 
             +Implementation Detail - Designed~String~
             +Implementation Detail - Verified~String~
             +[derived] Control Description~String~ [1]
+            -[constraint] OutOfDate()
             -[constraint] Proposed Implementation()
             -[constraint] Designed Implementation()
             -[constraint] Verified Implementation()
@@ -831,7 +832,8 @@ The `SecurityProperty` stereotype uses the `Property` class as a metaclass, and 
 `SecurityProperty` contains one derived property:
  - Control Description - which displays the `Control Description` attribute of the `SecurityControl` which is used as the Type of the `SecurityProperty`.
 
-`SecurityProperty` has seven active validation constraints:
+`SecurityProperty` has eight active validation constraints:
+ - OutOfDate() - which checks whether the Asset and Control relationships that generated the SecurityProperty have been removed;
  - Proposed Implementation() - which checks whether a Proposed Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
  - Implementation Detail - Proposed() - which checks whether the `SecurityProperty` has a Proposed Implementation state set, but no Implementation Detail - Proposed recorded, and flags if that is true;
  - Designed Implementation() - which checks whether a Designed Implementation state has been selected for this `SecurityProperty` and flags if it has not; 
