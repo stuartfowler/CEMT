@@ -603,7 +603,6 @@ The `SecurityControl` stereotype uses the `Requirement` class as a metaclass, an
             -[constraint] Mitigates()
         }
         class SecurityConstraint~Class~ {
-            +Constraint Number
             +[derived] Applies~Element~ [0..*]
             -[constraint] Description()
             -[constraint] Applies()
@@ -669,13 +668,11 @@ The `SecurityConstraint` stereotype uses the `Requirement` class as a metaclass,
             -[constraint] Mitigates()
         }
         class SecurityConstraint~Class~ {
-            +Constraint Number
             +[derived] Applies~Element~ [0..*]
             -[constraint] Description()
             -[constraint] Applies()
         }
         class ISMControl~Class~ {
-            +ISM Number
             +Revision~Integer~
             +Updated~String~
             +Applicability All~Boolean~
@@ -690,12 +687,34 @@ The `SecurityConstraint` stereotype uses the `Requirement` class as a metaclass,
             +Section~String~
             +Topic~String~
         }
+        class E8Strategy~Class~ {
+            +[derived]Maturity Level~E8Maturity~ [1]
+            +[derived]ML1 Applicable~Class~ [0..*]
+            +[derived]ML2 Applicable~Class~ [0..*]
+            +[derived]ML3 Applicable~Class~ [0..*]
+            +[derived]ML1 Implemented~Class~ [0..*]
+            +[derived]ML2 Implemented~Class~ [0..*]
+            +[derived]ML3 Implemented~Class~ [0..*]
+            +[derived]ML1 Not Implemented~Class~ [0..*]
+            +[derived]ML2 Not Implemented~Class~ [0..*]
+            +[derived]ML3 Not Implemented~Class~ [0..*]
+            +[derived]ML1 Partially Implemented~Class~ [0..*]
+            +[derived]ML2 Partially Implemented~Class~ [0..*]
+            +[derived]ML3 Partially Implemented~Class~ [0..*]
+            +[derived]ML1 Not Assessed~Class~ [0..*]
+            +[derived]ML2 Not Assessed~Class~ [0..*]
+            +[derived]ML3 Not Assessed~Class~ [0..*]
+        }
+        class E8Control~Class~ {
+            +Maturity Level 1~Boolean~
+            +Maturity Level 2~Boolean~
+            +Maturity Level 3~Boolean~
+        }
         SecurityControl~Class~ <|-- SecurityConstraint~Class~
         SecurityConstraint~Class~ <|-- ISMControl~Class~
+        SecurityConstraint~Class~ <|-- E8Strategy~Class~
+        SecurityConstraint~Class~ <|-- E8Control~Class~
 ```
-
-`SecurityConstraint` contains a single attribute:
- - Constraint Number - which contains a unique identifier for the each `SecurityConstraint`.
 
 `SecurityConstraint` contains one derived property:
  - Applies - which lists the `Asset`s which are linked to this `SecurityConstraint` by the `Applies` relationship.
@@ -715,13 +734,11 @@ The `ISMControl` stereotype uses the `Requirement` class as a metaclass, and pro
 ```mermaid
     classDiagram
         class SecurityConstraint~Class~ {
-            +Constraint Number
             +[derived] Applies~Element~ [0..*]
             -[constraint] Description()
             -[constraint] Applies()
         }
         class ISMControl~Class~ {
-            +ISM Number
             +Revision~Integer~
             +Updated~String~
             +Applicability All~Boolean~
@@ -739,8 +756,7 @@ The `ISMControl` stereotype uses the `Requirement` class as a metaclass, and pro
         SecurityConstraint~Class~ <|-- ISMControl~Class~
 ```
 
-`ISMControl` contains fourteen attributes:
- - ISM Number - which contains a unique identifier for the each `ISMControl`;
+`ISMControl` contains thirteen attributes:
  - Revision - which captures the Revision attribute taken from the ISM, which identifies the current revision of the control;
  - Updated - which captures the Updated attribute taken from the ISM, which identifies when the control was last modified;
  - Applicability All - which captures the Applicability All attribute taken from the ISM, which identifies whether the control is applicable to all classifications;
@@ -753,7 +769,86 @@ The `ISMControl` stereotype uses the `Requirement` class as a metaclass, and pro
  - ISM ID - which captures the ISM ID Number attribute taken from the ISM;
  - Guideline - which captures the Guideline heading under which the control is placed in the ISM;
  - Section - which captures the Section heading under which the control is placed in the ISM; and
- - Topic - which captures the Topic heading under which the control is placed in the ISM;
+ - Topic - which captures the Topic heading under which the control is placed in the ISM.
+
+`ISMControl` also has a related stereotype `Customization` which sets the `SecurityConstraint` stereotype as a `Quick Applying For` property, which allows the `ISMControl` stereotype to appear in the context menu for a `SecurityConstraint`.
+
+##### E8Control
+
+The `E8Control` stereotype uses the `Requirement` class as a metaclass, and provides a stereotype for all `SecurityControl`s that are imported from the Essential Eight Maturity Model. As this stereotype inherits from both the `SecurityControl` and `SecurityConstraint` stereotypes, `E8Control`s can be linked to either `ThreatModelAction`s or directly to `Asset`s. Where possible, they should be linked to `ThreatModelAction`s.
+
+```mermaid
+    classDiagram
+        class SecurityConstraint~Class~ {
+            +[derived] Applies~Element~ [0..*]
+            -[constraint] Description()
+            -[constraint] Applies()
+        }
+        class E8Control~Class~ {
+            +Maturity Level 1~Boolean~
+            +Maturity Level 2~Boolean~
+            +Maturity Level 3~Boolean~
+        }
+        SecurityConstraint~Class~ <|-- E8Control~Class~
+```
+
+`E8Control` contains three attributes:
+ - Maturity Level 1 - which identifies whether the E8Control is a mandatory part of Maturity Level 1 for its parent [`E8Strategy`](#e8strategy);
+ - Maturity Level 2 - which identifies whether the E8Control is a mandatory part of Maturity Level 2 for its parent [`E8Strategy`](#e8strategy); and
+ - Maturity Level 3 - which identifies whether the E8Control is a mandatory part of Maturity Level 3 for its parent [`E8Strategy`](#e8strategy).
+
+`E8Control` also has a related stereotype `Customization` which sets the `SecurityConstraint` stereotype as a `Quick Applying For` property, which allows the `E8Control` stereotype to appear in the context menu for a `SecurityConstraint`.
+
+##### E8Strategy
+
+The `E8Strategy` stereotype uses the `Requirement` class as a metaclass, and provides a stereotype for the eight high level strategies from the Essential Eight Maturity Model. As this stereotype inherits from both the `SecurityControl` and `SecurityConstraint` stereotypes, `E8Control`s can be linked to either `ThreatModelAction`s or directly to `Asset`s. Where possible, they should be linked to `ThreatModelAction`s.
+
+```mermaid
+    classDiagram
+        class SecurityConstraint~Class~ {
+            +[derived] Applies~Element~ [0..*]
+            -[constraint] Description()
+            -[constraint] Applies()
+        }
+        class E8Strategy~Class~ {
+            +[derived]Maturity Level~E8Maturity~ [1]
+            +[derived]ML1 Applicable~Class~ [0..*]
+            +[derived]ML2 Applicable~Class~ [0..*]
+            +[derived]ML3 Applicable~Class~ [0..*]
+            +[derived]ML1 Implemented~Class~ [0..*]
+            +[derived]ML2 Implemented~Class~ [0..*]
+            +[derived]ML3 Implemented~Class~ [0..*]
+            +[derived]ML1 Not Implemented~Class~ [0..*]
+            +[derived]ML2 Not Implemented~Class~ [0..*]
+            +[derived]ML3 Not Implemented~Class~ [0..*]
+            +[derived]ML1 Partially Implemented~Class~ [0..*]
+            +[derived]ML2 Partially Implemented~Class~ [0..*]
+            +[derived]ML3 Partially Implemented~Class~ [0..*]
+            +[derived]ML1 Not Assessed~Class~ [0..*]
+            +[derived]ML2 Not Assessed~Class~ [0..*]
+            +[derived]ML3 Not Assessed~Class~ [0..*]
+        }
+        SecurityConstraint~Class~ <|-- E8Strategy~Class~
+```
+
+`E8Strategy` contains sixteen derived attributes:
+ - Maturity Level - which captures the maturity level of the `E8Strategy` in accordance with the Essential Eight Maturity Model;
+ - ML1 Applicable - which captures all the `E8Control`s that have been assessed as applicable and form Maturity Level 1 for this `E8Strategy`;
+ - ML2 Applicable - which captures all the `E8Control`s that have been assessed as applicable and form Maturity Level 2 for this `E8Strategy`;
+ - ML3 Applicable - which captures all the `E8Control`s that have been assessed as applicable and form Maturity Level 3 for this `E8Strategy`;
+ - ML1 Implemented - which captures all the `E8Control`s that have been assessed as implemented and form Maturity Level 1 for this `E8Strategy`;
+ - ML2 Implemented - which captures all the `E8Control`s that have been assessed as implemented and form Maturity Level 2 for this `E8Strategy`;
+ - ML3 Implemented - which captures all the `E8Control`s that have been assessed as implemented and form Maturity Level 3 for this `E8Strategy`;
+ - ML1 Not Implemented - which captures all the `E8Control`s that have been assessed as not implemented and form Maturity Level 1 for this `E8Strategy`;
+ - ML2 Not Implemented - which captures all the `E8Control`s that have been assessed as not implemented and form Maturity Level 2 for this `E8Strategy`;
+ - ML3 Not Implemented - which captures all the `E8Control`s that have been assessed as not implemented and form Maturity Level 3 for this `E8Strategy`;
+ - ML1 Partially Implemented - which captures all the `E8Control`s that have been assessed as partially implemented and form Maturity Level 1 for this `E8Strategy`;
+ - ML2 Partially Implemented - which captures all the `E8Control`s that have been assessed as partially implemented and form Maturity Level 2 for this `E8Strategy`;
+ - ML3 Partially Implemented - which captures all the `E8Control`s that have been assessed as partially implemented and form Maturity Level 3 for this `E8Strategy`;
+ - ML1 Not Assessed - which captures all the `E8Control`s that have been assessed as not assessed and form Maturity Level 1 for this `E8Strategy`;
+ - ML2 Not Assessed - which captures all the `E8Control`s that have been assessed as not assessed and form Maturity Level 2 for this `E8Strategy`; and
+ - ML3 Not Assessed - which captures all the `E8Control`s that have been assessed as not assessed and form Maturity Level 3 for this `E8Strategy`.
+
 
 `ISMControl` also has a related stereotype `Customization` which sets the `SecurityConstraint` stereotype as a `Quick Applying For` property, which allows the `ISMControl` stereotype to appear in the context menu for a `SecurityConstraint`.
 

@@ -1,6 +1,6 @@
 # ISM
 
-This section provides profiles for the ACSC Information Security Manual.
+This section provides profiles for the ACSC Information Security Manual and the ACSC Essential Eight Maturity Model.
 
 A profile for a new ISM release can be made by:
  - Downloading the SSP Annex Excel Template [managed by ACSC](https://www.cyber.gov.au/acsc/view-all-content/ism);

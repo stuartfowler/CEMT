@@ -88,3 +88,17 @@ The enumeration options are:
  - Verified.
 
 These ratings are used to determine which [Implementation Status](./threat-mitigation.md#implementation-status) is used during the risk assessment process and which risk results are displayed in the [Risk Summary Table](./risk.md#risk-assessment-tables).
+
+## E8 Maturity
+
+The `E8 Maturity` enumeration is used to identify the maturity level for Essential Eight Strategies, based on the Essential Eight Maturity Model.
+
+The enumeration options are:
+ - Not Applicable;
+ - Not Assessed;
+ - Level 0;
+ - Level 1;
+ - Level 2; and
+ - Level 3.
+
+ These ratings are used to capture which maturity level has been achieved for each of the Essential Eight strategies, based on the implementation state of the related `SecurityProperty`s.
