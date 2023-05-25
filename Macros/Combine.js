@@ -25,6 +25,8 @@ importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(com.nomagic.magicdraw.uml.Refactoring);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
+importClass(com.nomagic.task.RunnableWithProgress);
+importClass(com.nomagic.ui.ProgressStatusRunner);
 
 var debug = 1;
 
@@ -680,7 +682,7 @@ function createBindingConnector(part1, shape1, owner1, part2, shape2, owner2) {
     return [newConnector, newConnectorShape];
 }
 
-function main(project, ef) {
+function main(project, ef, progress) {
     
     // Pre-checks to ensure two SecurityRisks are selected
     var selectedObjects = getSelectedObjects(project);
@@ -712,6 +714,8 @@ function main(project, ef) {
         writeLog("ERROR: A name for the risk was not passed to the macro. Please set the riskName argument when running the macro and try again", 1);
         return;
     }
+
+    progress.init("Creating Risk Diagram for " + riskName, 0, 3);
 
     // Create the new risk and a new parametric diagram
     var newRisk = createRisk(project, riskName);
@@ -757,6 +761,11 @@ function main(project, ef) {
     var firstResidualShape = PresentationElementsManager.getInstance().createShapeElement(firstResidual, firstRiskShape);
     PresentationElementsManager.getInstance().reshapeShapeElement(firstRiskShape, new java.awt.Rectangle(subrisk_x, topsubrisk_y, subriskWidth, subriskHeight));
     PresentationElementsManager.getInstance().reshapeShapeElement(combinedThreatLevelShape, new java.awt.Rectangle(subrisk_x, botsubrisk_y - numHeight, numWidth, numHeight));
+    
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
 
     // Draw the second subrisk on the parametric diagram, and display the residual and detection probabilities
     var secondRisk = selectedObjects[1];
@@ -788,6 +797,11 @@ function main(project, ef) {
     var secondResidualShape = PresentationElementsManager.getInstance().createShapeElement(secondResidual, secondRiskShape);    
     var secondDetectionShape = PresentationElementsManager.getInstance().createShapeElement(secondDetection, secondRiskShape);  
     PresentationElementsManager.getInstance().reshapeShapeElement(secondRiskShape, new java.awt.Rectangle(subrisk_x, botsubrisk_y, subriskWidth, subriskHeight));
+
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
 
     // Draw the constraint block which will merge the Detection Probability values
     var detConstraint = createProperty(riskClass, "Detection", Finder.byQualifiedName().find(project, detConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
@@ -833,6 +847,10 @@ function main(project, ef) {
     PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(detection_x,detection_y,numWidth,numHeight));
     createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, detConstraint);
 
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
 
     // Draw the constraint block which will merge the Residual Probability values
     var resConstraint = createProperty(riskClass, "Residual", Finder.byQualifiedName().find(project, resConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, threatConstraintStereotypePath), null, null);
@@ -884,10 +902,24 @@ function main(project, ef) {
     var secondPackage = secondRisk.getOwner();
     var secondSimPackage = Finder.byQualifiedName().find(project, secondPackage.getQualifiedName() + "::Simulation");
 
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
+    progress.increase();
+    progress.setDescription("Creating New Simulation");
+
     // Create the new simulation. Pass in the histograms from the subrisks so they can be added to the new simulation.
     newSession(project, "Simulation");
     createSimulation(riskClass, residualProbability, detectionProbability);
     createAnalysis();
+
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
+    progress.increase();
+    progress.setDescription("Moving Subrisks");
 
     // Finally, move the subrisks themselves under the new risk.
     newSession(project, "Risk Movement");
@@ -895,6 +927,13 @@ function main(project, ef) {
     risks.add(firstRisk);
     risks.add(secondRisk);
     Refactoring.Moving.moveElementsWithRelations(risks, riskClass);
+
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
+    progress.increase();
+    progress.setDescription("Moving Subrisk Data");
 
     newSession(project, "Remaining Movement");
     var subriskPackage = ef.createPackageInstance();
@@ -910,8 +949,15 @@ writeLog("Got project: " + project, 5);
 var ef = project.getElementsFactory();
 writeLog("Got elementsFactory: " + ef, 5);
 newSession(project, "Parametric Creation");
+
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, ef, progress);
+    }
+});
+
 try {
-    main(project, ef);
+    ProgressStatusRunner.runWithProgressStatus(task, "Combine Macro", true, 0);
 } finally {
     SessionManager.getInstance().closeSession();
 }

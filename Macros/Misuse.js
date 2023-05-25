@@ -20,6 +20,8 @@ importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
 importClass(com.nomagic.uml2.MagicDrawProfile);
+importClass(com.nomagic.task.RunnableWithProgress);
+importClass(com.nomagic.ui.ProgressStatusRunner);
 
 var debug = 1;
 var misuseCasePath = "Cyber::Stereotypes::MisuseCase";
@@ -72,14 +74,7 @@ function processMisuseCase(object) {
     }
 }
 
-//Initialises by selecting the project and element factory
-var project = Application.getInstance().getProject();
-writeLog("Got project: " + project, 5);
-var ef = project.getElementsFactory();
-writeLog("Got elementsFactory: " + ef, 5);
-newSession(project, "Misuse Activity Creation");
-
-try {
+function main(project, progress) {
     //Grabs the misuseCase stereotypes
     misuseCase = Finder.byQualifiedName().find(project, misuseCasePath);
     writeLog("Got misuseCase stereotype: " + misuseCase, 5);
@@ -89,8 +84,15 @@ try {
 
     //If something is selected in containment tree
     if(selectedObjects.length > 0) {
+        progress.init("Checking selected activities", 0, selectedObjects.length + 1);
         writeLog("Length: " + selectedObjects.length, 5);
         for (x = 0; x < selectedObjects.length; x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing MisuseCase: " + selectedObjects[x].getUserObject().getName());
             currentObject = selectedObjects[x].getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
             //Process object if it is a misuseCase, otherwise do nothing
@@ -104,13 +106,37 @@ try {
     } else {
         //If nothing is selected, find all misuseCase and process them
         misuseCases = StereotypesHelper.getStereotypedElements(misuseCase);
+        progress.init("Checking all misuse cases", 0, misuseCases.size() + 1);   
         writeLog("Got list of misuseCases: " + misuseCases, 4);
         writeLog("Misuse Case List Size: " + misuseCases.size(), 3);
-            for (x = 0; x < misuseCases.size(); x++) {
+        for (x = 0; x < misuseCases.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing MisuseCase: " + misuseCases.get(x).getName());
             currentObject = misuseCases.get(x);
             processMisuseCase(currentObject);
         }
     }
+}
+
+//Initialises by selecting the project and element factory
+var project = Application.getInstance().getProject();
+writeLog("Got project: " + project, 5);
+var ef = project.getElementsFactory();
+writeLog("Got elementsFactory: " + ef, 5);
+newSession(project, "Misuse Creation");
+
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, progress);
+    }
+});
+
+try {
+    ProgressStatusRunner.runWithProgressStatus(task, "Misuse Macro", true, 0);
 } finally {
     SessionManager.getInstance().closeSession();
 }

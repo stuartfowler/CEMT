@@ -22,7 +22,7 @@ importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
 importClass(com.nomagic.uml2.MagicDrawProfile);
 
-var debug = 2;
+var debug = 1;
 var threatJoinPath = "Cyber::Stereotypes::ThreatJoin";
 var postureSignalPath = "Cyber::Stereotypes::PostureImpactSignal";
 //Helper function to write logs
@@ -47,7 +47,7 @@ function processThreatJoin(object) {
     signal = object.refGetValue("PostureImpactSignal");
     if(signal) {
         if(StereotypesHelper.hasStereotype(signal.get(0), postureSignal)) {
-            writeLog("ThreatJoin: " + object.getName() + " has been renamed to " + signal.get(0).getName(), 2);
+            writeLog("ThreatJoin: " + object.getName() + " has been renamed to " + signal.get(0).getName(), 1);
             object.setName(signal.get(0).getName());
         } else {
             writeLog("ThreatJoin: " + object.getName() + " does not have a ThreatAcceptEvent with a ThreatImpactSignal immediately connected to it. Please add this before running this macro again.", 1);
@@ -57,14 +57,7 @@ function processThreatJoin(object) {
     }
 }
 
-//Initialises by selecting the project and element factory
-var project = Application.getInstance().getProject();
-writeLog("Got project: " + project, 5);
-var ef = project.getElementsFactory();
-writeLog("Got elementsFactory: " + ef, 5);
-newSession(project, "Misuse Activity Creation");
-
-try {
+function main(project, ef, progress) {
     //Grabs the threatJoin stereotypes
     threatJoin = Finder.byQualifiedName().find(project, threatJoinPath);
     writeLog("Got threatJoin stereotype: " + threatJoin, 5);
@@ -74,8 +67,15 @@ try {
 
     //If something is selected in containment tree
     if(selectedObjects.length > 0) {
+        progress.init("Checking selected threatjoins", 0, selectedObjects.length + 1);
         writeLog("Length: " + selectedObjects.length, 5);
         for (x = 0; x < selectedObjects.length; x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Join: " + selectedObjects[x].getUserObject().getName());
             currentObject = selectedObjects[x].getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
             //Process object if it is a misuseCase, otherwise do nothing
@@ -89,13 +89,37 @@ try {
     } else {
         //If nothing is selected, find all misuseCase and process them
         threatJoins = StereotypesHelper.getStereotypedElements(threatJoin);
+        progress.init("Checking selected threatjoins", 0, threatJoins.size() + 1);
         writeLog("Got list of threatJoins: " + threatJoins, 4);
         writeLog("Threat Join List Size: " + threatJoins.size(), 3);
-            for (x = 0; x < threatJoins.size(); x++) {
+        for (x = 0; x < threatJoins.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Join: " + threatJoins.get(x).getName());
             currentObject = threatJoins.get(x);
             processThreatJoin(currentObject);
         }
     }
+}
+
+//Initialises by selecting the project and element factory
+var project = Application.getInstance().getProject();
+writeLog("Got project: " + project, 5);
+var ef = project.getElementsFactory();
+writeLog("Got elementsFactory: " + ef, 5);
+newSession(project, "Join Creation");
+
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, ef, progress);
+    }
+});
+
+try {
+    ProgressStatusRunner.runWithProgressStatus(task, "Join Macro", true, 0);
 } finally {
     SessionManager.getInstance().closeSession();
 }

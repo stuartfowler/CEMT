@@ -253,6 +253,8 @@ The histograms will be automatically saved to the file system where the model is
 ![Threat Histogram](./Images/threathistogram.png)
 ![Detection Histogram](./Images/detecthistogram.png)
 
+> **Note**: Once the simulation has been run, the histogram and an image of the parametric diagram should be saved and attached into the applicable Results package and then attached to as the relevant attribute of the `SecurityRisk`.
+
 ### Additional Optional Steps
 
 It is possible to combine two parametric risk diagrams together into an aggregated risk. This is useful when combining a [Threat Path](#threat-path) which could represent the loss of a redundant function, with another threat path that represents the loss of the same primary function. This can be achieved by selecting two [`SecurityRisk`s](./stereotypes.md#securityrisk) in the containment tree and running the [CombineRisks Macro](../Macros/CombineRisks.js). This would normally be used when two co-requisite threat paths have been modelled using `ThreatJoin`s and `PostureImpactSignal`s, as described in the [Threat Modelling](./threat-modelling.md#additional-optional-steps-1) section.

@@ -22,6 +22,8 @@ importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
 importClass(com.nomagic.uml2.MagicDrawProfile);
+importClass(com.nomagic.task.RunnableWithProgress);
+importClass(com.nomagic.ui.ProgressStatusRunner);
 
 var debug = 1;
 var securityPropertyPath = "Cyber::Stereotypes::SecurityProperty";
@@ -61,14 +63,24 @@ function processProperty(object) {
         object.setName(new_name);
         writeLog("Property updated: " + object.getName(), 2);
     }
+    mitigates = object.getType().refGetValue("Mitigates");
+    affectedBy = object.getOwner().refGetValue("affectedBy");
+    found = 0;
+    for(i = 0; i < mitigates.size(); i++) {
+        if(affectedBy.contains(mitigates.get(i))) {
+            found = 1;
+        }
+    }
+    if(StereotypesHelper.hasStereotype(object.getType(),Finder.byQualifiedName().find(project, "Cyber::Stereotypes::NoneControl"))) {
+        found = 1;
+    }
+    if(!found) {
+        writeLog(object.getName() + " is no longer linked to the threat model via it's owning asset and typing control, and has been deleted. If this is undesired, you can reinstate the SecurityProperty using the 'Undo' command.", 1);
+        ModelElementsManager.getInstance().removeElement(object);
+    }
 }
 
-//Initialises by selecting the project and element factory
-var project = Application.getInstance().getProject();
-writeLog("Got project: " + project, 5);
-newSession(project, "Property Update");
-
-try {
+function main(project, progress) {
     //Grabs the securityProperty stereotypes
     securityProperty = Finder.byQualifiedName().find(project, securityPropertyPath);
     writeLog("Got securityProperty stereotype: " + securityProperty, 5);
@@ -78,8 +90,15 @@ try {
 
     //If something is selected in containment tree
     if(selectedObjects.length > 0) {
+        progress.init("Checking selected properties", 0, selectedObjects.length + 1);
         writeLog("Length: " + selectedObjects.length, 5);
         for (x = 0; x < selectedObjects.length; x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Property: " + selectedObjects[x].getUserObject().getName());
             currentObject = selectedObjects[x].getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
             //Process object if it is a securityProperty, otherwise do nothing
@@ -93,13 +112,37 @@ try {
     } else {
         //If nothing is selected, find all securityProperties and process them
         securityProperties = StereotypesHelper.getStereotypedElements(securityProperty);
+        progress.init("Checking all properties", 0, (securityProperties.size() + 1));   
         writeLog("Got list of securityProperties: " + securityProperties, 4);
         writeLog("Secuirty Constraint List Size: " + securityProperties.size(), 3);
-            for (x = 0; x < securityProperties.size(); x++) {
+        for (x = 0; x < securityProperties.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Property: " + securityProperties.get(x).getName());
             currentObject = securityProperties.get(x);
             processProperty(currentObject);
         }
     }
+}
+
+//Initialises by selecting the project and element factory
+var project = Application.getInstance().getProject();
+writeLog("Got project: " + project, 5);
+newSession(project, "Property Update");
+
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, progress);
+    }
+});
+
+try {
+    ProgressStatusRunner.runWithProgressStatus(task, "Properties Macro", true, 0);
+
+
 } finally {
     SessionManager.getInstance().closeSession();
 }

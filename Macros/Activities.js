@@ -20,6 +20,8 @@ importClass(com.nomagic.uml2.ext.jmi.helpers.CoreHelper);
 importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
+importClass(com.nomagic.task.RunnableWithProgress);
+importClass(com.nomagic.ui.ProgressStatusRunner);
 
 var debug = 1;
 var aggregatedActionPath = "Cyber::Stereotypes::AggregatedAction";
@@ -152,14 +154,7 @@ function processPin(pin) {
     }
 }
 
-//Initialises by selecting the project and element factory
-var project = Application.getInstance().getProject();
-writeLog("Got project: " + project, 5);
-var ef = project.getElementsFactory();
-writeLog("Got elementsFactory: " + ef, 5);
-newSession(project, "Activity Creation");
-
-try{
+function main(project, progress) {
     //Grabs the aggregatedAction stereotypes
     aggregatedAction = Finder.byQualifiedName().find(project, aggregatedActionPath);
     writeLog("Got aggregatedAction stereotype: " + aggregatedAction, 5);
@@ -175,9 +170,16 @@ try{
     //Get selected object from containment tree
     var selectedObjects = project.getBrowser().getContainmentTree().getSelectedNodes();
     //If something is selected in containment tree
-    if(selectedObjects.length > 0) {            
+    if(selectedObjects.length > 0) {         
+        progress.init("Checking selected activities", 0, selectedObjects.length + 1);
         writeLog("Length: " + selectedObjects.length, 5);
         for (x = 0; x < selectedObjects.length; x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + selectedObjects[x].getUserObject().getName());
             currentObject = selectedObjects[x].getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
             //Process object if it is a aggregatedAction, otherwise do nothing
@@ -196,25 +198,47 @@ try{
     } else {
         //If nothing is selected, find all aggregatedAction and process them
         aggregatedActions = StereotypesHelper.getStereotypedElements(aggregatedAction);
+        threatActions = StereotypesHelper.getStereotypedElements(threatAction);
+        detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
+
+        progress.init("Checking all activities", 0, (aggregatedActions.size() + aggregatedActions.size() + aggregatedActions.size()) + 1);   
         writeLog("Got list of aggregatedActions: " + aggregatedActions, 4);
         writeLog("Aggregated Action List Size: " + aggregatedActions.size(), 3);
-            for (x = 0; x < aggregatedActions.size(); x++) {
+        for (x = 0; x < aggregatedActions.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + aggregatedActions.get(x).getName());
             currentObject = aggregatedActions.get(x);
             processAggregatedAction(currentObject);
         } 
 
-        threatActions = StereotypesHelper.getStereotypedElements(threatAction);
+        
         writeLog("Got list of threatActions: " + threatActions, 4);
         writeLog("Threat Action List Size: " + threatActions.size(), 3);
-            for (x = 0; x < threatActions.size(); x++) {
+        for (x = 0; x < threatActions.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + threatActions.get(x).getName());
             currentObject = threatActions.get(x);
             processTMAction(currentObject);
         } 
 
-        detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
+        
         writeLog("Got list of detectionActions: " + detectionActions, 4);
         writeLog("Threat Action List Size: " + detectionActions.size(), 3);
-            for (x = 0; x < detectionActions.size(); x++) {
+        for (x = 0; x < detectionActions.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + detectionActions.get(x).getName());
             currentObject = detectionActions.get(x);
             processTMAction(currentObject);
         } 
@@ -222,21 +246,50 @@ try{
 
     var inputPinStereo = Finder.byQualifiedName().find(project, inputPinPath);
     var inputPins = StereotypesHelper.getStereotypedElements(inputPinStereo);
+    var outputPinStereo = Finder.byQualifiedName().find(project, outputPinPath);
+    var outputPins = StereotypesHelper.getStereotypedElements(outputPinStereo);
+
+    progress.increase();
+    progress.setDescription("Checking Pins");
+
     writeLog("Got list of inputPins: " + inputPins, 4);
     writeLog("Input Pins List Size: " + inputPins.size(), 3);
     for (x = 0; x < inputPins.size(); x++) {
+        if(progress.isCancel()) {
+            writeLog("ERROR: User cancelled macro.", 1);
+            return;
+        }
         currentObject = inputPins.get(x);
         processPin(currentObject);
     }
 
-    var outputPinStereo = Finder.byQualifiedName().find(project, outputPinPath);
-    var outputPins = StereotypesHelper.getStereotypedElements(outputPinStereo);
+    
     writeLog("Got list of outputPins: " + outputPins, 4);
     writeLog("Output Pins List Size: " + outputPins.size(), 3);
     for (x = 0; x < outputPins.size(); x++) {
+        if(progress.isCancel()) {
+            writeLog("ERROR: User cancelled macro.", 1);
+            return;
+        }
         currentObject = outputPins.get(x);
         processPin(currentObject);
     }
+}
+//Initialises by selecting the project and element factory
+var project = Application.getInstance().getProject();
+writeLog("Got project: " + project, 5);
+var ef = project.getElementsFactory();
+writeLog("Got elementsFactory: " + ef, 5);
+newSession(project, "Activity Creation");
+
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, progress);
+    }
+});
+
+try{
+    ProgressStatusRunner.runWithProgressStatus(task, "Activities Macro", true, 0);
 } finally {
     SessionManager.getInstance().closeSession();
 }

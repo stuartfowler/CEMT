@@ -45,13 +45,17 @@ The `MisuseCase` stereotype uses the `UseCase` class as a metaclass and provides
         class MisuseCase~UseCase~ {      
             -[constraint] Name()
             -[constraint] Mal-Activities()
+            -[constraint] Description()
         }
         
 ```
 
 `MisuseCase` contains no attributes, but has two active validation constraints:
- - Name() - which checks that the name of the `MisuseCase` and the name of the `MalActivity` which classifies its behaviour are equal; and
- - Mal-Activities() - which checks that the `Activity` which classifies the `MisuseCases` behaviour is stereotyped as a `MalActivity`.
+ - Name() - which checks that the name of the `MisuseCase` and the name of the `MalActivity` which classifies its behaviour are equal; 
+ - Mal-Activities() - which checks that the `Activity` which classifies the `MisuseCases` behaviour is stereotyped as a `MalActivity`; and
+ - Description() - which checks whether the Misuse Case Description attribute is empty and flags if it is.
+
+`MisuseCase` also has a related stereotype `Customization` which renames the built-in `Documentation` attribute to be called `Misuse Case Description`.
 
 ### Association
 

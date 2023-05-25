@@ -21,6 +21,8 @@ importClass(com.nomagic.uml2.ext.jmi.helpers.CoreHelper);
 importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
+importClass(com.nomagic.task.RunnableWithProgress);
+importClass(com.nomagic.ui.ProgressStatusRunner);
 
 var debug = 1;
 var securityConstraintPath = "Cyber::Stereotypes::SecurityConstraint";
@@ -153,14 +155,8 @@ function processConstraint(currentConstraint, noneAssetStereo) {
         }
     }
 }
-//Initialises by selecting the project and element factory
-var project = Application.getInstance().getProject();
-writeLog("Got project: " + project, 5);
-var ef = project.getElementsFactory();
-writeLog("Got elementsFactory: " + ef, 5);
-newSession(project, "Constraint Creation");
 
-try {
+function main(project, ef, progress) {
     //Grabs the threatAction and detectionAction stereotypes
     var threatAction = Finder.byQualifiedName().find(project, threatActionPath);
     writeLog("Got threatAction stereotype: " + threatAction, 5);
@@ -210,8 +206,15 @@ try {
 
     //If something is selected in containment tree
     if(selectedObjects.length > 0) {
+        progress.init("Checking selected actions", 0, selectedObjects.length + 1);
         writeLog("Length: " + selectedObjects.length, 5);
         for (x = 0; x < selectedObjects.length; x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + selectedObjects[x].getUserObject().getName());
             currentObject = selectedObjects[x].getUserObject();
             writeLog("Got object name: " + currentObject.getName(), 5);
             //Process object if it is a threatAction or detectionAction, otherwise do nothing
@@ -228,31 +231,69 @@ try {
             }
         }   
     } else {
-        //If nothing is selected, find all threatActions and process them
+        
         threatActions = StereotypesHelper.getStereotypedElements(threatAction);
+        detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
+        securityConstraints = StereotypesHelper.getStereotypedElementsIncludingDerived(securityConstraint);
+        progress.init("Checking all actions", 0, (threatActions.size() + detectionActions.size() + securityConstraints.size()) + 1);
+
+        //If nothing is selected, find all threatActions and process them
         writeLog("Got list of threatActions: " + threatActions, 4);
         writeLog("ThreatAction List Size: " + threatActions.size(), 3);
-            for (x = 0; x < threatActions.size(); x++) {
+        for (x = 0; x < threatActions.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + threatActions.get(x).getName());
             currentObject = threatActions.get(x);
             processAction(currentObject, noneControl, systemAsset);
         }
         //Also process all detectionActions
-        detectionActions = StereotypesHelper.getStereotypedElements(detectionAction);
         writeLog("Got list of detectionActions: " + detectionActions, 4);
         writeLog("DetectionAction List Size: " + detectionActions.size(), 3);
         for (x = 0; x < detectionActions.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + detectionActions.get(x).getName());
             currentObject = detectionActions.get(x);
             processAction(currentObject, noneControl, systemAsset);
         }
 
-        //Process SecurityConstraints
-        securityConstraints = StereotypesHelper.getStereotypedElementsIncludingDerived(securityConstraint);
+        //Process SecurityConstraints        
         writeLog("Got list of securityConstraints: " + securityConstraints, 2);
         writeLog("SecurityConstraints List Size: " + securityConstraints.size(), 2);     
         for (x = 0; x < securityConstraints.size(); x++) {
+            if(progress.isCancel()) {
+                writeLog("ERROR: User cancelled macro.", 1);
+                return;
+            }
+            progress.increase();
+            progress.setDescription("Processing Action: " + securityConstraints.get(x).getName());
             processConstraint(securityConstraints.get(x), noneAssetStereo);
         }
     }
+}
+
+//Initialises by selecting the project and element factory
+var project = Application.getInstance().getProject();
+writeLog("Got project: " + project, 5);
+var ef = project.getElementsFactory();
+writeLog("Got elementsFactory: " + ef, 5);
+newSession(project, "Constraint Creation");
+
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, ef, progress);
+    }
+});
+
+try {
+    ProgressStatusRunner.runWithProgressStatus(task, "Controls Macro", true, 0);
 } finally {
     SessionManager.getInstance().closeSession();
 }

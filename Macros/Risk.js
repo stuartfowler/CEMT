@@ -23,6 +23,8 @@ importClass(com.nomagic.magicdraw.sysml.util.SysMLProfile);
 importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
+importClass(com.nomagic.task.RunnableWithProgress);
+importClass(com.nomagic.ui.ProgressStatusRunner);
 
 var debug = 1;
 var threatImpactSignalPath = "Cyber::Stereotypes::ThreatImpactSignal";
@@ -405,9 +407,8 @@ function buildInitialShapes(diagram, initialNode, riskClass) {
     difficultyRareParameter = Finder.byQualifiedName().find(project, difficultyRareParameterPath);
 
     difficultyThreatShape = PresentationElementsManager.getInstance().createShapeElement(difficultyThreatParameter, difficultyConstraintShape);
-    changeProperty(difficultyThreatShape, "SHOW_NAME", false);
-    //changeProperty(difficultyConstraintShape, "SUPPRESS_STRUCTURE", true);       
-        PresentationElementsManager.getInstance().reshapeShapeElement(difficultyThreatShape, new java.awt.Rectangle(difficultyThreatParameter_x,difficulty_y,parameterWidth,parameterHeight));
+    changeProperty(difficultyThreatShape, "SHOW_NAME", false);     
+    PresentationElementsManager.getInstance().reshapeShapeElement(difficultyThreatShape, new java.awt.Rectangle(difficultyThreatParameter_x,difficulty_y,parameterWidth,parameterHeight));
     createBindingConnector(difficultyThreatParameter, difficultyThreatShape, difficultyConstraint, threatLevel, threatLevelShape, null);
 
     difficultyTrivialShape = PresentationElementsManager.getInstance().createShapeElement(difficultyTrivialParameter, difficultyConstraintShape);
@@ -500,18 +501,6 @@ function buildInitialShapes(diagram, initialNode, riskClass) {
     PresentationElementsManager.getInstance().reshapeShapeElement(legendShape, new java.awt.Rectangle(initialGap,topGap,legendWidth,legendHeight));
 
     return [initialProbability, initialProbabilityShape, null, initialProbability, initialProbabilityShape, null]
-}
-
-function getCommonNode(array, arraylist) {
-    for(i=0; i < array.length; i++) {
-        for(j=0; j < arraylist.size(); j++)
-        {
-            if(array[i] == arraylist.get(j)) {
-                return array[i];
-            }
-        }
-    }
-    return null;
 }
 
 function getThreatX (threatNumber) {
@@ -1293,7 +1282,74 @@ function createAnalysis() {
     
 }
 
-function main(project, ef) {
+function getCommonNode(array, arraylist) {
+    var nodeArray = new ArrayList();
+    for(a=0; a < array.length; a++) {
+        for(b=0; b < arraylist.size(); b++)
+        {
+            if(array[a] == arraylist.get(b)) {
+                nodeArray.add(array[a]);
+            }
+        }
+    }
+    return nodeArray;
+}
+
+function getOrderedPath(start, nodes) {
+
+    var orderedPath = new ArrayList();
+    var path = new ArrayList();
+    path.add(start);
+    orderedPath.add(path);
+    forkedPath = new ArrayList();
+    writeLog("Node Length: " + nodes.length, 4);
+    for(i = 0; i < nodes.length - 1; i++) {
+        writeLog("Node number: " + i, 5);
+        for(j = 0; j < orderedPath.size(); j++) {
+            writeLog("Path number: " + j, 5);
+            writeLog("Path size: " + orderedPath.get(j).size(), 4);
+            if(StereotypesHelper.hasStereotype(orderedPath.get(j).get(i),threatImpactSignal)) {
+                orderedPath.remove(j);
+                j--;
+                continue;
+            }
+            if(StereotypesHelper.hasStereotype(orderedPath.get(j).get(i),postureImpactSignal)) {
+                orderedPath.remove(j);
+                j--;
+                continue;
+            }
+            var nextNodeArray = orderedPath.get(j).get(i).refGetValue("NextThreatAction");
+            var possibleNode = getCommonNode(nodes, nextNodeArray);
+            writeLog("NextThreatAction: " + possibleNode, 3);
+            if(possibleNode.size() == 0) {
+                return null;
+            }
+            if(possibleNode.size() == 1) {
+                orderedPath.get(j).add(possibleNode.get(0));
+            }
+            if(possibleNode.size() > 1) {                
+                for(k = 1; k < possibleNode.size(); k++) {
+                    writeLog("Fork number: " + k, 5);
+                    forkedNode = new ArrayList();
+                    forkedNode.addAll(orderedPath.get(j));
+                    forkedNode.add(possibleNode.get(k));
+                    writeLog("Forked Node: " + forkedNode, 1);
+                    forkedPath.add(forkedNode);
+                }
+                orderedPath.get(j).add(possibleNode.get(0));
+            }
+        }
+        for(l = 0; l < forkedPath.size(); l++) {
+            writeLog("Path Size: " + forkedPath.get(l).size(), 5);
+            orderedPath.add(forkedPath.get(l));
+        }
+        forkedPath.clear();
+    }
+    return orderedPath;
+
+}
+
+function main(project, ef, progress) {
     //Initialises by selecting the project and element factory
 
     var selectedObjects = getSelectedObjects(project);
@@ -1326,23 +1382,23 @@ function main(project, ef) {
         joinPresent = 1;
     }
 
+    //Get correct path
+    var validPath = getOrderedPath(initialNode, selectedObjects);
+    if(!validPath) {
+        writeLog("ERROR: Incompleted branch selected in the containment tree. Please select a full branch of an attack tree in the containment tree and try again.", 1);
+        return;
+    }
+    if(validPath.size() > 1) {
+        writeLog("ERROR: Multiple valid paths selected. Please unambiguously select a full branch of an attack tree in the containment tree and try again.", 1);
+        return;
+    }
+    progress.init("Creating Risk Diagram for " + threatName, 0, validPath.get(0).size() + 2);
     //Validate that all objects have assets, controls and difficulties
-    var nextNode = initialNode;
-
     var checksPassed = true;
     var validationTAConstraints = [Finder.byQualifiedName().find(project, "Cyber::Stereotypes::ThreatAction::Controls"), Finder.byQualifiedName().find(project, "Cyber::Stereotypes::ThreatAction::Properties"), Finder.byQualifiedName().find(project, "Cyber::Stereotypes::ThreatAction::Assets")];
     var validationDAConstraints = [Finder.byQualifiedName().find(project, "Cyber::Stereotypes::DetectionAction::Controls"), Finder.byQualifiedName().find(project, "Cyber::Stereotypes::DetectionAction::Properties"), Finder.byQualifiedName().find(project, "Cyber::Stereotypes::DetectionAction::Assets")];
-    for(z = 0; z < selectedObjects.length; z++) {
-        next = nextNode.refGetValue("NextThreatAction");
-        nextNode = getCommonNode(selectedObjects, next);
-
-        if(StereotypesHelper.hasStereotype(nextNode,threatImpactSignal)) {
-            break;
-        }
-
-        if(StereotypesHelper.hasStereotype(nextNode,postureImpactSignal)) {
-            break;
-        }
+    for(z = 1; z < validPath.get(0).size() - 1; z++) {
+        nextNode = validPath.get(0).get(z);
 
         if(StereotypesHelper.hasStereotype(nextNode,threatJoin)) {
             continue;
@@ -1376,7 +1432,7 @@ function main(project, ef) {
         }
     }
 
-    var numberOfActions = selectedObjects.length - 2;
+    var numberOfActions = validPath.get(0).size() - 2;
     if(joinPresent) {
         numberOfActions--;
     }
@@ -1471,23 +1527,30 @@ function main(project, ef) {
         writeLog("Validation Checks Passed. Creating Risk...", 1);
     }
 
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
+
     risk = createRisk(project, initialNode.getName(), signal.getName(), assetSelection);
     diagram = ModelElementsManager.getInstance().createDiagram("CEMT Parametric Risk Diagram", risk);
 
-    nodeHistory = new ArrayList();
+    progress.increase();
+    progress.setDescription("Drawing Initial Shapes");
+
+    var nodeHistory = new ArrayList();
     drawnNode = buildInitialShapes(diagram, initialNode, risk);
     nodeHistory.add(drawnNode);
+    
 
-    var nextNode = initialNode;
     joinPresent = 0;
-    for(z = 0; z < selectedObjects.length; z++) {
-        next = nextNode.refGetValue("NextThreatAction");
-        nextNode = getCommonNode(selectedObjects, next);
-        if(StereotypesHelper.hasStereotype(nextNode, threatImpactSignal)) {
-            break;
-        }
-        if(StereotypesHelper.hasStereotype(nextNode,postureImpactSignal)) {
-            break;
+    for(z = 0; z < validPath.get(0).size() - 2; z++) {
+        var nextNode = validPath.get(0).get(z+1);
+        progress.increase();
+        progress.setDescription("Drawing Node " + nextNode.getName());
+        if(progress.isCancel()) {
+            writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+            return;
         }
         if(StereotypesHelper.hasStereotype(nextNode, threatJoin)) {
             joinPresent = 1;
@@ -1498,10 +1561,31 @@ function main(project, ef) {
         nodeHistory.add(drawnNode);
     }
 
+    progress.increase();
+    progress.setDescription("Drawing Final Shapes");
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
+
     buildFinalShapes(diagram, drawnNode, nextNode, (z - joinPresent), nodeHistory, detectionCombinationHeight, detectCombinationOut_y, detectionProbability_y, detectionCombinationsParameters, numberOf10CombinationBlocks, fullDifficultyCombinationHeight);
+
+    progress.increase();
+    progress.setDescription("Creating Simulation");
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
 
     newSession(project, "Simulation Creation");
     createSimulation();
+
+    progress.increase();
+    progress.setDescription("Creating Analysis");
+    if(progress.isCancel()) {
+        writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
+        return;
+    }
 
     newSession(project, "Analysis Creation");
     createAnalysis();
@@ -1509,15 +1593,25 @@ function main(project, ef) {
     project.getDiagram(diagram).open();
 }
 
+var task = new RunnableWithProgress({
+    run: function(progress) {
+       main(project, ef, progress);
+    }
+});
+
 var project = Application.getInstance().getProject();
 writeLog("Got project: " + project, 5);
 var ef = project.getElementsFactory();
 writeLog("Got elementsFactory: " + ef, 5);
 newSession(project, "Parametric Creation");
+
 try {
-    main(project, ef);
+    ProgressStatusRunner.runWithProgressStatus(task, "Risk Macro", true, 0);
 } finally {
     SessionManager.getInstance().closeSession();
 }
+
+
+
 
 
