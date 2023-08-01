@@ -25,6 +25,11 @@ importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
 importClass(com.nomagic.task.RunnableWithProgress);
 importClass(com.nomagic.ui.ProgressStatusRunner);
+importClass(com.nomagic.magicdraw.ui.dialogs.MDDialogParentProvider);
+importClass(com.nomagic.magicdraw.ui.dialogs.selection.ElementSelectionDlgFactory);
+importClass(com.nomagic.magicdraw.ui.dialogs.SelectElementTypes);
+importClass(com.nomagic.magicdraw.ui.dialogs.SelectElementInfo);
+importClass(com.nomagic.generictable.GenericTableManager);
 
 var debug = 1;
 var threatImpactSignalPath = "Cyber::Stereotypes::ThreatImpactSignal";
@@ -89,6 +94,7 @@ var threatJoinPath = "Cyber::Stereotypes::ThreatJoin";
 var postureSignalPath = "Cyber::Stereotypes::PostureImpactSignal";
 var nestedConnectorEndPath = "SysML::Blocks::NestedConnectorEnd";
 var securityAnalysisPath = "Cyber::Stereotypes::SecurityAnalysis";
+var threatModelActionStereotypePath = "Cyber::Stereotypes::ThreatModelAction";
 
 // Diagram global variables
 var leftGap = 50;
@@ -212,7 +218,7 @@ function getStereotypeInArray(array, stereotype) {
     return null;      
 }
 
-function createRisk(project, start, signal, assetSelection) {
+function createRisk(project, start, signal, assetSelectionString, threatName) {
     if(!(Finder.byQualifiedName().find(project, riskFolderPath))){
         riskPackage = ef.createPackageInstance();
         riskPackage.setName(riskFolderPath);
@@ -220,12 +226,7 @@ function createRisk(project, start, signal, assetSelection) {
     }
     threatPackage = ef.createPackageInstance();
     threatPackage.setOwner(Finder.byQualifiedName().find(project, riskFolderPath));
-    if(assetSelection) {
-        threatPackage.setName(start + " - " + signal + " - " + threatName + " - " + assetSelection.getName());
-    }
-    else {
-        threatPackage.setName(start + " - " + signal + " - " + threatName);
-    }            
+    threatPackage.setName(start + " - " + signal + " - " + threatName + assetSelectionString);
     writeLog("Created Package: " + threatPackage.getName(), 4);
 
     riskClass = ef.createClassInstance();
@@ -523,7 +524,7 @@ function getDetectionCombinationY (parameterNumber) {
     return detectCombination_y + parameterHeight + (parameterNumber * (parameterHeight + difficultyCombinationVerticalGap));
 }
 
-function buildThreatAction(diagram, previousNode, currentNode, step, noneControlPath, systemBlockPath, noneConstraintPath, assetSelection) {
+function buildThreatAction(diagram, previousNode, currentNode, step, noneControlPath, systemBlockPath, noneConstraintPath, assetSelection, mitigationTable, detectionTable) {
     parametricDiagram = project.getDiagram(diagram);
 
     threatConstraint = createProperty(riskClass, currentNode.getName(), Finder.byQualifiedName().find(project, threatConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, threatConstraintStereotypePath), null, null);
@@ -562,10 +563,29 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
         createBindingConnector(threatDifficultyParameter, threatDifficultyParameterShape, threatConstraint, extremeValue, extremeShape, null);
     }
 
-    threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), defaultMinEffectiveness, defaultMaxEffectiveness);
+    if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").size() == 1) {
+        var CEmin = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").get(0);
+    } else {
+        var CEmin = defaultMinEffectiveness;
+    }
+    if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").size() == 1) {
+        var CEmax = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").get(0);
+    } else {
+        var CEmax = defaultMaxEffectiveness;
+    }
+    if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").size() == 1) {
+        var CEjustification = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").get(0);
+    } else {
+        var CEjustification = "";
+    }  
+
+    threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), CEmin, CEmax);
+    CoreHelper.setComment(threatControlEffectiveness, CEjustification);
+    TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), "overrideDerivedEffectiveness", false);
     threatControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(threatControlEffectiveness, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(threatControlEffectivenessShape, new java.awt.Rectangle(getThreatX(step),threatControlEffectiveness_y,threatWidth,controlEffectivenessHeight));
-    
+    GenericTableManager.addRowElement(mitigationTable, threatControlEffectiveness);
+
     createBindingConnector(threatRiskInputParameter, threatRiskInputParameterShape, threatConstraint, previousNode[0], previousNode[1], previousNode[2]);
     createBindingConnector(threatControlParameter, threatControlParameterShape, threatConstraint, threatControlEffectiveness, threatControlEffectivenessShape, null);
 
@@ -574,7 +594,7 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     writeLog("allocatedComponents: " + linkedAssets, 5);
     if(assetSelection) {
         for(h = 0; h < linkedAssets.size(); h++) {
-            if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
+            if(!(linkedAssets.get(h).isAbstract() || assetSelection.contains(linkedAssets.get(h)) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
                 linkedAssets.remove(h);
             }
         }
@@ -595,6 +615,7 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
         }
         TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", "0");
         TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", "0");
+        CoreHelper.setComment(threatControlEffectiveness, "There are no controls linked to this action. Control effectiveness is 0.");
     }
     else {
         for(i = 0; i < linkedAssets.size(); i++) {
@@ -657,10 +678,29 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
 
     createBindingConnector(detectEvasionParameter, detectEvasionParameterShape, detectConstraint, evasionValue, evasionShape, null);
     
-    detectControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentDetectNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), defaultMinEffectiveness, defaultMaxEffectiveness);
+    if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").size() == 1) {
+        var CEmin = TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").get(0);
+    } else {
+        var CEmin = defaultMinEffectiveness;
+    }
+    if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").size() == 1) {
+        var CEmax = TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").get(0);
+    } else {
+        var CEmax = defaultMaxEffectiveness;
+    }
+    if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").size() == 1) {
+        var CEjustification = TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").get(0);
+    } else {
+        var CEjustification = "";
+    }  
+
+    detectControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentDetectNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), CEmin, CEmax);
+    CoreHelper.setComment(detectControlEffectiveness, CEjustification);
+    TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), "overrideDerivedEffectiveness", false);
     detectControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(detectControlEffectiveness, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(detectControlEffectivenessShape, new java.awt.Rectangle(getThreatX(step),detectControlEffectiveness_y,threatWidth,controlEffectivenessHeight));
-    
+    GenericTableManager.addRowElement(detectionTable, detectControlEffectiveness);
+
     createBindingConnector(detectControlParameter, detectControlParameterShape, detectConstraint, detectControlEffectiveness, detectControlEffectivenessShape, null);
 
     //draw constraints
@@ -668,7 +708,7 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     writeLog("allocatedComponents: " + linkedAssets, 5);
     if(assetSelection) {
         for(h = 0; h < linkedAssets.size(); h++) {
-            if(!(linkedAssets.get(h).isAbstract() || (linkedAssets.get(h) == assetSelection) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
+            if(!(linkedAssets.get(h).isAbstract() || assetSelection.contains(linkedAssets.get(h)) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
                 linkedAssets.remove(h);
             }
         }
@@ -689,6 +729,7 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
         }
         TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
         TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
+        CoreHelper.setComment(threatControlEffectiveness, "There are no controls linked to this action. Control effectiveness is 0.");
     }
     else {
         for(i = 0; i < linkedAssets.size(); i++) {
@@ -729,7 +770,7 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
 
     for(x = 0; x < fullBlocks; x++) {
         detectionCombinationPath = detectConstraintPath + "10";
-        detectionCombination = createProperty(riskClass, "Detection Combination " + (x + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+        detectionCombination = createProperty(riskClass, "Detection Combination " + (x + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
         detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
         PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * x),threatWidth,fullBlockHeight));
         for(y = 0; y < 10; y++) {
@@ -764,9 +805,9 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
 
     detectionCombinationPath = detectConstraintPath + finalParameters;
     if(fullBlocks) {
-        detectionCombination = createProperty(riskClass, "Detection Combination " + (fullBlocks + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+        detectionCombination = createProperty(riskClass, "Detection Combination " + (fullBlocks + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
     } else {
-        detectionCombination = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+        detectionCombination = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
     }
     detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * fullBlocks),threatWidth,detectionCombinationHeight));
@@ -920,6 +961,7 @@ function createSimulation() {
     uiList.add(threatHistogram);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", uiList); 
     
+    return simConfig;
 }
 
 function createAnalysis() {
@@ -1250,9 +1292,42 @@ function createAnalysis() {
     TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
     TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Novice.png");
 
+    csvValueList = new ArrayList();
+    csvValueList.add(novResidualProbability);
+    csvValueList.add(novDetectionProbability);
+    csvValueList.add(intResidualProbability);
+    csvValueList.add(intDetectionProbability);
+    csvValueList.add(proResidualProbability);
+    csvValueList.add(proDetectionProbability);
+    csvValueList.add(nationResidualProbability);
+    csvValueList.add(nationDetectionProbability);
+        
+    csvIDList = new ArrayList();
+    csvIDList.add(novResidualProbability.getID());
+    csvIDList.add(novDetectionProbability.getID());
+    csvIDList.add(intResidualProbability.getID());
+    csvIDList.add(intDetectionProbability.getID());
+    csvIDList.add(proResidualProbability.getID());
+    csvIDList.add(proDetectionProbability.getID());
+    csvIDList.add(nationResidualProbability.getID());
+    csvIDList.add(nationDetectionProbability.getID());
+
+    var csvExportStereotypePath = "SimulationProfile::config::CSVExport";
+    csvExport = ef.createClassInstance();
+    csvExport.setName("Export - " + riskClass.getName());
+    csvExport.setOwner(anPackage);
+    StereotypesHelper.addStereotype(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath));
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath), "fileName", ".\\Analysis\\CSV - " + riskClass.getName() + ".csv");
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath), "recordTime", false);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath), "writeAtTheEnd", true);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", analysis);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", csvValueList);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", csvIDList);
+
     var simulationConfigStereotypePath = "SimulationProfile::config::SimulationConfig";
     StereotypesHelper.addStereotype(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath));
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionTarget", analysis);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionListeners", csvExport);
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", "100");
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autoStart", true);
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autostartActiveObjects", true);
@@ -1280,6 +1355,11 @@ function createAnalysis() {
     anuiList.add(novThreatHistogram);
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", anuiList); 
     
+    simConfigs = new HashSet();
+    simConfigs.add(anConfig);
+    TagsHelper.setStereotypePropertyValue(analysis, Finder.byQualifiedName().find(project, securityAnalysisPath), "Simulation Configuration", simConfigs);
+
+    return analysis;
 }
 
 function getCommonNode(array, arraylist) {
@@ -1458,10 +1538,7 @@ function main(project, ef, progress) {
         detectComponent_y = detectControlEffectiveness_y + controlEffectivenessHeight + threatVeriticalGap;
     }
 
-    if(assetSelectionPath){
-        var assetSelection = Finder.byQualifiedName().find(project, assetSelectionPath);
-    }
-            
+          
     var secControl = Finder.byQualifiedName().find(project, securityControlPath);
     var noneControlStereo = Finder.byQualifiedName().find(project, noneControlStereoPath);
     var noneControls = StereotypesHelper.getStereotypedElements(noneControlStereo);
@@ -1532,7 +1609,44 @@ function main(project, ef, progress) {
         return;
     }
 
-    risk = createRisk(project, initialNode.getName(), signal.getName(), assetSelection);
+    res = Application.getInstance().getGUILog().showQuestion("Do you want to select specific assets?", false, "Asset Selection");
+    if(res == 2){
+        var dialogParent = MDDialogParentProvider.getProvider().getDialogParent();
+        var dlg = ElementSelectionDlgFactory.create(dialogParent);
+        var assets = StereotypesHelper.getStereotypedElements(Finder.byQualifiedName().find(project, assetPath));
+
+        var sel = new SelectElementTypes(assets, null, Finder.byQualifiedName().find(project, assetPath));
+        var info = new SelectElementInfo(false, false, project.getPrimaryModel(), false);
+        var arr = [];
+        ElementSelectionDlgFactory.initMultiple(dlg, sel, info, arr);
+
+        dlg.show();
+
+        if(dlg.isOkClicked()) {
+            var assetSelection = dlg.getSelectedElements();            
+        } else {
+            var assetSelection = null;
+            writeLog("Nothing Selected.", 5);
+        }
+    }
+
+    assetSelectionString = "";
+    if(assetSelection) {
+        if(assetSelection.size() == 1) {
+            assetSelectionString = " - " + assetSelection.get(0).getName(); 
+        }
+    }
+
+    res = "";
+    res = Application.getInstance().getGUILog().showInputTextDialog("Create Risk", "Please enter a threat description. (Name Format: " +initialNode.getName() + " - " + signal.getName() + " - <threatDescription>" + assetSelectionString);
+    if(res == "") {
+        writeLog("ERROR: Threat description not entered, no action taken.", 1);
+        return;
+    }
+    var threatName = res;
+    writeLog("New Name: " + threatName, 5);
+
+    risk = createRisk(project, initialNode.getName(), signal.getName(), assetSelectionString, threatName);
     diagram = ModelElementsManager.getInstance().createDiagram("CEMT Parametric Risk Diagram", risk);
 
     progress.increase();
@@ -1542,6 +1656,49 @@ function main(project, ef, progress) {
     drawnNode = buildInitialShapes(diagram, initialNode, risk);
     nodeHistory.add(drawnNode);
     
+    mit = new ArrayList();
+    mit.add(Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath));    
+    var mitigationTable = GenericTableManager.createGenericTable(project, "Mitigation Control Effectiveness");
+    GenericTableManager.setTableElementTypes(mitigationTable, mit);
+    mitigationTable.setOwner(risk);
+    columns = new ArrayList();
+    columns.add("_NUMBER_");
+    columns.add("QPROP:Element:threatAction");
+    columns.add("QPROP:Element:name");
+    columns.add("QPROP:Element:min");
+    columns.add("QPROP:Element:max");
+    columns.add("QPROP:Element:documentation");
+    columns.add("QPROP:Element:Not Assessed");
+    columns.add("QPROP:Element:Implemented");
+    columns.add("QPROP:Element:Partially Implemented");    
+    columns.add("QPROP:Element:Not Implemented");
+    columns.add("QPROP:Element:overrideDerivedEffectiveness");
+    columns.add("QPROP:Element:derivedControlEffectivenessMin");
+    columns.add("QPROP:Element:derivedControlEffectivenessMax");
+    columns.add("QPROP:Element:derivedControlEffectivenessJustification");
+    GenericTableManager.addColumnsById(mitigationTable, columns);
+
+    det = new ArrayList();
+    det.add(Finder.byQualifiedName().find(project, detectionControlEffectivenessPath));
+    var detectionTable = GenericTableManager.createGenericTable(project, "Detection Control Effectiveness");
+    GenericTableManager.setTableElementTypes(detectionTable, det);
+    detectionTable.setOwner(risk);
+    columns = new ArrayList();
+    columns.add("_NUMBER_");
+    columns.add("QPROP:Element:detectionAction");
+    columns.add("QPROP:Element:name");
+    columns.add("QPROP:Element:min");
+    columns.add("QPROP:Element:max");
+    columns.add("QPROP:Element:documentation");
+    columns.add("QPROP:Element:Not Assessed");
+    columns.add("QPROP:Element:Implemented");
+    columns.add("QPROP:Element:Partially Implemented");    
+    columns.add("QPROP:Element:Not Implemented");
+    columns.add("QPROP:Element:overrideDerivedEffectiveness");
+    columns.add("QPROP:Element:derivedControlEffectivenessMin");
+    columns.add("QPROP:Element:derivedControlEffectivenessMax");
+    columns.add("QPROP:Element:derivedControlEffectivenessJustification");
+    GenericTableManager.addColumnsById(detectionTable, columns);
 
     joinPresent = 0;
     for(z = 0; z < validPath.get(0).size() - 2; z++) {
@@ -1557,7 +1714,7 @@ function main(project, ef, progress) {
             continue;
         }
         writeLog("NextThreatAction: " + nextNode.getName(), 3);
-        drawnNode = buildThreatAction(diagram, drawnNode, nextNode, (z - joinPresent), noneControlPath, systemBlockPath, noneConstraintPath, assetSelection);
+        drawnNode = buildThreatAction(diagram, drawnNode, nextNode, (z - joinPresent), noneControlPath, systemBlockPath, noneConstraintPath, assetSelection, mitigationTable, detectionTable);
         nodeHistory.add(drawnNode);
     }
 
@@ -1578,7 +1735,7 @@ function main(project, ef, progress) {
     }
 
     newSession(project, "Simulation Creation");
-    createSimulation();
+    sim = createSimulation();
 
     progress.increase();
     progress.setDescription("Creating Analysis");
@@ -1588,7 +1745,26 @@ function main(project, ef, progress) {
     }
 
     newSession(project, "Analysis Creation");
-    createAnalysis();
+    analysis = createAnalysis();
+
+    analysisList = new HashSet();
+    analysisList.add(analysis);
+    TagsHelper.setStereotypePropertyValue(risk, Finder.byQualifiedName().find(project, securityRiskPath), "SecurityAnalysis", analysisList);
+
+    configList = new HashSet();
+    configList.add(sim);
+    TagsHelper.setStereotypePropertyValue(risk, Finder.byQualifiedName().find(project, securityRiskPath), "Simulation Configuration", configList);
+
+    threatStart = new HashSet();
+    threatStart.add(initialNode);
+    TagsHelper.setStereotypePropertyValue(risk, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatStart", threatStart);
+
+    impactSignal = new HashSet();
+    impactSignal.add(signal);
+    TagsHelper.setStereotypePropertyValue(risk, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatImpactSignal", signal);
+    if(assetSelection) {
+        TagsHelper.setStereotypePropertyValue(risk, Finder.byQualifiedName().find(project, securityRiskPath), "AssetSelection", assetSelection);
+    }
 
     project.getDiagram(diagram).open();
 }

@@ -4,6 +4,9 @@
     <toolbarConfiguration>
         <category name="Cyber" id="action_category_1682853800654_139686_1" expandedByDefault="true">
             <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Comment" description="Assumption" listAsElement="false" opposite="false" id="IDaction_1687848668334_846696_3">
+                    <stereotype id="_2022x_1_6a70230_1687820052762_581407_68000"/>
+                </custom>
                 <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Initial Probability" listAsElement="false" opposite="false" id="IDaction_1682854361308_225302_12">
                     <stereotype id="_19_0_3_6a70230_1587004840092_445843_67195"/>
                     <stereotype id="_12_0_be00301_1164123483951_695645_2041"/>
@@ -363,6 +366,30 @@
                     </style>
                 </custom>
                 <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency" description="Dependency" listAsElement="false" opposite="false" id="IDaction_1682854297757_495132_11"/>
+            </actions>
+        </category>
+        <category name="Common" id="action_category_1689054572487_942151_2" expandedByDefault="false">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/packagenode.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/packagenode.svg"></icon>
+            <actions>
+                <group>
+                    <standard action="ADD_NOTE" shortcut="pressed N "/>
+                    <standard action="ADD_HTML_NOTE" shortcut="shift pressed N "/>
+                    <standard action="ADD_COMMENT"/>
+                    <standard action="ADD_HTML_COMMENT"/>
+                </group>
+                <group>
+                    <standard action="ADD_TEXT_BOX" shortcut="pressed X "/>
+                    <standard action="ADD_HTML_TEXT_BOX" shortcut="shift pressed X "/>
+                </group>
+                <group>
+                    <standard action="ADD_NOTE_ANCHOR" shortcut="pressed H "/>
+                </group>
+                <group>
+                    <standard action="ADD_SEPARATOR" shortcut="pressed W "/>
+                    <standard action="ADD_SEPARATOR_VERTICAL"/>
+                    <standard action="ADD_RECTANGULAR_SHAPE" shortcut="shift pressed Q "/>
+                </group>
             </actions>
         </category>
     </toolbarConfiguration>

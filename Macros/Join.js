@@ -21,6 +21,7 @@ importClass(com.nomagic.magicdraw.uml.Finder);
 importClass(java.util.ArrayList);
 importClass(java.util.HashSet);
 importClass(com.nomagic.uml2.MagicDrawProfile);
+importClass(com.nomagic.task.RunnableWithProgress);
 
 var debug = 1;
 var threatJoinPath = "Cyber::Stereotypes::ThreatJoin";

@@ -35,6 +35,7 @@ var riskFolderPath = "Risk Assessment"
 var securityRiskPath = "Cyber::Stereotypes::SecurityRisk";
 var residualProbabilityPath = "Cyber::Stereotypes::ResidualProbability";
 var detectionProbabilityPath = "Cyber::Stereotypes::DetectionProbability";
+var initialProbabilityPath = "Cyber::Stereotypes::InitialProbability";
 var resConstraintPath = "Cyber::Constraints::Combine";
 var valuePropertyPath = "MD Customization for SysML::additional_stereotypes::ValueProperty";
 var partPropertyPath = "MD Customization for SysML::additional_stereotypes::PartProperty";
@@ -66,10 +67,10 @@ var numWidth = constraintWidth;
 
 var subrisk_x = x_pad;
 var topsubrisk_y = y_pad;
-var botsubrisk_y = y_pad + subriskHeight + constraintHeight;
+var botsubrisk_y = y_pad + (subriskHeight * 2) + constraintHeight;
 
 var detConstraint_x = subrisk_x + subriskWidth + x_pad;
-var detConstraint_y = y_pad + subriskHeight;
+var detConstraint_y = y_pad + (subriskHeight * 1.5);
 var detPara_x = detConstraint_x + (constraintWidth / 2) - (paraWidth / 2);
 var topdetPara_y = detConstraint_y;
 var botdetPara_y = detConstraint_y + constraintHeight;
@@ -272,6 +273,8 @@ function createSimulation(riskClass, residualProbability, detectionProbability) 
     uiList = new HashSet();
     uiList.add(threatHistogram);
     TagsHelper.setStereotypePropertyValue(simConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", uiList); 
+
+    return simConfig;
 }
 
 function createAnalysis() {
@@ -601,9 +604,43 @@ function createAnalysis() {
     TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "recordPlotDataAs", "PNG");
     TagsHelper.setStereotypePropertyValue(novThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Novice.png");
 
+
+    csvValueList = new ArrayList();
+    csvValueList.add(novResidualProbability);
+    csvValueList.add(novDetectionProbability);
+    csvValueList.add(intResidualProbability);
+    csvValueList.add(intDetectionProbability);
+    csvValueList.add(proResidualProbability);
+    csvValueList.add(proDetectionProbability);
+    csvValueList.add(nationResidualProbability);
+    csvValueList.add(nationDetectionProbability);
+        
+    csvIDList = new ArrayList();
+    csvIDList.add(novResidualProbability.getID());
+    csvIDList.add(novDetectionProbability.getID());
+    csvIDList.add(intResidualProbability.getID());
+    csvIDList.add(intDetectionProbability.getID());
+    csvIDList.add(proResidualProbability.getID());
+    csvIDList.add(proDetectionProbability.getID());
+    csvIDList.add(nationResidualProbability.getID());
+    csvIDList.add(nationDetectionProbability.getID());
+
+    var csvExportStereotypePath = "SimulationProfile::config::CSVExport";
+    csvExport = ef.createClassInstance();
+    csvExport.setName("Export - " + riskClass.getName());
+    csvExport.setOwner(anPackage);
+    StereotypesHelper.addStereotype(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath));
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath), "fileName", ".\\Analysis\\CSV - " + riskClass.getName() + ".csv");
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath), "recordTime", false);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, csvExportStereotypePath), "writeAtTheEnd", true);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, selectPropertiesPath), "represents", analysis);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, selectPropertiesPath), "value", csvValueList);
+    TagsHelper.setStereotypePropertyValue(csvExport, Finder.byQualifiedName().find(project, selectPropertiesPath), "nestedPropertyPaths", csvIDList);
+
     var simulationConfigStereotypePath = "SimulationProfile::config::SimulationConfig";
     StereotypesHelper.addStereotype(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath));
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionTarget", analysis);
+    TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "executionListeners", csvExport);
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "animationSpeed", "100");
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autoStart", true);
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "autostartActiveObjects", true);
@@ -631,6 +668,12 @@ function createAnalysis() {
     anuiList.add(novThreatHistogram);
     TagsHelper.setStereotypePropertyValue(anConfig, Finder.byQualifiedName().find(project, simulationConfigStereotypePath), "UI", anuiList); 
     
+    simConfigs = new HashSet();
+    simConfigs.add(anConfig);
+    TagsHelper.setStereotypePropertyValue(analysis, Finder.byQualifiedName().find(project, securityAnalysisPath), "Simulation Configuration", simConfigs);
+
+    return analysis;
+
 }
 
 function createProperty(owner, name, type, defaultValue, stereotype1, stereotype2, min, max) {
@@ -710,10 +753,20 @@ function main(project, ef, progress) {
         }
     }
 
-    if (!riskName) {
-        writeLog("ERROR: A name for the risk was not passed to the macro. Please set the riskName argument when running the macro and try again", 1);
-        return;
+    riskName = selectedObjects[0].getName() + " AND " + selectedObjects[1].getName();
+
+    res = Application.getInstance().getGUILog().showQuestion("Do you want to set a custom name? (Default: " + riskName + ")", false, "Name Selection");
+    if(res == 2){
+        res = "";
+        res = Application.getInstance().getGUILog().showInputTextDialog("Name Combined Risk", "Please enter a new risk name.");
+        if(res == "") {
+            writeLog("ERROR: Risk Name not entered, no action taken.", 1);
+            return;
+        }
+        riskName = res;
+        writeLog("New Name: " + riskName, 5);
     }
+
 
     progress.init("Creating Risk Diagram for " + riskName, 0, 3);
 
@@ -734,6 +787,11 @@ function main(project, ef, progress) {
     var combinedThreatLevel = createProperty(riskClass, "Threat Level", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
     combinedThreatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
     var combinedThreatLevelShape = PresentationElementsManager.getInstance().createShapeElement(combinedThreatLevel, parametricDiagram);
+
+    var combinedInitialProbability = createProperty(riskClass, "Initial Probability", Finder.byQualifiedName().find(project, numberPath), 100, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, initialProbabilityPath), null, null);
+    combinedInitialProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+    var combinedInitialProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(combinedInitialProbability, parametricDiagram);
+
     var nestedConnectorEnd = Finder.byQualifiedName().find(project, nestedConnectorEndPath);
 
     var ownedValues = firstRisk.getOwnedElement();
@@ -756,11 +814,22 @@ function main(project, ef, progress) {
             newConnectorEnds.get(1).setRole(combinedThreatLevel);
             StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, firstRiskPart);
         }
+        if(StereotypesHelper.hasStereotype(ownedValues.get(j), Finder.byQualifiedName().find(project, initialProbabilityPath))) {
+            writeLog("InitialProbability Found: " + ownedValues.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(riskClass);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(ownedValues.get(j));  
+            newConnectorEnds.get(1).setRole(combinedInitialProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, firstRiskPart);
+        }
     }                    
     var firstDetectionShape = PresentationElementsManager.getInstance().createShapeElement(firstDetection, firstRiskShape);
     var firstResidualShape = PresentationElementsManager.getInstance().createShapeElement(firstResidual, firstRiskShape);
     PresentationElementsManager.getInstance().reshapeShapeElement(firstRiskShape, new java.awt.Rectangle(subrisk_x, topsubrisk_y, subriskWidth, subriskHeight));
-    PresentationElementsManager.getInstance().reshapeShapeElement(combinedThreatLevelShape, new java.awt.Rectangle(subrisk_x, botsubrisk_y - numHeight, numWidth, numHeight));
+    PresentationElementsManager.getInstance().reshapeShapeElement(combinedThreatLevelShape, new java.awt.Rectangle(subrisk_x, detConstraint_y, numWidth, (numHeight / 2)));
+    PresentationElementsManager.getInstance().reshapeShapeElement(combinedInitialProbabilityShape, new java.awt.Rectangle(subrisk_x, detConstraint_y + (numHeight / 2), numWidth, (numHeight / 2)));
     
     if(progress.isCancel()) {
         writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
@@ -793,6 +862,16 @@ function main(project, ef, progress) {
             newConnectorEnds.get(1).setRole(combinedThreatLevel);
             StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, secondRiskPart);
         }
+        if(StereotypesHelper.hasStereotype(ownedValues.get(j), Finder.byQualifiedName().find(project, initialProbabilityPath))) {
+            writeLog("InitialProbability Found: " + ownedValues.get(j).getName(), 5);
+            newConnector = ef.createConnectorInstance();
+            StereotypesHelper.addStereotype(newConnector, Finder.byQualifiedName().find(project, bindingConnectorPath));
+            newConnector.setOwner(riskClass);
+            newConnectorEnds = newConnector.getEnd();
+            newConnectorEnds.get(0).setRole(ownedValues.get(j));  
+            newConnectorEnds.get(1).setRole(combinedInitialProbability);
+            StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, secondRiskPart);
+        }
     }         
     var secondResidualShape = PresentationElementsManager.getInstance().createShapeElement(secondResidual, secondRiskShape);    
     var secondDetectionShape = PresentationElementsManager.getInstance().createShapeElement(secondDetection, secondRiskShape);  
@@ -804,7 +883,7 @@ function main(project, ef, progress) {
     }
 
     // Draw the constraint block which will merge the Detection Probability values
-    var detConstraint = createProperty(riskClass, "Detection", Finder.byQualifiedName().find(project, detConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+    var detConstraint = createProperty(riskClass, "Detection", Finder.byQualifiedName().find(project, detConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
     var detConstraintShape = PresentationElementsManager.getInstance().createShapeElement(detConstraint, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(detConstraintShape, new java.awt.Rectangle(detConstraint_x, detConstraint_y, constraintWidth, constraintHeight));
 
@@ -853,7 +932,7 @@ function main(project, ef, progress) {
     }
 
     // Draw the constraint block which will merge the Residual Probability values
-    var resConstraint = createProperty(riskClass, "Residual", Finder.byQualifiedName().find(project, resConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, threatConstraintStereotypePath), null, null);
+    var resConstraint = createProperty(riskClass, "Residual", Finder.byQualifiedName().find(project, resConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
     var resConstraintShape = PresentationElementsManager.getInstance().createShapeElement(resConstraint, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(resConstraintShape, new java.awt.Rectangle(resConstraint_x, resConstraint_y, constraintWidth, constraintHeight));
 
@@ -911,8 +990,31 @@ function main(project, ef, progress) {
 
     // Create the new simulation. Pass in the histograms from the subrisks so they can be added to the new simulation.
     newSession(project, "Simulation");
-    createSimulation(riskClass, residualProbability, detectionProbability);
-    createAnalysis();
+    sim = createSimulation(riskClass, residualProbability, detectionProbability);
+    analysis = createAnalysis();
+
+    analysisList = new HashSet();
+    analysisList.add(analysis);
+    TagsHelper.setStereotypePropertyValue(riskClass, Finder.byQualifiedName().find(project, securityRiskPath), "SecurityAnalysis", analysisList);
+
+    configList = new HashSet();
+    configList.add(sim);
+    TagsHelper.setStereotypePropertyValue(riskClass, Finder.byQualifiedName().find(project, securityRiskPath), "Simulation Configuration", configList);
+
+    mergedThreat = new HashSet();
+    mergedThreat.addAll(TagsHelper.getStereotypePropertyValue(firstRisk, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatStart"));
+    mergedThreat.addAll(TagsHelper.getStereotypePropertyValue(secondRisk, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatStart"));
+    TagsHelper.setStereotypePropertyValue(riskClass, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatStart", mergedThreat);
+
+    mergedSignal = new HashSet();
+    mergedSignal.addAll(TagsHelper.getStereotypePropertyValue(firstRisk, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatImpactSignal"));
+    mergedSignal.addAll(TagsHelper.getStereotypePropertyValue(secondRisk, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatImpactSignal"));
+    TagsHelper.setStereotypePropertyValue(riskClass, Finder.byQualifiedName().find(project, securityRiskPath), "ThreatImpactSignal", mergedSignal);
+
+    mergedAsset = new HashSet();
+    mergedAsset.addAll(TagsHelper.getStereotypePropertyValue(firstRisk, Finder.byQualifiedName().find(project, securityRiskPath), "AssetSelection"));
+    mergedAsset.addAll(TagsHelper.getStereotypePropertyValue(secondRisk, Finder.byQualifiedName().find(project, securityRiskPath), "AssetSelection"));
+    TagsHelper.setStereotypePropertyValue(riskClass, Finder.byQualifiedName().find(project, securityRiskPath), "AssetSelection", mergedAsset);
 
     if(progress.isCancel()) {
         writeLog("ERROR: User cancelled macro. Extraneous objects may exist in the model from the partially completed macro. You may want to Undo using Ctrl + Z, or manually delete the partial package in the Risk Assessment section.", 1);
@@ -942,6 +1044,8 @@ function main(project, ef, progress) {
     
     firstPackage.setOwner(subriskPackage);
     secondPackage.setOwner(subriskPackage);
+
+    project.getDiagram(diagram).open();
 }
 
 var project = Application.getInstance().getProject();

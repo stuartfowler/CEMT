@@ -136,7 +136,6 @@ The threat modelling stage involves the use of Misuse Case Diagrams and Mal-Acti
 
 ```mermaid
 flowchart TB
-  subgraph TMo["Threat Modelling"]
     direction TB
     subgraph 1["Misuse Case Diagrams"]
       direction LR
@@ -155,7 +154,6 @@ flowchart TB
       3e("Threat Ends") --> 3d
     end
     1 --> 2 --> 3
-  end
 ```
 
 ### [Threat Mitigation](./Documentation/threat-mitigation.md)
@@ -168,8 +166,6 @@ The threat mitigation stage involves the use of Asset Definition Diagrams and De
 
 ```mermaid
 flowchart TB
-
-  subgraph TMi["Threat Mitigation"]
     direction TB
     subgraph 4["Asset Definition Diagrams"]
       4a("System of Interest") --> 4d("Directed Associations")
@@ -186,7 +182,6 @@ flowchart TB
       5f("Link Constraints") --> 5c
     end
     4 --> 6 --> 5
-  end
 ```
 
 ### [Risk Assessment](./Documentation/risk.md)
@@ -199,7 +194,6 @@ The risk assessment stage involves the use of Relationship Maps and Parametric D
 
 ```mermaid
 flowchart TB
-  subgraph RA["Risk Assessment"]
     direction TB
     subgraph 6["Summary Diagrams"]
       6c("Mitigation Trees")
@@ -216,7 +210,6 @@ flowchart TB
       8b("Risk Summary")
     end
     6 --> 7 --> 8
-  end
 ```
 
 ## Samples

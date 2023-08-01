@@ -36,14 +36,12 @@ Summary Diagrams are automatically generated diagrams that are built based on th
 
 ```mermaid
 flowchart TB
-  subgraph RA["Risk Assessment"]
     direction TB
     subgraph 6["Summary Diagrams"]
       6c("Mitigation Trees")
       6b("Attack Trees")
       6a("Bowties")     
     end
-  end
 ```
 
 The summary diagrams are created using the `Relationship Map` diagram that is built into CAMEO Systems Modeler. These are pre-defined as part of the CEMT, and are copied across from the `Cyber Profile` as shown below:
@@ -151,14 +149,12 @@ Parametric Risk Diagrams are used to provide a quantitative assessment of the li
 
 ```mermaid
 flowchart TB
-  subgraph RA["Risk Assessment"]
     direction TB
     subgraph 7["Parametric Risk Diagrams"]
       7a("Threat Path") --> 7b("Threat Level") --> 7e("Simulate")
       7a --> 7c("Initial Probability") --> 7e
       7a --> 7d("Control Effectiveness") --> 7e
     end
-  end
 ```
 
 The Parametric Risk Diagrams are created using the `CEMT Parametric Risk Diagram`. However, these diagrams do not need to be manually created by the modeller as the modeller can leverage the [Risk Macro](../Macros/Risk.js) to generate the majority of the diagram from the existing relationships within the model.
@@ -267,13 +263,11 @@ The Risk Assessment Tables are used to provide a summary of the risks that have 
 
 ```mermaid
 flowchart TB
-  subgraph RA["Risk Assessment"]
     direction TB
     subgraph 8["Risk Assessment Tables"]
       8a("Risk Lists")
       8b("Risk Summary")
     end
-  end
   
   click 8a "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-lists" "Risk Input Tables"
   click 8b "https://github.com/stuartfowler/CEMT/blob/main/Documentation/risk.md#risk-summary" "Risk Summary Table"

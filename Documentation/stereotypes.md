@@ -94,7 +94,7 @@ The `AggregatedAction` stereotype uses the `CallBehaviorAction` class as a metac
 
 ```mermaid
     classDiagram
-        class MisuseCase~UseCase~ {      
+        class AggregatedAction~CallBehaviorAction~ {      
             -[constraint] Name()
             -[constraint] Mal-Activities()
             -[constraint] Nodes()
@@ -436,8 +436,7 @@ The `ThreatJoin` stereotype uses the `JoinNode` class as a metaclass, and provid
 
 ```mermaid
     classDiagram
-        class ThreatJoin~JoinNode~ { 
-            +Difficulty~Difficulty~     
+        class ThreatJoin~JoinNode~ {  
             -[derived] NextThreatAction~RedefinableElement~[0..*]
             -[derived] PreviousThreatAction~RedefinableElement~[0..*]
             -[derived] PostureImpactSignal~Signal~[0..*]
@@ -1196,7 +1195,7 @@ The `difficultyProperty` stereotype uses the `Property` class as a metaclass, an
 
 ```mermaid
     classDiagram
-        ValueProperty~Property~ <|-- difficultyProperty~Property~
+        ValueProperty~Property~ <|-- DifficultyProperty~Property~
 ```
 
 `difficultyProperty` contains no attributes or constraints and inherits from the built-in `ValueProperty` stereotype.
@@ -1242,7 +1241,7 @@ The `DifficultyConstraint` stereotype uses the `Property` class as a metaclass, 
 
 ```mermaid
     classDiagram
-        ConstraintProperty~Property~ <|-- ThreatConstraint~Property~
+        ConstraintProperty~Property~ <|-- DifficultyConstraint~Property~
 ```
 
 `DifficultyConstraint` contains no attributes or constraints and inherits from the built-in `ConstraintProperty` stereotype.
