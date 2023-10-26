@@ -792,6 +792,9 @@ function main(project, ef, progress) {
     combinedInitialProbability.setAggregation(AggregationKindEnum.COMPOSITE);
     var combinedInitialProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(combinedInitialProbability, parametricDiagram);
 
+    var forcedInitialProbability = createProperty(riskClass, "Forced Initial Probability", Finder.byQualifiedName().find(project, numberPath), 100, Finder.byQualifiedName().find(project, valuePropertyPath), null, null, null);
+    forcedInitialProbability.setAggregation(AggregationKindEnum.COMPOSITE);
+
     var nestedConnectorEnd = Finder.byQualifiedName().find(project, nestedConnectorEndPath);
 
     var ownedValues = firstRisk.getOwnedElement();
@@ -869,7 +872,7 @@ function main(project, ef, progress) {
             newConnector.setOwner(riskClass);
             newConnectorEnds = newConnector.getEnd();
             newConnectorEnds.get(0).setRole(ownedValues.get(j));  
-            newConnectorEnds.get(1).setRole(combinedInitialProbability);
+            newConnectorEnds.get(1).setRole(forcedInitialProbability);
             StereotypesHelper.setStereotypePropertyValue(newConnectorEnds.get(0), nestedConnectorEnd, SysMLProfile.ELEMENTPROPERTYPATH_PROPERTYPATH_PROPERTY, secondRiskPart);
         }
     }         

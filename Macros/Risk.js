@@ -40,6 +40,7 @@ var initialProbabilityPath = "Cyber::Stereotypes::InitialProbability";
 var residualProbabilityPath = "Cyber::Stereotypes::ResidualProbability";
 var detectionProbabilityPath = "Cyber::Stereotypes::DetectionProbability";
 var difficultyPropertyPath = "Cyber::Stereotypes::difficultyProperty";
+var difficultyProbabilityPath = "Cyber::Stereotypes::difficultyProbability";
 var valuePropertyPath = "MD Customization for SysML::additional_stereotypes::ValueProperty";
 var partPropertyPath = "MD Customization for SysML::additional_stereotypes::PartProperty";
 var numberPath = "SysML::Libraries::PrimitiveValueTypes::Number";
@@ -95,6 +96,7 @@ var postureSignalPath = "Cyber::Stereotypes::PostureImpactSignal";
 var nestedConnectorEndPath = "SysML::Blocks::NestedConnectorEnd";
 var securityAnalysisPath = "Cyber::Stereotypes::SecurityAnalysis";
 var threatModelActionStereotypePath = "Cyber::Stereotypes::ThreatModelAction";
+var triangularPath = "MD Customization for SysML::additional_stereotypes::Triangular";
 
 // Diagram global variables
 var leftGap = 50;
@@ -108,9 +110,9 @@ var threatWidth = 150;
 var componentHeight = 150;
 var componentGap = 10;
 var controlHeight = 80;
-var controlEffectivenessHeight = 60;
+var controlEffectivenessHeight = 90;
 
-var valueHeight = 50;
+var valueHeight = 60;
 var valueWidth = 240;
 var difficultyVerticalGap = 40;
 
@@ -124,6 +126,7 @@ var difficultyCombinationVerticalGap = 0;
 
 var defaultMinEffectiveness = 10;
 var defaultMaxEffectiveness = 90;
+var defaultPeakEffectiveness = 50;
 
 // Diagram calculated variables
 var initialGap = leftGap + threatWidth + leftGap;
@@ -333,7 +336,7 @@ function createBindingConnector(part1, shape1, owner1, part2, shape2, owner2) {
     return [newConnector, newConnectorShape];
 }
 
-function createProperty(owner, name, type, defaultValue, stereotype1, stereotype2, min, max) {
+function createProperty(owner, name, type, defaultValue, stereotype1, stereotype2, min, max, peak) {
     newProperty = ef.createPropertyInstance();
     if (stereotype1) {
         StereotypesHelper.addStereotype(newProperty, stereotype1);
@@ -350,10 +353,11 @@ function createProperty(owner, name, type, defaultValue, stereotype1, stereotype
     if (type) {
         newProperty.setType(type);
     }
-    if((min || min == 0) && max) {
-        StereotypesHelper.addStereotype(newProperty, Finder.byQualifiedName().find(project, uniformPath));
-        TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, uniformPath), "min", min);
-        TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, uniformPath), "max", max);
+    if((min || min == 0) && (max || max == 0) && (peak || peak == 0)) {
+        StereotypesHelper.addStereotype(newProperty, Finder.byQualifiedName().find(project, triangularPath));
+        TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, triangularPath), "min", min);
+        TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, triangularPath), "max", max);
+        TagsHelper.setStereotypePropertyValue(newProperty, Finder.byQualifiedName().find(project, triangularPath), "peak", peak);
     }
     if (defaultValue) {
         tempValue = ValueSpecificationHelper.createValueSpecification(project, newProperty.getType(), defaultValue, null);
@@ -379,16 +383,16 @@ function buildInitialShapes(diagram, initialNode, riskClass) {
 
     parametricDiagram = project.getDiagram(diagram);
 
-    initialProbability = createProperty(riskClass, "Initial Probability - " + initialNode.getName(), Finder.byQualifiedName().find(project, numberPath), 100, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, initialProbabilityPath), null, null);
+    initialProbability = createProperty(riskClass, "Initial Probability - " + initialNode.getName(), Finder.byQualifiedName().find(project, numberPath), 100, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, initialProbabilityPath), null, null, null);
     initialProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(initialProbability, parametricDiagram);
     changeProperty(initialProbabilityShape, "SHOW_DEFAULT_PART_VALUE", true);       
     PresentationElementsManager.getInstance().reshapeShapeElement(initialProbabilityShape, new java.awt.Rectangle(initialGap,initialProbability_y,valueWidth,valueHeight));
 
-    threatLevel = createProperty(riskClass, "Threat Level", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel = createProperty(riskClass, "Threat Level", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null, null);
     threatLevelShape = PresentationElementsManager.getInstance().createShapeElement(threatLevel, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(threatLevelShape, new java.awt.Rectangle(initialGap,threatLevel_y,threatWidth,valueHeight));
 
-    difficultyConstraint = createProperty(riskClass, "Difficulty", Finder.byQualifiedName().find(project, difficultyConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, difficultyConstraintStereotypePath), null, null);
+    difficultyConstraint = createProperty(riskClass, "Difficulty", Finder.byQualifiedName().find(project, difficultyConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, difficultyConstraintStereotypePath), null, null, null);
     difficultyConstraintShape = PresentationElementsManager.getInstance().createShapeElement(difficultyConstraint, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(difficultyConstraintShape, new java.awt.Rectangle(initialGap,difficulty_y,threatWidth,difficultyConstraintHeight));
 
@@ -438,62 +442,62 @@ function buildInitialShapes(diagram, initialNode, riskClass) {
     difficultyRareShape = PresentationElementsManager.getInstance().createShapeElement(difficultyRareParameter, difficultyConstraintShape);
     PresentationElementsManager.getInstance().reshapeShapeElement(difficultyRareShape, new java.awt.Rectangle(initialGap,difficultyEvasionParameter_y,parameterWidth,parameterHeight));         
 
-    trivialValue = createProperty(riskClass, "Trivial Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null);
+    trivialValue = createProperty(riskClass, "Trivial Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null, null);
     trivialShape = PresentationElementsManager.getInstance().createShapeElement(trivialValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(trivialShape, new java.awt.Rectangle(trivial_x,difficulty_y,threatWidth,valueHeight));
     createBindingConnector(difficultyTrivialParameter, difficultyTrivialShape, difficultyConstraint, trivialValue, trivialShape, null);
 
-    lowValue = createProperty(riskClass, "Low Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null);
+    lowValue = createProperty(riskClass, "Low Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null, null);
     lowShape = PresentationElementsManager.getInstance().createShapeElement(lowValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(lowShape, new java.awt.Rectangle(trivial_x,low_y,threatWidth,valueHeight));
     createBindingConnector(difficultyLowParameter, difficultyLowShape, difficultyConstraint, lowValue, lowShape, null);
 
-    mediumValue = createProperty(riskClass, "Medium Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null);
+    mediumValue = createProperty(riskClass, "Medium Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null, null);
     mediumShape = PresentationElementsManager.getInstance().createShapeElement(mediumValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(mediumShape, new java.awt.Rectangle(trivial_x,medium_y,threatWidth,valueHeight));
     createBindingConnector(difficultyMediumParameter, difficultyMediumShape, difficultyConstraint, mediumValue, mediumShape, null);
 
-    highValue = createProperty(riskClass, "High Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null);
+    highValue = createProperty(riskClass, "High Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null, null);
     highShape = PresentationElementsManager.getInstance().createShapeElement(highValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(highShape, new java.awt.Rectangle(trivial_x,high_y,threatWidth,valueHeight));
     createBindingConnector(difficultyHighParameter, difficultyHighShape, difficultyConstraint, highValue, highShape, null);
 
-    extremeValue = createProperty(riskClass, "Extreme Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null);
+    extremeValue = createProperty(riskClass, "Extreme Difficulty", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null, null);
     extremeShape = PresentationElementsManager.getInstance().createShapeElement(extremeValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(extremeShape, new java.awt.Rectangle(trivial_x,extreme_y,threatWidth,valueHeight));
     createBindingConnector(difficultyExtremeParameter, difficultyExtremeShape, difficultyConstraint, extremeValue, extremeShape, null);
 
-    evasionValue = createProperty(riskClass, "Evasion Skill", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null);
+    evasionValue = createProperty(riskClass, "Evasion Skill", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), null, null, null);
     evasionShape = PresentationElementsManager.getInstance().createShapeElement(evasionValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(evasionShape, new java.awt.Rectangle(trivial_x,evasion_y,threatWidth,valueHeight));
     createBindingConnector(difficultyEvasionParameter, difficultyEvasionShape, difficultyConstraint, evasionValue, evasionShape, null);
 
-    certainValue = createProperty(riskClass, "Certain", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), 100, 100);
+    certainValue = createProperty(riskClass, "Certain", Finder.byQualifiedName().find(project, integerPath), 100, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyProbabilityPath), 100, 100, 100);
     certainShape = PresentationElementsManager.getInstance().createShapeElement(certainValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(certainShape, new java.awt.Rectangle(leftGap,difficulty_y,threatWidth,valueHeight));
     createBindingConnector(difficultyCertainParameter, difficultyCertainShape, difficultyConstraint, certainValue, certainShape, null);
 
-    highlyLikelyValue = createProperty(riskClass, "Highly Likely", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), 80, 90);
+    highlyLikelyValue = createProperty(riskClass, "Highly Likely", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyProbabilityPath), 80, 90, 85);
     highlyLikelyShape = PresentationElementsManager.getInstance().createShapeElement(highlyLikelyValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(highlyLikelyShape, new java.awt.Rectangle(leftGap,low_y,threatWidth,valueHeight));
     createBindingConnector(difficultyHighlyLikelyParameter, difficultyHighlyLikelyShape, difficultyConstraint, highlyLikelyValue, highlyLikelyShape, null);
 
-    likelyValue = createProperty(riskClass, "Likely", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), 60, 70);
+    likelyValue = createProperty(riskClass, "Likely", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyProbabilityPath), 60, 70, 65);
     likelyShape = PresentationElementsManager.getInstance().createShapeElement(likelyValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(likelyShape, new java.awt.Rectangle(leftGap,medium_y,threatWidth,valueHeight));
     createBindingConnector(difficultyLikelyParameter, difficultyLikelyShape, difficultyConstraint, likelyValue, likelyShape, null);
 
-    possibleValue = createProperty(riskClass, "Possible", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), 40, 50);
+    possibleValue = createProperty(riskClass, "Possible", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyProbabilityPath), 40, 50, 45);
     possibleShape = PresentationElementsManager.getInstance().createShapeElement(possibleValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(possibleShape, new java.awt.Rectangle(leftGap,high_y,threatWidth,valueHeight));
     createBindingConnector(difficultyPossibleParameter, difficultyPossibleShape, difficultyConstraint, possibleValue, possibleShape, null);
 
-    unlikelyValue = createProperty(riskClass, "Unlikely", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), 20, 30);
+    unlikelyValue = createProperty(riskClass, "Unlikely", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyProbabilityPath), 20, 30, 25);
     unlikelyShape = PresentationElementsManager.getInstance().createShapeElement(unlikelyValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(unlikelyShape, new java.awt.Rectangle(leftGap,extreme_y,threatWidth,valueHeight));
     createBindingConnector(difficultyUnlikelyParameter, difficultyUnlikelyShape, difficultyConstraint, unlikelyValue, unlikelyShape, null);
 
-    rareValue = createProperty(riskClass, "Rare", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyPropertyPath), 0, 10);
+    rareValue = createProperty(riskClass, "Rare", Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, difficultyProbabilityPath), 0, 10, 5);
     rareShape = PresentationElementsManager.getInstance().createShapeElement(rareValue, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(rareShape, new java.awt.Rectangle(leftGap,evasion_y,threatWidth,valueHeight));
     createBindingConnector(difficultyRareParameter, difficultyRareShape, difficultyConstraint, rareValue, rareShape, null);
@@ -527,7 +531,7 @@ function getDetectionCombinationY (parameterNumber) {
 function buildThreatAction(diagram, previousNode, currentNode, step, noneControlPath, systemBlockPath, noneConstraintPath, assetSelection, mitigationTable, detectionTable) {
     parametricDiagram = project.getDiagram(diagram);
 
-    threatConstraint = createProperty(riskClass, currentNode.getName(), Finder.byQualifiedName().find(project, threatConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, threatConstraintStereotypePath), null, null);
+    threatConstraint = createProperty(riskClass, currentNode.getName(), Finder.byQualifiedName().find(project, threatConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, threatConstraintStereotypePath), null, null, null);
     threatConstraintShape = PresentationElementsManager.getInstance().createShapeElement(threatConstraint, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(threatConstraintShape, new java.awt.Rectangle(getThreatX(step),threatConstraint_y,threatWidth,threatHeight));
 
@@ -564,22 +568,30 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     }
 
     if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").size() == 1) {
-        var CEmin = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").get(0);
+        var CEmin = parseInt(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").get(0));
     } else {
         var CEmin = defaultMinEffectiveness;
     }
     if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").size() == 1) {
-        var CEmax = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").get(0);
+        var CEmax = parseInt(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").get(0));
     } else {
         var CEmax = defaultMaxEffectiveness;
+    }
+    if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessPeak").size() == 1) {
+        var CEpeak = parseInt(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessPeak").get(0));
+    } else {
+        var CEpeak = defaultPeakEffectiveness;
     }
     if(TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").size() == 1) {
         var CEjustification = TagsHelper.getStereotypePropertyValue(currentNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").get(0);
     } else {
         var CEjustification = "";
     }  
-
-    threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), CEmin, CEmax);
+    var CEdef = null;
+    if(CEmin == CEmax) {
+        CEdef = CEmin;
+    }
+    threatControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentNode.getName(), Finder.byQualifiedName().find(project, integerPath), CEdef, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), CEmin, CEmax, CEpeak);
     CoreHelper.setComment(threatControlEffectiveness, CEjustification);
     TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, mitigationControlEffectivenessPath), "overrideDerivedEffectiveness", false);
     threatControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(threatControlEffectiveness, parametricDiagram);
@@ -590,22 +602,26 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     createBindingConnector(threatControlParameter, threatControlParameterShape, threatConstraint, threatControlEffectiveness, threatControlEffectivenessShape, null);
 
     //draw constraints
-    linkedAssets = currentNode.refGetValue("affects");
-    writeLog("allocatedComponents: " + linkedAssets, 5);
+    linkedAssets = new ArrayList();
+    tempAssets = currentNode.refGetValue("affects");
+    writeLog("allocatedComponents: " + tempAssets, 5);
     if(assetSelection) {
-        for(h = 0; h < linkedAssets.size(); h++) {
-            if(!(linkedAssets.get(h).isAbstract() || assetSelection.contains(linkedAssets.get(h)) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
-                linkedAssets.remove(h);
-            }
+        for(h = 0; h < tempAssets.size(); h++) {
+            if(tempAssets.get(h).isAbstract() || assetSelection.contains(tempAssets.get(h)) || (tempAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath))) {
+                linkedAssets.add(tempAssets.get(h));
+            }        
         }
+    } else {
+        linkedAssets = tempAssets;
     }
+    
     linkedControls = currentNode.refGetValue("mitigatedBy");
     writeLog("potentialControls: " + linkedControls, 5);
 
     if(noneControlPath && linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
         if(noneConstraintPath && systemBlockPath){
             noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
-            currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+            currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
             currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
             currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
             createDependency(threatControlEffectiveness, threatControlEffectivenessShape, noneConstraint, currentConstraintShape);
@@ -613,14 +629,16 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
         } else {
             writeLog("ERROR: NoneControl is linked to " + currentNode.getName() + " but there is no associated SecurityProperty on the System Block.")
         }
-        TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", "0");
-        TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", "0");
+        TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, triangularPath), "min", "0");
+        TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, triangularPath), "max", "0");
+        TagsHelper.setStereotypePropertyValue(threatControlEffectiveness, Finder.byQualifiedName().find(project, triangularPath), "peak", "0");
+        threatControlEffectiveness.setDefaultValue(ValueSpecificationHelper.createValueSpecification(project, threatControlEffectiveness.getType(), "0", null));
         CoreHelper.setComment(threatControlEffectiveness, "There are no controls linked to this action. Control effectiveness is 0.");
     }
     else {
         for(i = 0; i < linkedAssets.size(); i++) {
             currentAsset = linkedAssets.get(i);
-            currentPart = createProperty(riskClass, null, currentAsset, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+            currentPart = createProperty(riskClass, null, currentAsset, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
             currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
             ownedConstraints = currentAsset.getOwnedElement();
             for(j = 0; j < ownedConstraints.size(); j++) {
@@ -640,7 +658,7 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     currentDetectNode = currentNode.refGetValue("DetectionAction").get(0);
 
     //draw detect
-    detectConstraint = createProperty(riskClass, currentDetectNode.getName(), Finder.byQualifiedName().find(project, detectConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+    detectConstraint = createProperty(riskClass, currentDetectNode.getName(), Finder.byQualifiedName().find(project, detectConstraintPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null, null);
     detectConstraintShape = PresentationElementsManager.getInstance().createShapeElement(detectConstraint, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(detectConstraintShape, new java.awt.Rectangle(getThreatX(step),detectConstraint_y,threatWidth,threatHeight));
 
@@ -679,22 +697,30 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     createBindingConnector(detectEvasionParameter, detectEvasionParameterShape, detectConstraint, evasionValue, evasionShape, null);
     
     if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").size() == 1) {
-        var CEmin = TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").get(0);
+        var CEmin = parseInt(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMin").get(0));
     } else {
         var CEmin = defaultMinEffectiveness;
     }
     if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").size() == 1) {
-        var CEmax = TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").get(0);
+        var CEmax = parseInt(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessMax").get(0));
     } else {
         var CEmax = defaultMaxEffectiveness;
+    }
+    if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessPeak").size() == 1) {
+        var CEpeak = parseInt(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessPeak").get(0));
+    } else {
+        var CEpeak = defaultPeakEffectiveness;
     }
     if(TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").size() == 1) {
         var CEjustification = TagsHelper.getStereotypePropertyValue(currentDetectNode, Finder.byQualifiedName().find(project, threatModelActionStereotypePath), "controlEffectivenessJustification").get(0);
     } else {
         var CEjustification = "";
     }  
-
-    detectControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentDetectNode.getName(), Finder.byQualifiedName().find(project, integerPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), CEmin, CEmax);
+    var CEdef = null;
+    if(CEmin == CEmax) {
+        CEdef = CEmin;
+    }
+    detectControlEffectiveness = createProperty(riskClass, "Control Effectiveness - " + currentDetectNode.getName(), Finder.byQualifiedName().find(project, integerPath), CEdef, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), CEmin, CEmax, CEpeak);
     CoreHelper.setComment(detectControlEffectiveness, CEjustification);
     TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, detectionControlEffectivenessPath), "overrideDerivedEffectiveness", false);
     detectControlEffectivenessShape = PresentationElementsManager.getInstance().createShapeElement(detectControlEffectiveness, parametricDiagram);
@@ -704,14 +730,17 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     createBindingConnector(detectControlParameter, detectControlParameterShape, detectConstraint, detectControlEffectiveness, detectControlEffectivenessShape, null);
 
     //draw constraints
-    linkedAssets = currentDetectNode.refGetValue("affects");
-    writeLog("allocatedComponents: " + linkedAssets, 5);
+    linkedAssets = new ArrayList();
+    tempAssets = currentDetectNode.refGetValue("affects");
+    writeLog("allocatedComponents: " + tempAssets, 5);
     if(assetSelection) {
-        for(h = 0; h < linkedAssets.size(); h++) {
-            if(!(linkedAssets.get(h).isAbstract() || assetSelection.contains(linkedAssets.get(h)) || (linkedAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath)))) {
-                linkedAssets.remove(h);
-            }
+        for(h = 0; h < tempAssets.size(); h++) {
+            if(tempAssets.get(h).isAbstract() || assetSelection.contains(tempAssets.get(h)) || (tempAssets.get(h) == Finder.byQualifiedName().find(project, systemBlockPath))) {
+                linkedAssets.add(tempAssets.get(h));
+            }        
         }
+    } else {
+        linkedAssets = tempAssets;
     }
     linkedControls = currentDetectNode.refGetValue("mitigatedBy");
     writeLog("potentialControls: " + linkedControls, 5);
@@ -719,7 +748,7 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
     if(noneControlPath && linkedControls.get(0) == Finder.byQualifiedName().find(project, noneControlPath)){
         if(noneConstraintPath && systemBlockPath){
             noneConstraint = Finder.byQualifiedName().find(project, noneConstraintPath);
-            currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+            currentPart = createProperty(riskClass, null, Finder.byQualifiedName().find(project, systemBlockPath), null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
             currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
             currentConstraintShape = PresentationElementsManager.getInstance().createShapeElement(noneConstraint, currentPartShape);
             createDependency(detectControlEffectiveness, detectControlEffectivenessShape, noneConstraint, currentConstraintShape);
@@ -727,14 +756,16 @@ function buildThreatAction(diagram, previousNode, currentNode, step, noneControl
         } else {
             writeLog("ERROR: NoneControl is linked to " + currentDetectNode.getName() + " but there is no associated SecurityProperty on the System Block.")
         }
-        TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "min", 0);
-        TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, uniformPath), "max", 0);
-        CoreHelper.setComment(threatControlEffectiveness, "There are no controls linked to this action. Control effectiveness is 0.");
+        TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, triangularPath), "min", "0");
+        TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, triangularPath), "max", "0");
+        TagsHelper.setStereotypePropertyValue(detectControlEffectiveness, Finder.byQualifiedName().find(project, triangularPath), "peak", "0");
+        detectControlEffectiveness.setDefaultValue(ValueSpecificationHelper.createValueSpecification(project, detectControlEffectiveness.getType(), "0", null));
+        CoreHelper.setComment(detectControlEffectiveness, "There are no controls linked to this action. Control effectiveness is 0.");
     }
     else {
         for(i = 0; i < linkedAssets.size(); i++) {
             currentAsset = linkedAssets.get(i);
-            currentPart = createProperty(riskClass, null, currentAsset, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+            currentPart = createProperty(riskClass, null, currentAsset, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
             currentPartShape = PresentationElementsManager.getInstance().createShapeElement(currentPart, parametricDiagram);
             ownedConstraints = currentAsset.getOwnedElement();
             for(j = 0; j < ownedConstraints.size(); j++) {
@@ -758,7 +789,7 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
 
     parametricDiagram = project.getDiagram(diagram);
 
-    residualProbability = createProperty(riskClass, "Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    residualProbability = createProperty(riskClass, "Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null, null);
     residualProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(residualProbability, parametricDiagram); 
     PresentationElementsManager.getInstance().reshapeShapeElement(residualProbabilityShape, new java.awt.Rectangle(getThreatX(step),initialProbability_y,threatWidth,valueHeight));
     createBindingConnector(residualProbability, residualProbabilityShape, null, previousNode[0], previousNode[1], previousNode[2]);
@@ -770,7 +801,7 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
 
     for(x = 0; x < fullBlocks; x++) {
         detectionCombinationPath = detectConstraintPath + "10";
-        detectionCombination = createProperty(riskClass, "Detection Combination " + (x + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
+        detectionCombination = createProperty(riskClass, "Detection Combination " + (x + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null, null);
         detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
         PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * x),threatWidth,fullBlockHeight));
         for(y = 0; y < 10; y++) {
@@ -805,9 +836,9 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
 
     detectionCombinationPath = detectConstraintPath + finalParameters;
     if(fullBlocks) {
-        detectionCombination = createProperty(riskClass, "Detection Combination " + (fullBlocks + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
+        detectionCombination = createProperty(riskClass, "Detection Combination " + (fullBlocks + 1), Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null, null);
     } else {
-        detectionCombination = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null);
+        detectionCombination = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, detectionCombinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null, null);
     }
     detectionCombinationShape = PresentationElementsManager.getInstance().createShapeElement(detectionCombination, parametricDiagram);
     PresentationElementsManager.getInstance().reshapeShapeElement(detectionCombinationShape, new java.awt.Rectangle(getThreatX(step),detectCombination_y + (fullBlockHeight * fullBlocks),threatWidth,detectionCombinationHeight));
@@ -841,7 +872,7 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
         parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, detectionCombinationShape);
         PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatControlParameterX(step), detectCombination_y ,parameterWidth,parameterHeight));
 
-        detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+        detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null, null);
         detectionProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(detectionProbability, parametricDiagram); 
         PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(getThreatX(step), detectionProbability_y, threatWidth, valueHeight));
         createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, detectionCombination);
@@ -857,7 +888,7 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
 
         combination = fullBlocks + 1;
         combinationPath = combineConstraintPath + combination;
-        combine = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, combinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), Finder.byQualifiedName().find(project, detectConstraintStereotypePath), null, null);
+        combine = createProperty(riskClass, "Detection Combination", Finder.byQualifiedName().find(project, combinationPath), null, Finder.byQualifiedName().find(project, constraintPropertyPath), null, null, null, null);
         combineShape = PresentationElementsManager.getInstance().createShapeElement(combine, parametricDiagram);
         PresentationElementsManager.getInstance().reshapeShapeElement(combineShape, new java.awt.Rectangle(getThreatX(step), detectCombination_y,threatWidth, (fullBlockHeight * fullBlocks) + detectionCombinationHeight));
         for (x = 0; x < combination; x++) {
@@ -877,7 +908,7 @@ function buildFinalShapes(diagram, previousNode, currentNode, step, allNodes, de
         parameterShape = PresentationElementsManager.getInstance().createShapeElement(parameter, combineShape);
         PresentationElementsManager.getInstance().reshapeShapeElement(parameterShape, new java.awt.Rectangle(getThreatControlParameterX(step), detectCombination_y,parameterWidth,parameterHeight));
         
-        detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+        detectionProbability = createProperty(riskClass, "Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null, null);
         detectionProbabilityShape = PresentationElementsManager.getInstance().createShapeElement(detectionProbability, parametricDiagram); 
         PresentationElementsManager.getInstance().reshapeShapeElement(detectionProbabilityShape, new java.awt.Rectangle(getThreatX(step), detectionProbability_y, threatWidth, valueHeight));
         createBindingConnector(detectionProbability, detectionProbabilityShape, null, parameter, parameterShape, combine);
@@ -981,17 +1012,17 @@ function createAnalysis() {
     nestedConnectorEnd = Finder.byQualifiedName().find(project, nestedConnectorEndPath);
     
     //Nation State Shapes
-    threatLevel = createProperty(analysis, "Threat Level - Nation State", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel = createProperty(analysis, "Threat Level - Nation State", Finder.byQualifiedName().find(project, threatPath), "Nation State", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null, null);
     threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    riskPartNation = createProperty(analysis, "Nation State", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartNation = createProperty(analysis, "Nation State", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
     riskPartNation.setAggregation(AggregationKindEnum.COMPOSITE);
     elements = riskClass.getOwnedElement();
 
-    nationResidualProbability = createProperty(analysis, "Nation State - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    nationResidualProbability = createProperty(analysis, "Nation State - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null, null);
     nationResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    nationDetectionProbability = createProperty(analysis, "Nation State - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    nationDetectionProbability = createProperty(analysis, "Nation State - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null, null);
     nationDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
     for(j = 0; j < elements.size(); j++) {
@@ -1062,16 +1093,16 @@ function createAnalysis() {
     TagsHelper.setStereotypePropertyValue(nationThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Nation State.png");
 
     //Professional Shapes
-    threatLevel = createProperty(analysis, "Threat Level - Professional", Finder.byQualifiedName().find(project, threatPath), "Professional", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel = createProperty(analysis, "Threat Level - Professional", Finder.byQualifiedName().find(project, threatPath), "Professional", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null, null);
     threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    proResidualProbability = createProperty(analysis, "Professional - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    proResidualProbability = createProperty(analysis, "Professional - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null, null);
     proResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    proDetectionProbability = createProperty(analysis, "Professional - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    proDetectionProbability = createProperty(analysis, "Professional - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null, null);
     proDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    riskPartPro = createProperty(analysis, "Professional", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartPro = createProperty(analysis, "Professional", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
     riskPartPro.setAggregation(AggregationKindEnum.COMPOSITE);
 
     elements = riskClass.getOwnedElement();
@@ -1139,16 +1170,16 @@ function createAnalysis() {
     TagsHelper.setStereotypePropertyValue(proThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Professional.png");
 
     //Intermediate Shapes
-    threatLevel = createProperty(analysis, "Threat Level - Intermediate", Finder.byQualifiedName().find(project, threatPath), "Intermediate", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel = createProperty(analysis, "Threat Level - Intermediate", Finder.byQualifiedName().find(project, threatPath), "Intermediate", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null, null);
     threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    intResidualProbability = createProperty(analysis, "Intermediate - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    intResidualProbability = createProperty(analysis, "Intermediate - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null, null);
     intResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    intDetectionProbability = createProperty(analysis, "Intermediate - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    intDetectionProbability = createProperty(analysis, "Intermediate - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null, null);
     intDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    riskPartInt = createProperty(analysis, "Intermediate", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartInt = createProperty(analysis, "Intermediate", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
     riskPartInt.setAggregation(AggregationKindEnum.COMPOSITE);
 
     elements = riskClass.getOwnedElement();
@@ -1216,16 +1247,16 @@ function createAnalysis() {
     TagsHelper.setStereotypePropertyValue(intThreatHistogram, Finder.byQualifiedName().find(project, timeSeriesChartPath), "resultFile", ".\\Analysis\\Histogram - " + riskClass.getName() + " - Intermediate.png");
 
     //Novice Shapes
-    threatLevel = createProperty(analysis, "Threat Level - Novice", Finder.byQualifiedName().find(project, threatPath), "Novice", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null);
+    threatLevel = createProperty(analysis, "Threat Level - Novice", Finder.byQualifiedName().find(project, threatPath), "Novice", Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, threatLevelPath), null, null, null);
     threatLevel.setAggregation(AggregationKindEnum.COMPOSITE);
     
-    novResidualProbability = createProperty(analysis, "Novice - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null);
+    novResidualProbability = createProperty(analysis, "Novice - Residual Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, residualProbabilityPath), null, null, null);
     novResidualProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    novDetectionProbability = createProperty(analysis, "Novice - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null);
+    novDetectionProbability = createProperty(analysis, "Novice - Detection Probability", Finder.byQualifiedName().find(project, numberPath), null, Finder.byQualifiedName().find(project, valuePropertyPath), Finder.byQualifiedName().find(project, detectionProbabilityPath), null, null, null);
     novDetectionProbability.setAggregation(AggregationKindEnum.COMPOSITE);
 
-    riskPartNov = createProperty(analysis, "Novice", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null);
+    riskPartNov = createProperty(analysis, "Novice", riskClass, null, Finder.byQualifiedName().find(project, partPropertyPath), null, null, null, null);
     riskPartNov.setAggregation(AggregationKindEnum.COMPOSITE);
 
     elements = riskClass.getOwnedElement();

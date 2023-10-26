@@ -26,6 +26,7 @@ var uniformPath = "SysML::Non-Normative Extensions::Distributions::Uniform";
 var TMAPath = "Cyber::Stereotypes::ThreatModelAction";
 var MCAPath = "Cyber::Stereotypes::MitigationControlEffectiveness";
 var DCAPath = "Cyber::Stereotypes::DetectionControlEffectiveness";
+var triangularPath = "MD Customization for SysML::additional_stereotypes::Triangular";
 
 //Helper function to write logs
 function writeLog(text,level) {
@@ -67,26 +68,34 @@ function updateAction(effectiveness, type) {
 
     justification = CoreHelper.getComment(effectiveness);
        
-    if(TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, uniformPath), "min").size() == 1) {
-        min = TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, uniformPath), "min").get(0);
+    if(TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, triangularPath), "min").size() == 1) {
+        min = TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, triangularPath), "min").get(0);
     } else {
         writeLog("ERROR: The Min field has not been set on this control effectiveness property. Please set this value before trying again.", 1);
         return;
     }
-    if(TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, uniformPath), "max").size() == 1) {
-        max = TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, uniformPath), "max").get(0);
+    if(TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, triangularPath), "max").size() == 1) {
+        max = TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, triangularPath), "max").get(0);
     } else {
         writeLog("ERROR: The Max field has not been set on this control effectiveness property. Please set this value before trying again.", 1);
+        return;
+    }
+    if(TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, triangularPath), "peak").size() == 1) {
+        peak = TagsHelper.getStereotypePropertyValue(effectiveness, Finder.byQualifiedName().find(project, triangularPath), "peak").get(0);
+    } else {
+        writeLog("ERROR: The Peak field has not been set on this control effectiveness property. Please set this value before trying again.", 1);
         return;
     }
 
     writeLog("Justification: " + justification, 2);
     writeLog("min: " + min, 2);
     writeLog("max: " + max, 2);
+    writeLog("peak: " + peak, 2);
     writeLog("threatAction: " + action.getName(), 2);
     
     TagsHelper.setStereotypePropertyValue(action, Finder.byQualifiedName().find(project, TMAPath), "controlEffectivenessMin", min);
     TagsHelper.setStereotypePropertyValue(action, Finder.byQualifiedName().find(project, TMAPath), "controlEffectivenessMax", max);
+    TagsHelper.setStereotypePropertyValue(action, Finder.byQualifiedName().find(project, TMAPath), "controlEffectivenessPeak", peak);
     TagsHelper.setStereotypePropertyValue(action, Finder.byQualifiedName().find(project, TMAPath), "controlEffectivenessJustification", justification);
 
 }

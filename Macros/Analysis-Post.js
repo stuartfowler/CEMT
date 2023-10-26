@@ -196,7 +196,7 @@ function main(project, ef, progress) {
                 if(res == 2) {
                     progress.init("Processing simulation results for " + risk.getName(), 0, 2);
                     
-    
+                    var foundIP = 0;
                     for(i = 0; i < risk.getOwnedElement().size(); i++)
                     {
                         if(StereotypesHelper.hasStereotype(risk.getOwnedElement().get(i), TL))
@@ -205,7 +205,10 @@ function main(project, ef, progress) {
                         }
                         if(StereotypesHelper.hasStereotype(risk.getOwnedElement().get(i), IP))
                         {
-                            var initialProbability = risk.getOwnedElement().get(i);
+                            if(foundIP == 0) {
+                                var initialProbability = risk.getOwnedElement().get(i);
+                                foundIP = 1;
+                            }
                         }
                     }
     

@@ -1,4 +1,4 @@
-# Cyberworthiness Evaluation and Management Toolkit (CEMT)
+# Cyber Evaluation and Management Toolkit (CEMT)
 
 ## Background
 

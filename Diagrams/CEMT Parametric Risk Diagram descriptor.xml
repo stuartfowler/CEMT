@@ -27,6 +27,10 @@
                         </PropertyVisitorAcceptor>
                     </defaults>
                 </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Difficulty Probability" listAsElement="false" opposite="false" id="IDaction_1691059815538_243780_0">
+                    <stereotype id="_2022x_2_6a70230_1691058084944_585853_25497"/>
+                    <stereotype id="_12_0_be00301_1164123483951_695645_2041"/>
+                </custom>
                 <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Difficulty Property" listAsElement="false" opposite="false" id="IDaction_1682854120660_538829_6">
                     <stereotype id="_19_0_3_6a70230_1653028064690_400500_43533"/>
                     <stereotype id="_12_0_be00301_1164123483951_695645_2041"/>
